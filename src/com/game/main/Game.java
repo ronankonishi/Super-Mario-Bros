@@ -1,0 +1,175 @@
+package com.game.main;
+
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+
+import com.game.gfx.BufferedImageLoader;
+import com.game.gfx.Camera;
+import com.game.gfx.Texture;
+import com.game.gfx.Window;
+import com.game.object.GameObject;
+import com.game.object.util.Handler;
+import com.game.object.util.KeyInput;
+import com.game.object.util.ObjectId;
+import com.game.main.util.LevelHandler;
+
+public class Game extends Canvas implements Runnable {
+
+	// GAME CONSTANTS
+	private static final int MILLIS_PER_SEC = 1000;
+	private static final int NANOS_PER_SEC = 1000000000;
+	private static final double NUM_TICKS = 60.0;
+	private static final String NAME = "Super Mario Bros";
+
+	private final static int WINDOW_WIDTH = 960;
+	private final static int WINDOW_HEIGHT = 720;
+	private final static int SCREEN_WIDTH = WINDOW_WIDTH - 67;
+	private final static int SCREEN_HEIGHT = WINDOW_HEIGHT;
+	private final static int SCREEN_OFFSET = 16*3;
+
+	// GAME VARIABLES
+	private boolean running;
+
+	// GAME COMPONENTS
+	private Thread thread;
+	private Handler handler;
+	private Camera cam;
+	private LevelHandler levelHandler;
+	
+	private static Texture tex;
+
+	public Game() {
+		running = false;
+		initialize();
+	}
+
+	public static void main(String args[]) {
+		new Game();
+	}
+
+	@Override
+	public void run() {
+		long lastTime = System.nanoTime();
+		double amountOfTicks = NUM_TICKS;
+		double ns = NANOS_PER_SEC / amountOfTicks;
+		double delta = 0;
+		long timer = System.currentTimeMillis();
+		int frames = 0;
+
+		// while running, update graphics and process and get FPS
+		while (running) {
+			long now = System.nanoTime();
+			delta += (now - lastTime) / ns;
+			lastTime = now;
+
+			// call tick() and reset time passed
+			while (delta >= 1) {
+				tick();
+				delta--;
+			}
+
+			if (running) {
+				render();
+			}
+
+			frames++;
+
+			// get number of frames every second
+			if (System.currentTimeMillis() - timer > MILLIS_PER_SEC) {
+				timer += MILLIS_PER_SEC;
+//				System.out.println("FPS: "+ frames);
+				frames = 0;
+			}
+		}
+		stop();
+	}
+	
+	public static Texture getTexture() {
+		return tex;
+	}
+
+	public static int getWindowHeight() {
+		return WINDOW_HEIGHT;
+	}
+
+	public static int getWindowWidth() {
+		return WINDOW_WIDTH;
+	}
+
+	public static int getScreenHeight() {
+		return SCREEN_HEIGHT;
+	}
+
+	public static int getScreenWidth() {
+		return SCREEN_WIDTH;
+	}
+
+	private void initialize() {
+
+		tex = new Texture();
+		
+		handler = new Handler();
+		this.addKeyListener(new KeyInput(handler));
+		
+		levelHandler = new LevelHandler(handler);
+		levelHandler.start();
+
+		cam = new Camera(0, SCREEN_OFFSET);
+		
+//		hud = new HUD();
+		new Window(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, this);
+
+		this.setFocusable(true);
+		this.start();
+	}
+
+	private synchronized void start() {
+		thread = new Thread(this);
+		thread.start();
+		running = true;
+	}
+
+	private synchronized void stop() {
+		try {
+			thread.join();
+			running = false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void tick() {
+		handler.tick();
+		cam.tick(handler.getPlayer());
+//		hud.tick();
+	}
+
+	private void render() {
+		BufferStrategy buf = this.getBufferStrategy();
+		if (buf == null) {
+			this.createBufferStrategy(3);
+			return;
+		}
+
+		// draw graphics
+		Graphics g = buf.getDrawGraphics();
+		Graphics2D g2d = (Graphics2D) g;
+
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+		g2d.translate(cam.getX(), cam.getY());
+		handler.render(g);
+		g2d.translate(-cam.getX(), -cam.getY());
+
+//		hud.render(g);
+		
+		// clean for next frame
+		g.dispose();
+		buf.show();
+	}	
+}

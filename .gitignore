@@ -1,0 +1,8 @@
+*.class
+*.wav
+*.png
+*.jpg
+
+.settings
+.classpath
+.project
