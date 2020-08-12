@@ -1,7 +1,9 @@
 *.class
 *.wav
-*.png
-*.jpg
+
+/res/sfx/*
+/res/tile/*
+/bin/*
 
 .settings
 .classpath
