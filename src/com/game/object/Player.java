@@ -99,7 +99,7 @@ public class Player extends GameObject {
 			GameObject temp = handler.getGameObjs().get(i);
 			
 			if (temp.getId() == ObjectId.Block || temp.getId() == ObjectId.Pipe) {
-				if (getBounds().intersects(temp.getBounds())) {
+				if (getBoundsBottom().intersects(temp.getBounds())) {
 					setY(temp.getY() - getHeight());
 					setVelY(0);
 					jumped = false;
@@ -125,14 +125,13 @@ public class Player extends GameObject {
 		Graphics2D g2d = (Graphics2D) g;
 		
 		g.setColor(Color.red);
-		g2d.draw(getBounds());
+		g2d.draw(getBoundsBottom());
 		g2d.draw(getBoundsRight());
 		g2d.draw(getBoundsLeft());
 		g2d.draw(getBoundsTop());
 	}
 
-	@Override
-	public Rectangle getBounds() {
+	public Rectangle getBoundsBottom() {
 		int x = (int) (getX() + (getWidth()/4));
 		int y = (int) (getY() + (getHeight()/2));
 		int w = (int) (getWidth()/2);
@@ -170,5 +169,11 @@ public class Player extends GameObject {
 	
 	public void setJumped(boolean hasJumped) {
 		jumped = hasJumped;
+	}
+
+	@Override
+	public Rectangle getBounds() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

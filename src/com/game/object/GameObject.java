@@ -1,6 +1,8 @@
 package com.game.object;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import com.game.main.Game;
@@ -34,6 +36,13 @@ public abstract class GameObject {
 	public abstract void tick();
 	public abstract void render(Graphics g);
 	public abstract Rectangle getBounds();
+	
+	private void showBounds(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		
+		g.setColor(Color.red);
+		g2d.draw(getBounds());
+	}
 	
 	public void applyGravity() {
 		if (y < Game.getWindowHeight()) {
