@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import com.game.gfx.Animation;
+import com.game.gfx.AnimationId;
 import com.game.gfx.Texture;
 import com.game.main.Game;
 import com.game.object.util.Handler;
@@ -14,40 +16,82 @@ import com.game.object.util.ObjectId;
 public class Player extends GameObject {
 
 	private static final float WIDTH = 16;
-	private static final float HEIGHT = 32;
+	private static final float HEIGHT = 16;
 	
 	private Handler handler;
 	private Texture tex;
+	
+	private PlayerState state;
 	private BufferedImage[] spriteL, spriteS;
+	private Animation playerWalkL, playerWalkS;
+	private BufferedImage[] currSprite;
+	private Animation currAnimation;
 	
 	private boolean jumped = false;
-	private int health = 2;
+	private boolean forward = false;
+	
 	
 	public Player(float x, float y, int scale, Handler handler) {
 		super(x, y, ObjectId.Player, WIDTH, HEIGHT, scale);
 		this.handler = handler;
 		tex = Game.getTexture();
+				
 		spriteL = tex.getMarioL();
 		spriteS = tex.getMarioS();
+		
+		playerWalkL = new Animation(5, spriteL[1], spriteL[2], spriteL[3]);
+		playerWalkS = new Animation(5, spriteS[1], spriteS[2], spriteS[3]);
+		
+		state = PlayerState.Small;
+		currSprite = spriteS;
+		currAnimation = playerWalkS;
 	}
 
 	@Override
 	public void render(Graphics g) {
-		if (health == 1) {
-			g.drawImage(spriteS[0], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight()/2, null);
-		} else if (health == 2) {
-			g.drawImage(spriteS[0], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+		if (jumped) {
+			if (forward) {
+				g.drawImage(currSprite[5], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+			} else {
+				g.drawImage(currSprite[5], (int) getX() + (int)getWidth(), (int) getY(), (int) -getWidth(), (int) getHeight(), null);
+			}
+		} else if (getVelX() > 0) {
+			currAnimation.drawAnimation(g, (int)getX(), (int)getY(), (int)getWidth(), (int)getHeight());
+			forward = true;
+		} else if (getVelX() < 0) {
+			currAnimation.drawAnimation(g, (int)getX() + (int)getWidth(), (int)getY(), (int)-getWidth(), (int)getHeight());
+			forward = false;
+		} else {
+			g.drawImage(currSprite[0], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
 		}
+		
 		showBounds(g);		
 	}
 
+	private void setStateSmall() {
+		state = PlayerState.Small;
+		currSprite = spriteS;
+		currAnimation = playerWalkS;
+		setY(getY() + (getHeight()/2));
+		setHeight(getHeight()/2);
+	}
+	
+	private void setStateLarge() {
+		state = PlayerState.Large;
+		currSprite = spriteL;
+		currAnimation = playerWalkL;
+		setY(getY() - getHeight());
+		setHeight((float) 2 * (getHeight() / getScale()));
+	}
+
 	@Override
-	public void tick() {		
+	public void tick() {
 		setX(getVelX() + getX());
 		setY(getVelY() + getY());
 		applyGravity();
 		
-		collision();		
+		collision();
+		currAnimation.runAnimation();
 	}
 	
 	private void collision() {
@@ -86,22 +130,38 @@ public class Player extends GameObject {
 		g2d.draw(getBoundsLeft());
 		g2d.draw(getBoundsTop());
 	}
-	
+
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle( (int) ((int)getX() + (getWidth()/2) - ((getWidth()/4))), (int) ((int) getY()+(getHeight()/2)), (int)getWidth()/2, (int)getHeight()/2);
+		int x = (int) (getX() + (getWidth()/4));
+		int y = (int) (getY() + (getHeight()/2));
+		int w = (int) (getWidth()/2);
+		int h = (int) (getHeight()/2);
+		return new Rectangle(x, y, w, h);
 	}
 	
 	public Rectangle getBoundsTop() {
-		return new Rectangle((int)((int)getX() + (getWidth()/2) - (getWidth()/4)), (int)getY(), (int)getWidth()/2, (int)getHeight()/2);
+		int x = (int) ((int)getX() + (getWidth()/2) - (getWidth()/4));
+		int y = (int) getY();
+		int w = (int) (getWidth() / 2);
+		int h = (int) (getHeight() / 2);
+		return new Rectangle(x, y, w, h);
 	}
 	
 	public Rectangle getBoundsRight() {
-		return new Rectangle((int)((int)getX()+getWidth()-5), (int)getY()+5, (int)5, (int)getHeight()-10);
+		int x = (int) (getX() + getWidth() - 5);
+		int y = (int) (getY() + 5);
+		int w = (int) 5;
+		int h = (int) (getHeight() - 10);
+		return new Rectangle(x, y, w, h);
 	}
 	
 	public Rectangle getBoundsLeft() {
-		return new Rectangle((int)getX(), (int)getY()+5, (int)5, (int)getHeight()-10);
+		int x = (int) getX();
+		int y = (int) (getY() + 5);
+		int w = (int) 5;
+		int h = (int) (getHeight() - 10);
+		return new Rectangle(x, y, w, h);
 	}
 
 	public boolean hasJumped() {
@@ -111,5 +171,4 @@ public class Player extends GameObject {
 	public void setJumped(boolean hasJumped) {
 		jumped = hasJumped;
 	}
-
 }

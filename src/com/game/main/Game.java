@@ -19,6 +19,8 @@ import com.game.main.util.LevelHandler;
 
 public class Game extends Canvas implements Runnable {
 
+	private static final long serialVersionUID = 1L;
+
 	// GAME CONSTANTS
 	private static final int MILLIS_PER_SEC = 1000;
 	private static final int NANOS_PER_SEC = 1000000000;
@@ -41,14 +43,38 @@ public class Game extends Canvas implements Runnable {
 	private LevelHandler levelHandler;
 	
 	private static Texture tex;
-
+	
+	public static void main(String args[]) {
+		new Game();
+	}
+	
 	public Game() {
 		running = false;
 		initialize();
 	}
+	
+	private void initialize() {
+		tex = new Texture();
+		
+		handler = new Handler();
+		this.addKeyListener(new KeyInput(handler));
+		
+		levelHandler = new LevelHandler(handler);
+		levelHandler.start();
 
-	public static void main(String args[]) {
-		new Game();
+		cam = new Camera(0, SCREEN_OFFSET);
+		
+//		hud = new HUD();
+		new Window(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, this);
+
+		this.setFocusable(true);
+		this.start();
+	}
+
+	private synchronized void start() {
+		thread = new Thread(this);
+		thread.start();
+		running = true;
 	}
 
 	@Override
@@ -88,60 +114,6 @@ public class Game extends Canvas implements Runnable {
 		stop();
 	}
 	
-	public static Texture getTexture() {
-		return tex;
-	}
-
-	public static int getWindowHeight() {
-		return WINDOW_HEIGHT;
-	}
-
-	public static int getWindowWidth() {
-		return WINDOW_WIDTH;
-	}
-
-	public static int getScreenHeight() {
-		return SCREEN_HEIGHT;
-	}
-
-	public static int getScreenWidth() {
-		return SCREEN_WIDTH;
-	}
-
-	private void initialize() {
-
-		tex = new Texture();
-		
-		handler = new Handler();
-		this.addKeyListener(new KeyInput(handler));
-		
-		levelHandler = new LevelHandler(handler);
-		levelHandler.start();
-
-		cam = new Camera(0, SCREEN_OFFSET);
-		
-//		hud = new HUD();
-		new Window(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, this);
-
-		this.setFocusable(true);
-		this.start();
-	}
-
-	private synchronized void start() {
-		thread = new Thread(this);
-		thread.start();
-		running = true;
-	}
-
-	private synchronized void stop() {
-		try {
-			thread.join();
-			running = false;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void tick() {
 		handler.tick();
 		cam.tick(handler.getPlayer());
@@ -171,5 +143,34 @@ public class Game extends Canvas implements Runnable {
 		// clean for next frame
 		g.dispose();
 		buf.show();
-	}	
+	}
+	
+	private synchronized void stop() {
+		try {
+			thread.join();
+			running = false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static Texture getTexture() {
+		return tex;
+	}
+
+	public static int getWindowHeight() {
+		return WINDOW_HEIGHT;
+	}
+
+	public static int getWindowWidth() {
+		return WINDOW_WIDTH;
+	}
+
+	public static int getScreenHeight() {
+		return SCREEN_HEIGHT;
+	}
+
+	public static int getScreenWidth() {
+		return SCREEN_WIDTH;
+	}
 }

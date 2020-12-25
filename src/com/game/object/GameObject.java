@@ -26,8 +26,8 @@ public abstract class GameObject {
 		this.x = x * scale;
 		this.y = y * scale;
 		this.id = id;
-		this.width = width * scale;
-		this.height = height * scale;
+		this.width = width;
+		this.height = height;
 		this.scale = scale;
 	}
 	
@@ -64,11 +64,11 @@ public abstract class GameObject {
 	}
 	
 	public void setWidth(float width) {
-		this.width = width*scale;
+		this.width = width;
 	}
 	
 	public void setHeight(float height) {
-		this.height = height*scale;
+		this.height = height;
 	}
 	
 	public float getX() {
@@ -92,10 +92,14 @@ public abstract class GameObject {
 	}
 	
 	public float getWidth() {
-		return width;
+		return width * scale;
 	}
 	
 	public float getHeight() {
-		return height;
+		return height * scale;
+	}
+	
+	public float getScale() {
+		return scale;
 	}
 }
