@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 
 import com.game.gfx.Animation;
 import com.game.gfx.AnimationId;
@@ -26,7 +27,7 @@ public class Player extends GameObject {
 	private Animation playerWalkL, playerWalkS;
 	private BufferedImage[] currSprite;
 	private Animation currAnimation;
-	private Block removeBlock;
+	private LinkedList<Block> removeBlocks;
 	
 	private boolean jumped = false;
 	private boolean forward = false;
@@ -35,7 +36,7 @@ public class Player extends GameObject {
 	public Player(float x, float y, int scale, Handler handler) {
 		super(x, y, ObjectId.Player, WIDTH, HEIGHT, scale);
 		this.handler = handler;
-		removeBlock = null;
+		removeBlocks = new LinkedList<Block>();
 		
 		tex = Game.getTexture();
 				
@@ -102,13 +103,13 @@ public class Player extends GameObject {
 		for (int i = 0; i < handler.getGameObjs().size(); i++) {
 			GameObject temp = handler.getGameObjs().get(i);
 			if (temp == this) continue;
-			if (removeBlock != null && temp == removeBlock) continue;
+			if (removeBlocks.contains(temp)) continue;
 			
 			if (temp.getId() == ObjectId.Block && getBoundsTop().intersects(temp.getBounds())) {
 				setY(temp.getY() + temp.getHeight());
 				setVelY(0);
 				((Block) temp).hit();
-				removeBlock = (Block) temp;
+				removeBlocks.add((Block) temp);
 			} else {
 				if (getBoundsBottom().intersects(temp.getBounds())) {
 					setY(temp.getY() - getHeight());
@@ -132,10 +133,15 @@ public class Player extends GameObject {
 		}
 	}
 	
-	public Block getAndResetRemoveBlock() {
-		if (removeBlock == null || !removeBlock.shouldRemove()) return null;
-		Block output = removeBlock;
-		removeBlock = null;
+	public LinkedList<Block> getAndResetRemoveBlock() {
+		LinkedList<Block> output = new LinkedList<Block>();
+		for (Block removeBlock : removeBlocks) {
+			if (!removeBlock.shouldRemove()) continue;
+			output.add(removeBlock);
+		}
+		for (Block removeBlock : output) {
+			removeBlocks.remove(removeBlock);
+		}
 		return output;
 	}
 	

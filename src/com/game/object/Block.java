@@ -15,11 +15,27 @@ public class Block extends GameObject {
 	private BufferedImage[] sprite;
 	private boolean hit;
 	private Debris debris;
+	private BlockId id;
 	
-	public Block(int x, int y, int width, int height, int index, int scale) {
+	public Block(int x, int y, int width, int height, int scale, BlockId id) {
 		super(x, y, ObjectId.Block, width, height, scale);
-		this.index = index;
+		this.id = id;
 		sprite = tex.getTile1();
+		setBlockSprite();
+	}
+	
+	private void setBlockSprite() {
+		switch (id) {
+			case Brick:
+				index = 0;
+				break;
+			case Question:
+				index = 120/5;
+				break;
+			case Solid:
+				index = 140/5;
+				break;
+		}
 	}
 	
 	@Override 

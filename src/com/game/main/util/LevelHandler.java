@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 import com.game.gfx.BufferedImageLoader;
 import com.game.object.Block;
+import com.game.object.BlockId;
 import com.game.object.Pipe;
 import com.game.object.Player;
 import com.game.object.util.Handler;
@@ -42,7 +43,12 @@ public class LevelHandler {
 				if (red == 255 && green == 255 && blue == 255) continue;
 				
 				if (red == green && red == blue) {
-					handler.addObj(new Block(i*16, j*16, 16, 16, red/5, 3));
+					BlockId id = null;
+					if (red == 0) id = BlockId.Brick;
+					if (red == 120) id = BlockId.Question;
+					if (red == 140) id = BlockId.Solid;
+					
+					handler.addObj(new Block(i*16, j*16, 16, 16, 3, id));
 				} else if (blue == 0 && green == 0 && red == 5) {
 					handler.addObj(new Pipe(i*16, j*16, 32, 16, 0, 3, false));
 				} else if (blue == 0 && green == 0 && red == 10) {
