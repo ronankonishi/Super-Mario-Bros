@@ -13,6 +13,8 @@ public class Block extends GameObject {
 	private Texture tex = Game.getTexture();
 	private int index;
 	private BufferedImage[] sprite;
+	private boolean hit;
+	private Debris debris;
 	
 	public Block(int x, int y, int width, int height, int index, int scale) {
 		super(x, y, ObjectId.Block, width, height, scale);
@@ -20,17 +22,37 @@ public class Block extends GameObject {
 		sprite = tex.getTile1();
 	}
 	
-	@Override
-	public void tick() {		
+	@Override 
+	public void tick() {
+		if (hit) {
+			debris.tick();
+		}
+	}
+	
+	public boolean shouldRemove() {
+		if (debris.shouldRemove()) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public void render(Graphics g) {
-		g.drawImage(sprite[index], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+		if (!hit) {
+			g.drawImage(sprite[index], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+		} else {
+			debris.draw(g);
+		}
+		
 	}
 
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+	}
+	
+	public void hit() {
+		hit = true;
+		debris = new Debris(getX(), getY(), getWidth(), getHeight(), getScale());
 	}
 }

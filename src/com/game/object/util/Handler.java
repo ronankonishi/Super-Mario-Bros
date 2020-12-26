@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.game.object.Block;
 import com.game.object.GameObject;
 import com.game.object.Player;
 
@@ -22,6 +23,10 @@ public class Handler {
 	public void tick() {
 		for (GameObject obj : gameObjs) {
 			obj.tick();
+		}
+		Block removeBlock = player.getAndResetRemoveBlock();
+		if (removeBlock != null) {
+			removeObj(removeBlock);
 		}
 	}
 	

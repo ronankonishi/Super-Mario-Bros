@@ -26,6 +26,7 @@ public class Player extends GameObject {
 	private Animation playerWalkL, playerWalkS;
 	private BufferedImage[] currSprite;
 	private Animation currAnimation;
+	private Block removeBlock;
 	
 	private boolean jumped = false;
 	private boolean forward = false;
@@ -34,6 +35,8 @@ public class Player extends GameObject {
 	public Player(float x, float y, int scale, Handler handler) {
 		super(x, y, ObjectId.Player, WIDTH, HEIGHT, scale);
 		this.handler = handler;
+		removeBlock = null;
+		
 		tex = Game.getTexture();
 				
 		spriteL = tex.getMarioL();
@@ -45,6 +48,7 @@ public class Player extends GameObject {
 		state = PlayerState.Small;
 		currSprite = spriteS;
 		currAnimation = playerWalkS;
+		setStateLarge();
 	}
 
 	@Override
@@ -90,15 +94,22 @@ public class Player extends GameObject {
 		setY(getVelY() + getY());
 		applyGravity();
 		
-		collision();
 		currAnimation.runAnimation();
+		collision();
 	}
 	
 	private void collision() {
 		for (int i = 0; i < handler.getGameObjs().size(); i++) {
 			GameObject temp = handler.getGameObjs().get(i);
+			if (temp == this) continue;
+			if (removeBlock != null && temp == removeBlock) continue;
 			
-			if (temp.getId() == ObjectId.Block || temp.getId() == ObjectId.Pipe) {
+			if (temp.getId() == ObjectId.Block && getBoundsTop().intersects(temp.getBounds())) {
+				setY(temp.getY() + temp.getHeight());
+				setVelY(0);
+				((Block) temp).hit();
+				removeBlock = (Block) temp;
+			} else {
 				if (getBoundsBottom().intersects(temp.getBounds())) {
 					setY(temp.getY() - getHeight());
 					setVelY(0);
@@ -119,6 +130,13 @@ public class Player extends GameObject {
 				}
 			}
 		}
+	}
+	
+	public Block getAndResetRemoveBlock() {
+		if (removeBlock == null || !removeBlock.shouldRemove()) return null;
+		Block output = removeBlock;
+		removeBlock = null;
+		return output;
 	}
 	
 	private void showBounds(Graphics g) {

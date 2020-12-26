@@ -45,11 +45,7 @@ public abstract class GameObject {
 	}
 	
 	public void applyGravity() {
-		if (y < Game.getWindowHeight()) {
-			velY += 0.5f;
-		} else if (y == 0) {
-			velY = 0;
-		}
+		velY += 0.5f;
 	}
 	
 	public void setX(float x) {
@@ -108,7 +104,7 @@ public abstract class GameObject {
 		return height * scale;
 	}
 	
-	public float getScale() {
+	public int getScale() {
 		return scale;
 	}
 }
