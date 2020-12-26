@@ -43,10 +43,12 @@ public class LevelHandler {
 				if (red == 255 && green == 255 && blue == 255) continue;
 				
 				if (red == green && red == blue) {
+					int blockIdInd = (int) (red/10);
 					BlockId id = null;
-					if (red == 0) id = BlockId.Brick;
-					if (red == 120) id = BlockId.Question;
-					if (red == 140) id = BlockId.Solid;
+					if (blockIdInd == 0) id = BlockId.Brick;
+					if (blockIdInd == 3) id = BlockId.Question;
+					if (blockIdInd == 6) id = BlockId.Solid;
+					if (blockIdInd == 9) id = BlockId.Invisible;
 					
 					handler.addObj(new Block(i*16, j*16, 16, 16, 3, id));
 				} else if (blue == 0 && green == 0 && red == 5) {

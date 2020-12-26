@@ -105,7 +105,7 @@ public class Player extends GameObject {
 			if (temp == this) continue;
 			if (removeBlocks.contains(temp)) continue;
 			
-			if (temp.getId() == ObjectId.Block && getBoundsTop().intersects(temp.getBounds())) {
+			if (temp.getId() == ObjectId.Block && ((Block) temp).getBlockId() == BlockId.Brick && getBoundsTop().intersects(temp.getBounds())) {
 				setY(temp.getY() + temp.getHeight());
 				setVelY(0);
 				((Block) temp).hit();

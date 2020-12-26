@@ -30,11 +30,13 @@ public class Block extends GameObject {
 				index = 0;
 				break;
 			case Question:
-				index = 120/5;
+				index = 24;
 				break;
 			case Solid:
-				index = 140/5;
+				index = 28;
 				break;
+			case Invisible:
+				index = -1;
 		}
 	}
 	
@@ -54,12 +56,14 @@ public class Block extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
-		if (!hit) {
-			g.drawImage(sprite[index], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
-		} else {
+		if (hit) {
 			debris.draw(g);
+			return;
 		}
 		
+		if (index == -1) return;
+		
+		g.drawImage(sprite[index], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
 	}
 
 	@Override
@@ -70,5 +74,9 @@ public class Block extends GameObject {
 	public void hit() {
 		hit = true;
 		debris = new Debris(getX(), getY(), getWidth(), getHeight(), getScale());
+	}
+	
+	public BlockId getBlockId() {
+		return id;
 	}
 }
