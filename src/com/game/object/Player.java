@@ -11,6 +11,8 @@ import com.game.gfx.Animation;
 import com.game.gfx.AnimationId;
 import com.game.gfx.Texture;
 import com.game.main.Game;
+import com.game.object.block.Block;
+import com.game.object.block.BrickBlock;
 import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
 
@@ -105,11 +107,12 @@ public class Player extends GameObject {
 			if (temp == this) continue;
 			if (removeBlocks.contains(temp)) continue;
 			
-			if (temp.getId() == ObjectId.Block && ((Block) temp).getBlockId() == BlockId.Brick && getBoundsTop().intersects(temp.getBounds())) {
+			if (temp.getId() == ObjectId.Block && getBoundsTop().intersects(temp.getBounds())) {
 				setY(temp.getY() + temp.getHeight());
 				setVelY(0);
+				
 				((Block) temp).hit();
-				removeBlocks.add((Block) temp);
+				if (temp.getClass() == BrickBlock.class) removeBlocks.add((Block) temp);
 			} else {
 				if (getBoundsBottom().intersects(temp.getBounds())) {
 					setY(temp.getY() - getHeight());
@@ -197,7 +200,6 @@ public class Player extends GameObject {
 
 	@Override
 	public Rectangle getBounds() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

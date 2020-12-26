@@ -3,10 +3,17 @@ package com.game.main.util;
 import java.awt.image.BufferedImage;
 
 import com.game.gfx.BufferedImageLoader;
-import com.game.object.Block;
-import com.game.object.BlockId;
 import com.game.object.Pipe;
 import com.game.object.Player;
+import com.game.object.block.Block;
+import com.game.object.block.BrickBlock;
+import com.game.object.block.BrickCoinsBlock;
+import com.game.object.block.BrickStarBlock;
+import com.game.object.block.GroundBlock;
+import com.game.object.block.InvisibleBlock;
+import com.game.object.block.QuestionBlock;
+import com.game.object.block.QuestionFlowerBlock;
+import com.game.object.block.SolidBlock;
 import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
 
@@ -43,14 +50,23 @@ public class LevelHandler {
 				if (red == 255 && green == 255 && blue == 255) continue;
 				
 				if (red == green && red == blue) {
-					int blockIdInd = (int) (red/10);
-					BlockId id = null;
-					if (blockIdInd == 0) id = BlockId.Brick;
-					if (blockIdInd == 3) id = BlockId.Question;
-					if (blockIdInd == 6) id = BlockId.Solid;
-					if (blockIdInd == 9) id = BlockId.Invisible;
+					Block block = null;
+					int x = i * 16;
+					int y = j * 16;
+					int w = 16;
+					int h = 16;
+					int s = 3;
 					
-					handler.addObj(new Block(i*16, j*16, 16, 16, 3, id));
+					if (red == 0) block = new BrickBlock(x, y, w, h, s);
+					if (red == 2) block = new BrickCoinsBlock(x, y, w, h, s);
+					if (red == 4) block = new BrickStarBlock(x, y, w, h, s);
+					if (red == 30) block = new QuestionBlock(x, y, w, h, s);
+					if (red == 32) block = new QuestionFlowerBlock(x, y, w, h, s);
+					if (red == 60) block = new SolidBlock(x, y, w, h, s);
+					if (red == 90) block = new InvisibleBlock(x, y, w, h, s);
+					if (red == 100) block = new GroundBlock(x, y, w, h, s);
+										
+					handler.addObj(block);
 				} else if (blue == 0 && green == 0 && red == 5) {
 					handler.addObj(new Pipe(i*16, j*16, 32, 16, 0, 3, false));
 				} else if (blue == 0 && green == 0 && red == 10) {
