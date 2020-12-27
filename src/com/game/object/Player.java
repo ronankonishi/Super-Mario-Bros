@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 import com.game.gfx.Animation;
-import com.game.gfx.AnimationId;
 import com.game.gfx.Texture;
 import com.game.main.Game;
 import com.game.object.block.Block;

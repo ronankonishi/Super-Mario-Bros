@@ -56,7 +56,7 @@ public class LevelHandler {
 					int w = 16;
 					int h = 16;
 					int s = 3;
-					
+
 					if (red == 0) block = new BrickBlock(x, y, w, h, s);
 					if (red == 2) block = new BrickCoinsBlock(x, y, w, h, s);
 					if (red == 4) block = new BrickStarBlock(x, y, w, h, s);

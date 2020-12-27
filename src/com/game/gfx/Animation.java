@@ -42,7 +42,7 @@ public class Animation {
 		}
 	}
 	
-	public void drawAnimation(Graphics g, int x, int y, int scaleX, int scaleY) {
-		g.drawImage(currentImg, x, y, scaleX, scaleY, null);
+	public void drawAnimation(Graphics g, int x, int y, int width, int height) {
+		g.drawImage(currentImg, x, y, width, height, null);
 	}
 }

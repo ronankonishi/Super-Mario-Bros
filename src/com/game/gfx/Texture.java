@@ -21,7 +21,7 @@ public class Texture {
 	private List<BufferedImage> sheetList;
 		
 	public BufferedImage[] mario_l, mario_s, tile_1, tile_2, tile_3, tile_4,
-						   pipe_1, debris_1;
+						   pipe_1, debris_1, coin_a1;
 	
 	public Texture() {
 		mario_l = new BufferedImage[MARIO_L_COUNT];
@@ -32,6 +32,7 @@ public class Texture {
 		tile_4 = new BufferedImage[TILE_1_COUNT + TILE_2_COUNT];
 		pipe_1 = new BufferedImage[4];
 		debris_1 = new BufferedImage[4];
+		coin_a1 = new BufferedImage[4];
 		
 		loader = new BufferedImageLoader();
 		sheetList = new LinkedList<BufferedImage>();
@@ -51,6 +52,7 @@ public class Texture {
 		getTileTextures();
 		getDebrisTextures();
 		getPipeTextures();
+		getCoinA1Textures();
 	}
 	
 	public BufferedImage[] getMarioL() {
@@ -84,6 +86,10 @@ public class Texture {
 	public BufferedImage[] getDebris1() {
 		return debris_1;
 	}	
+	
+	public BufferedImage[] getCoinA1() {
+		return coin_a1;
+	}
 	
 	private void getPlayerTextures() {
 		int x_off = 80;
@@ -160,5 +166,17 @@ public class Texture {
 		pipe_1[1] = tile_sheet.getSubimage(x_off, y_off + height, width, height);
 		pipe_1[2] = tile_sheet.getSubimage(x_off + width, y_off, width, height);
 		pipe_1[3] = tile_sheet.getSubimage(x_off + width, y_off + height, width, height);
+	}
+	
+	private void getCoinA1Textures() {
+		int x_off = 0;
+		int y_off = 7 * 16;
+		int width = 16;
+		int height = 16;
+		
+		coin_a1[2] = npc_sheet.getSubimage(x_off, y_off, width, height);
+		coin_a1[1] = npc_sheet.getSubimage(x_off + width, y_off, width, height);
+		coin_a1[0] = npc_sheet.getSubimage(x_off + 2*width, y_off, width, height);
+		coin_a1[3] = npc_sheet.getSubimage(x_off + 3*width, y_off, width, height);		
 	}
 }
