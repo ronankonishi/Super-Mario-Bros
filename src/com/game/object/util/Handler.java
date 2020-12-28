@@ -24,9 +24,13 @@ public class Handler {
 		for (GameObject obj : gameObjs) {
 			obj.tick();
 		}
-		LinkedList<Block> removeBlocks = player.getAndResetRemoveBlock();
-		for (Block removeBlock : removeBlocks) {
-			removeObj(removeBlock);
+		LinkedList<GameObject> removeObjs = player.removeObjs();
+		for (GameObject removeObj : removeObjs) {
+			removeObj(removeObj);
+		}
+		LinkedList<GameObject> addObjs = player.addObjs();
+		for (GameObject addObj : addObjs) {
+			addObj(addObj);
 		}
 	}
 	

@@ -36,4 +36,9 @@ public class Pipe extends GameObject {
 	public Rectangle getBounds() {
 		return new Rectangle((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
 	}
+
+	@Override
+	protected boolean shouldRemove() {
+		return false;
+	}
 }

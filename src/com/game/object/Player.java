@@ -12,6 +12,9 @@ import com.game.gfx.Texture;
 import com.game.main.Game;
 import com.game.object.block.Block;
 import com.game.object.block.BrickBlock;
+import com.game.object.block.InvisibleBlock;
+import com.game.object.block.QuestionFlowerBlock;
+import com.game.object.item.RedShroom;
 import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
 
@@ -28,7 +31,7 @@ public class Player extends GameObject {
 	private Animation playerWalkL, playerWalkS;
 	private BufferedImage[] currSprite;
 	private Animation currAnimation;
-	private LinkedList<Block> removeBlocks;
+	private LinkedList<GameObject> removeObjs, addObjs;
 	
 	private boolean jumped = false;
 	private boolean forward = false;
@@ -37,7 +40,8 @@ public class Player extends GameObject {
 	public Player(float x, float y, int scale, Handler handler) {
 		super(x, y, ObjectId.Player, WIDTH, HEIGHT, scale);
 		this.handler = handler;
-		removeBlocks = new LinkedList<Block>();
+		removeObjs = new LinkedList<GameObject>();
+		addObjs = new LinkedList<GameObject>();
 		
 		tex = Game.getTexture();
 				
@@ -50,7 +54,7 @@ public class Player extends GameObject {
 		state = PlayerState.Small;
 		currSprite = spriteS;
 		currAnimation = playerWalkS;
-		setStateLarge();
+//		setStateLarge();
 	}
 
 	@Override
@@ -104,15 +108,26 @@ public class Player extends GameObject {
 		for (int i = 0; i < handler.getGameObjs().size(); i++) {
 			GameObject temp = handler.getGameObjs().get(i);
 			if (temp == this) continue;
-			if (removeBlocks.contains(temp)) continue;
+			if (removeObjs.contains(temp) || addObjs.contains(temp)) continue;
 			
-			if (temp.getId() == ObjectId.Block && getBoundsTop().intersects(temp.getBounds())) {
+			if (temp.getClass() == RedShroom.class) {
+				if (getBounds().intersects(temp.getBounds())) {
+					setStateLarge();
+					((RedShroom) temp).shouldRemove();
+					removeObjs.add(temp);
+				}
+			} else if (temp.getId() == ObjectId.Block && getBoundsTop().intersects(temp.getBounds())) {
 				setY(temp.getY() + temp.getHeight());
 				setVelY(0);
 				
 				((Block) temp).hit();
-				if (temp.getClass() == BrickBlock.class) removeBlocks.add((Block) temp);
+				if (temp.getClass() == BrickBlock.class) removeObjs.add(temp);
+				if (temp.getClass() == QuestionFlowerBlock.class) {
+					addObjs.add(((QuestionFlowerBlock) temp).getRedShroom());
+				}
 			} else {
+				if (temp.getClass() == InvisibleBlock.class) continue; 
+				
 				if (getBoundsBottom().intersects(temp.getBounds())) {
 					setY(temp.getY() - getHeight());
 					setVelY(0);
@@ -135,14 +150,25 @@ public class Player extends GameObject {
 		}
 	}
 	
-	public LinkedList<Block> getAndResetRemoveBlock() {
-		LinkedList<Block> output = new LinkedList<Block>();
-		for (Block removeBlock : removeBlocks) {
-			if (!removeBlock.shouldRemove()) continue;
-			output.add(removeBlock);
+	public LinkedList<GameObject> removeObjs() {
+		LinkedList<GameObject> output = new LinkedList<GameObject>();
+		for (GameObject removeObj : removeObjs) {
+			if (!removeObj.shouldRemove()) continue;
+			output.add(removeObj);
 		}
-		for (Block removeBlock : output) {
-			removeBlocks.remove(removeBlock);
+		for (GameObject removeObj : output) {
+			removeObjs.remove(removeObj);
+		}
+		return output;
+	}
+	
+	public LinkedList<GameObject> addObjs() {
+		LinkedList<GameObject> output = new LinkedList<GameObject>();
+		for (GameObject addObj : addObjs) {
+			output.add(addObj);
+		}
+		for (GameObject addObj : output) {
+			addObjs.remove(addObj);
 		}
 		return output;
 	}
@@ -151,6 +177,8 @@ public class Player extends GameObject {
 		Graphics2D g2d = (Graphics2D) g;
 		
 		g.setColor(Color.red);
+		g2d.draw(getBounds());
+		g.setColor(Color.blue);
 		g2d.draw(getBoundsBottom());
 		g2d.draw(getBoundsRight());
 		g2d.draw(getBoundsLeft());
@@ -199,6 +227,15 @@ public class Player extends GameObject {
 
 	@Override
 	public Rectangle getBounds() {
-		return null;
+		int x = (int) getX();
+		int y = (int) getY();
+		int w = (int) getWidth();
+		int h = (int) getHeight();
+		return new Rectangle(x, y, w, h);
+	}
+
+	@Override
+	protected boolean shouldRemove() {
+		return false;
 	}
 }

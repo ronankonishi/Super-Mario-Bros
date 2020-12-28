@@ -38,7 +38,7 @@ public class Game extends Canvas implements Runnable {
 
 	// GAME COMPONENTS
 	private Thread thread;
-	private Handler handler;
+	private static Handler handler;
 	private Camera cam;
 	private LevelHandler levelHandler;
 	
@@ -158,6 +158,10 @@ public class Game extends Canvas implements Runnable {
 		return tex;
 	}
 
+	public static Handler getHandler() {
+		return handler;
+	}
+	
 	public static int getWindowHeight() {
 		return WINDOW_HEIGHT;
 	}

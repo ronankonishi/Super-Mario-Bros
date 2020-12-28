@@ -21,7 +21,7 @@ public class Texture {
 	private List<BufferedImage> sheetList;
 		
 	public BufferedImage[] mario_l, mario_s, tile_1, tile_2, tile_3, tile_4,
-						   pipe_1, debris_1, coin_a1;
+						   pipe_1, debris_1, coin_a1, shroom_1, flower_1, star_1;
 	
 	public Texture() {
 		mario_l = new BufferedImage[MARIO_L_COUNT];
@@ -33,6 +33,9 @@ public class Texture {
 		pipe_1 = new BufferedImage[4];
 		debris_1 = new BufferedImage[4];
 		coin_a1 = new BufferedImage[4];
+		shroom_1 = new BufferedImage[3];
+		flower_1 = new BufferedImage[4];
+		star_1 = new BufferedImage[4];
 		
 		loader = new BufferedImageLoader();
 		sheetList = new LinkedList<BufferedImage>();
@@ -53,6 +56,9 @@ public class Texture {
 		getDebrisTextures();
 		getPipeTextures();
 		getCoinA1Textures();
+		getShroomTextures();
+		getFlowerTextures();
+		getStarTextures();
 	}
 	
 	public BufferedImage[] getMarioL() {
@@ -89,6 +95,18 @@ public class Texture {
 	
 	public BufferedImage[] getCoinA1() {
 		return coin_a1;
+	}
+	
+	public BufferedImage[] getShroom1() {
+		return shroom_1;
+	}
+	
+	public BufferedImage[] getFlower1() {
+		return flower_1;
+	}
+	
+	public BufferedImage[] getStar1() {
+		return star_1;
 	}
 	
 	private void getPlayerTextures() {
@@ -178,5 +196,37 @@ public class Texture {
 		coin_a1[1] = npc_sheet.getSubimage(x_off + width, y_off, width, height);
 		coin_a1[0] = npc_sheet.getSubimage(x_off + 2*width, y_off, width, height);
 		coin_a1[3] = npc_sheet.getSubimage(x_off + 3*width, y_off, width, height);		
+	}
+	
+	private void getShroomTextures() {
+		int x_off = 0;
+		int y_off = 0;
+		int width = 16;
+		int height = 16;
+		shroom_1[0] = npc_sheet.getSubimage(x_off, y_off, width, height);
+		shroom_1[1] = npc_sheet.getSubimage(x_off + width, y_off, width, height);
+		shroom_1[2] = npc_sheet.getSubimage(x_off + 2*width, y_off, width, height);
+	}
+	
+	private void getFlowerTextures() {
+		int x_off = 0;
+		int y_off = 16*3;
+		int width = 16;
+		int height = 16;
+		flower_1[0] = npc_sheet.getSubimage(x_off, y_off, width, height);
+		flower_1[1] = npc_sheet.getSubimage(x_off + width, y_off, width, height);
+		flower_1[2] = npc_sheet.getSubimage(x_off + 2*width, y_off, width, height);
+		flower_1[3] = npc_sheet.getSubimage(x_off + 3*width, y_off, width, height);
+	}
+	
+	private void getStarTextures() {
+		int x_off = 0;
+		int y_off = 16*4;
+		int width = 16;
+		int height = 16;
+		star_1[0] = npc_sheet.getSubimage(x_off, y_off, width, height);
+		star_1[1] = npc_sheet.getSubimage(x_off + width, y_off, width, height);
+		star_1[2] = npc_sheet.getSubimage(x_off + 2*width, y_off, width, height);
+		star_1[3] = npc_sheet.getSubimage(x_off + 3*width, y_off, width, height);
 	}
 }

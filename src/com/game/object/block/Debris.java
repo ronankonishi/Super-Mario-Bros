@@ -35,7 +35,7 @@ public class Debris {
 		velY = -7f;
 	}
 	
-	public void applyGravity() {
+	private void applyGravity() {
 		velY += 0.5f;
 	}
 	

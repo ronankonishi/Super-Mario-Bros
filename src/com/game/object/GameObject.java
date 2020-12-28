@@ -13,12 +13,12 @@ import com.game.object.util.ObjectId;
  */
 public abstract class GameObject {
 	
-	private float x;
-	private float y;
-	private ObjectId id;
-	private float velX, velY;
-	private float width, height;
-	private int scale;
+	protected float x;
+	protected float y;
+	protected ObjectId id;
+	protected float velX, velY;
+	protected float width, height;
+	protected int scale;
 	
 	
 	/**
@@ -107,4 +107,6 @@ public abstract class GameObject {
 	public int getScale() {
 		return scale;
 	}
+
+	protected abstract boolean shouldRemove();
 }
