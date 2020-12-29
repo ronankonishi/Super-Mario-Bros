@@ -1,10 +1,6 @@
 package com.game.object.block;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
-import com.game.gfx.Texture;
-import com.game.main.Game;
 import com.game.object.item.Debris;
 
 public class BrickBlock extends Block{

@@ -1,10 +1,6 @@
 package com.game.object.block;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
-import com.game.gfx.Texture;
-import com.game.main.Game;
 
 public class BrickStarBlock extends Block{
 	public BrickStarBlock(float x, float y, float width, float height, int scale) {

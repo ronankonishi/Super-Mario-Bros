@@ -9,7 +9,6 @@ import com.game.main.Game;
 public class Debris {
 	private Texture tex = Game.getTexture();
 	private BufferedImage[] debris;
-	private int scale;
 	private float width, height, velX, velY;
 	private float[] x, y;
 	

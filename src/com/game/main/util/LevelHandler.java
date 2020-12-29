@@ -15,7 +15,6 @@ import com.game.object.block.QuestionBlock;
 import com.game.object.block.QuestionFlowerBlock;
 import com.game.object.block.SolidBlock;
 import com.game.object.util.Handler;
-import com.game.object.util.ObjectId;
 
 public class LevelHandler {
 	

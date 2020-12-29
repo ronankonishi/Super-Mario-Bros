@@ -5,16 +5,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-
-import com.game.gfx.BufferedImageLoader;
 import com.game.gfx.Camera;
 import com.game.gfx.Texture;
 import com.game.gfx.Window;
-import com.game.object.GameObject;
 import com.game.object.util.Handler;
 import com.game.object.util.KeyInput;
-import com.game.object.util.ObjectId;
 import com.game.main.util.LevelHandler;
 
 public class Game extends Canvas implements Runnable {

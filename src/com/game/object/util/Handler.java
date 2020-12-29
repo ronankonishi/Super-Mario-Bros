@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.game.object.GameObject;
 import com.game.object.Player;
-import com.game.object.block.Block;
 
 /**
  * Manager for updating all game objects

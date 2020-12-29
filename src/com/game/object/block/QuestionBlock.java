@@ -1,11 +1,6 @@
 package com.game.object.block;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.util.LinkedList;
-
-import com.game.gfx.Texture;
-import com.game.main.Game;
 import com.game.object.item.Coin;
 
 public class QuestionBlock extends Block{

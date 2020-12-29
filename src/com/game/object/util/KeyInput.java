@@ -3,8 +3,6 @@ package com.game.object.util;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import com.game.object.Player;
-
 public class KeyInput extends KeyAdapter {
 	
 	private boolean[] keyDown = new boolean[4];
