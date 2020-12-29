@@ -10,11 +10,13 @@ import java.util.LinkedList;
 import com.game.gfx.Animation;
 import com.game.object.block.Block;
 import com.game.object.block.BrickBlock;
+import com.game.object.block.BrickStarBlock;
 import com.game.object.block.InvisibleBlock;
 import com.game.object.block.QuestionFlowerBlock;
 import com.game.object.item.GreenShroom;
 import com.game.object.item.RedFlower;
 import com.game.object.item.RedShroom;
+import com.game.object.item.Star;
 import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
 
@@ -142,6 +144,11 @@ public class Player extends GameObject {
 				continue;
 			}
 			
+			if (temp.getClass() == Star.class && getBounds().intersects(temp.getBounds())) {
+				removeObjs.add(temp);
+				continue;
+			}
+			
 			if (temp.getId() == ObjectId.Block && getBoundsTop().intersects(temp.getBounds())) {
 				if(temp.getClass() == InvisibleBlock.class && velY > 0) continue;
 				
@@ -150,6 +157,7 @@ public class Player extends GameObject {
 				
 				((Block) temp).hit();
 				if (temp.getClass() == BrickBlock.class) removeObjs.add(temp);
+				
 				if (temp.getClass() == QuestionFlowerBlock.class && !((QuestionFlowerBlock) temp).isDisabled()) {
 					if (state == State.SMALL) {
 						((QuestionFlowerBlock) temp).spawnRedShroom();
@@ -164,7 +172,15 @@ public class Player extends GameObject {
 				if (temp.getClass() == InvisibleBlock.class && !((InvisibleBlock) temp).isDisabled()) {
 					((InvisibleBlock) temp).spawnGreenShroom();
 					addObjs.add(((InvisibleBlock)temp).getGreenShroom());
+					continue;
 				}
+				
+				if (temp.getClass() == BrickStarBlock.class && !((BrickStarBlock) temp).isDisabled()) {
+					((BrickStarBlock) temp).spawnStar();
+					addObjs.add(((BrickStarBlock) temp).getStar());
+					continue;
+				}
+				
 			} else {
 				if (temp.getClass() == InvisibleBlock.class && !((InvisibleBlock) temp).isDisabled()) continue; 
 				
