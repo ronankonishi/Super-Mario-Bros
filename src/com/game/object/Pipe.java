@@ -29,12 +29,12 @@ public class Pipe extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		g.setColor(Color.white);
-		g.drawImage(sprite[index], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+		g.drawImage(sprite[index], (int) x, (int) y, (int) width, (int) height, null);
 	}
 
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+		return new Rectangle((int) x, (int) y, (int) width, (int) height);
 	}
 
 	@Override

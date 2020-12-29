@@ -9,14 +9,10 @@ import com.game.main.Game;
 import com.game.object.item.Coin;
 
 public class BrickCoinsBlock extends Block {
-	private Texture tex = Game.getTexture();
-	private int index;
-	private BufferedImage[] sprite;
-	private boolean hit;
 	private int hitCount;
 	private LinkedList<Coin> coins, removeCoins;
 	
-	public BrickCoinsBlock(int x, int y, int width, int height, int scale) {
+	public BrickCoinsBlock(float x, float y, float width, float height, int scale) {
 		super(x, y, width, height, scale);
 		index = 1;
 		sprite = tex.getTile1();
@@ -31,7 +27,7 @@ public class BrickCoinsBlock extends Block {
 			if (hitCount == 10) {
 				index = 3;
 			}
-			coins.add(new Coin(getX(), getY(), getWidth(), getHeight(), getScale()));
+			coins.add(new Coin((int) x, (int) y, (int) width, (int) height, 1));
 			hit = false;
 		}
 		
@@ -50,7 +46,7 @@ public class BrickCoinsBlock extends Block {
 			coin.render(g);
 		}
 
-		g.drawImage(sprite[index], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);		
+		g.drawImage(sprite[index], (int) x, (int) y, (int) width, (int) height, null);		
 	}
 	
 	public void hit() {

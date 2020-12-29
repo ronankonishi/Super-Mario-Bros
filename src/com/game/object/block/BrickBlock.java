@@ -5,15 +5,12 @@ import java.awt.image.BufferedImage;
 
 import com.game.gfx.Texture;
 import com.game.main.Game;
+import com.game.object.item.Debris;
 
 public class BrickBlock extends Block{
-	private Texture tex = Game.getTexture();
-	private int index;
-	private BufferedImage[] sprite;
-	private boolean hit;
 	private Debris debris;
 	
-	public BrickBlock(int x, int y, int width, int height, int scale) {
+	public BrickBlock(float x, float y, float width, float height, int scale) {
 		super(x, y, width, height, scale);
 		index = 1;
 		sprite = tex.getTile1();
@@ -43,12 +40,12 @@ public class BrickBlock extends Block{
 		
 		if (index == -1) return;
 		
-		g.drawImage(sprite[index], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+		g.drawImage(sprite[index], (int) x, (int) y, (int) width, (int) height, null);
 	}
 	
 	
 	public void hit() {
 		hit = true;
-		debris = new Debris(getX(), getY(), getWidth(), getHeight(), getScale());
+		debris = new Debris((int) x, (int) y, (int) width, (int) height, scale);
 	}
 }

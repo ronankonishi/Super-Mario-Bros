@@ -13,14 +13,11 @@ import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
 
 public class RedShroom extends GameObject {
-	private Texture tex = Game.getTexture();
 	private Handler handler = Game.getHandler();
-	private BufferedImage[] sprite;
-	private int index;
 	
 	public RedShroom(float x, float y, float width, float height, int scale) {
-		super(x/scale, y/scale, ObjectId.RedShroom, width/scale, height/scale, scale);
-		this.index = 0;
+		super(x, y, ObjectId.RedShroom, width, height, 1);
+		index = 0;
 		sprite = tex.getShroom1();
 		setVelX(3f);
 	}
@@ -62,7 +59,8 @@ public class RedShroom extends GameObject {
 		}
 	}
 	
-	private void showBounds(Graphics g) {
+	@Override
+	protected void showBounds(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		
 		g.setColor(Color.red);

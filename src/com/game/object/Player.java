@@ -24,12 +24,9 @@ public class Player extends GameObject {
 	private static final float HEIGHT = 16;
 	
 	private Handler handler;
-	private Texture tex;
 	
-	private PlayerState state;
 	private BufferedImage[] spriteL, spriteS;
 	private Animation playerWalkL, playerWalkS;
-	private BufferedImage[] currSprite;
 	private Animation currAnimation;
 	private LinkedList<GameObject> removeObjs, addObjs;
 	
@@ -42,62 +39,58 @@ public class Player extends GameObject {
 		this.handler = handler;
 		removeObjs = new LinkedList<GameObject>();
 		addObjs = new LinkedList<GameObject>();
-		
-		tex = Game.getTexture();
-				
+						
 		spriteL = tex.getMarioL();
 		spriteS = tex.getMarioS();
 		
 		playerWalkL = new Animation(5, spriteL[1], spriteL[2], spriteL[3]);
 		playerWalkS = new Animation(5, spriteS[1], spriteS[2], spriteS[3]);
 		
-		state = PlayerState.Small;
-		currSprite = spriteS;
+		sprite = spriteS;
 		currAnimation = playerWalkS;
 //		setStateLarge();
+//		setStateSmall();
 	}
 
 	@Override
 	public void render(Graphics g) {
 		if (jumped) {
 			if (forward) {
-				g.drawImage(currSprite[5], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+				g.drawImage(sprite[5], (int) x, (int) y, (int) width, (int) height, null);
 			} else {
-				g.drawImage(currSprite[5], (int) getX() + (int)getWidth(), (int) getY(), (int) -getWidth(), (int) getHeight(), null);
+				g.drawImage(sprite[5], (int) (x + width), (int) y, (int) -width, (int) height, null);
 			}
-		} else if (getVelX() > 0) {
-			currAnimation.drawAnimation(g, (int)getX(), (int)getY(), (int)getWidth(), (int)getHeight());
+		} else if (velX > 0) {
+			currAnimation.drawAnimation(g, (int) x, (int) y, (int) width, (int) height);
 			forward = true;
-		} else if (getVelX() < 0) {
-			currAnimation.drawAnimation(g, (int)getX() + (int)getWidth(), (int)getY(), (int)-getWidth(), (int)getHeight());
+		} else if (velX < 0) {
+			currAnimation.drawAnimation(g, (int) (x + width), (int) y, (int) -width, (int) height);
 			forward = false;
 		} else {
-			g.drawImage(currSprite[0], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+			g.drawImage(sprite[0], (int) x, (int) y, (int) width, (int) height, null);
 		}
 		
 		showBounds(g);		
 	}
 
 	private void setStateSmall() {
-		state = PlayerState.Small;
-		currSprite = spriteS;
+		sprite = spriteS;
 		currAnimation = playerWalkS;
-		setY(getY() + (getHeight()/2));
-		setHeight(getHeight()/2);
+		y += height/2;
+		height /= 2;
 	}
 	
 	private void setStateLarge() {
-		state = PlayerState.Large;
-		currSprite = spriteL;
+		sprite = spriteL;
 		currAnimation = playerWalkL;
-		setY(getY() - getHeight());
-		setHeight((float) 2 * (getHeight() / getScale()));
+		y -= height;
+		height *= 2;
 	}
 
 	@Override
 	public void tick() {
-		setX(getVelX() + getX());
-		setY(getVelY() + getY());
+		x += velX;
+		y += velY;
 		applyGravity();
 		
 		currAnimation.runAnimation();
@@ -117,8 +110,8 @@ public class Player extends GameObject {
 					removeObjs.add(temp);
 				}
 			} else if (temp.getId() == ObjectId.Block && getBoundsTop().intersects(temp.getBounds())) {
-				setY(temp.getY() + temp.getHeight());
-				setVelY(0);
+				y = temp.getY() + temp.getHeight();
+				velY = 0;
 				
 				((Block) temp).hit();
 				if (temp.getClass() == BrickBlock.class) removeObjs.add(temp);
@@ -129,22 +122,22 @@ public class Player extends GameObject {
 				if (temp.getClass() == InvisibleBlock.class) continue; 
 				
 				if (getBoundsBottom().intersects(temp.getBounds())) {
-					setY(temp.getY() - getHeight());
-					setVelY(0);
+					y = temp.getY() - height;
+					velY = 0;
 					jumped = false;
 				} 
 				
 				if (getBoundsTop().intersects(temp.getBounds())) {
-					setY(temp.getY() + temp.getHeight());
-					setVelY(0);
+					y = temp.getY() + temp.getHeight();
+					velY = 0;
 				}
 				
 				if (getBoundsRight().intersects(temp.getBounds())) {
-					setX(temp.getX() - getWidth());
+					x = temp.getX() - width;
 				}
 				
 				if (getBoundsLeft().intersects(temp.getBounds())) {
-					setX(temp.getX() + temp.getWidth());
+					x = temp.getX() + temp.getWidth();
 				}
 			}
 		}
@@ -173,7 +166,8 @@ public class Player extends GameObject {
 		return output;
 	}
 	
-	private void showBounds(Graphics g) {
+	@Override
+	protected void showBounds(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		
 		g.setColor(Color.red);
@@ -185,35 +179,35 @@ public class Player extends GameObject {
 		g2d.draw(getBoundsTop());
 	}
 
-	public Rectangle getBoundsBottom() {
-		int x = (int) (getX() + (getWidth()/4));
-		int y = (int) (getY() + (getHeight()/2));
-		int w = (int) (getWidth()/2);
-		int h = (int) (getHeight()/2);
+	private Rectangle getBoundsBottom() {
+		int x = (int) (this.x + (width/4));
+		int y = (int) (this.y + (height/2));
+		int w = (int) (width/2);
+		int h = (int) (height/2);
 		return new Rectangle(x, y, w, h);
 	}
 	
-	public Rectangle getBoundsTop() {
-		int x = (int) ((int)getX() + (getWidth()/2) - (getWidth()/4));
-		int y = (int) getY();
-		int w = (int) (getWidth() / 2);
-		int h = (int) (getHeight() / 2);
+	private Rectangle getBoundsTop() {
+		int x = (int) (this.x + (width/2) - (width/4));
+		int y = (int) this.y;
+		int w = (int) (width / 2);
+		int h = (int) (height / 2);
 		return new Rectangle(x, y, w, h);
 	}
 	
-	public Rectangle getBoundsRight() {
-		int x = (int) (getX() + getWidth() - 5);
-		int y = (int) (getY() + 5);
-		int w = (int) 5;
-		int h = (int) (getHeight() - 10);
+	private Rectangle getBoundsRight() {
+		int x = (int) (this.x + width - 5);
+		int y = (int) (this.y + 5);
+		int w = 5;
+		int h = (int) (height - 10);
 		return new Rectangle(x, y, w, h);
 	}
 	
-	public Rectangle getBoundsLeft() {
-		int x = (int) getX();
-		int y = (int) (getY() + 5);
-		int w = (int) 5;
-		int h = (int) (getHeight() - 10);
+	private Rectangle getBoundsLeft() {
+		int x = (int) this.x;
+		int y = (int) (this.y + 5);
+		int w = 5;
+		int h = (int) (height - 10);
 		return new Rectangle(x, y, w, h);
 	}
 
@@ -223,15 +217,6 @@ public class Player extends GameObject {
 	
 	public void setJumped(boolean hasJumped) {
 		jumped = hasJumped;
-	}
-
-	@Override
-	public Rectangle getBounds() {
-		int x = (int) getX();
-		int y = (int) getY();
-		int w = (int) getWidth();
-		int h = (int) getHeight();
-		return new Rectangle(x, y, w, h);
 	}
 
 	@Override

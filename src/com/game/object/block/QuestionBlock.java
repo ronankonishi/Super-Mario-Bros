@@ -9,14 +9,10 @@ import com.game.main.Game;
 import com.game.object.item.Coin;
 
 public class QuestionBlock extends Block{
-	private Texture tex = Game.getTexture();
-	private int index;
-	private BufferedImage[] sprite;
-	private boolean hit;
 	private Coin coin;
 	private boolean disabled;
 	
-	public QuestionBlock(int x, int y, int width, int height, int scale) {
+	public QuestionBlock(float x, float y, float width, float height, int scale) {
 		super(x, y, width, height, scale);
 		index = 24;
 		sprite = tex.getTile1();
@@ -26,7 +22,7 @@ public class QuestionBlock extends Block{
 	public void tick() {
 		if (!disabled && hit) {
 			index = 3;
-			coin = new Coin((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), (int) getScale());
+			coin = new Coin((int) x, (int) y, (int) width, (int) height, (int) scale);
 			hit = false;
 			disabled = true;
 		}
@@ -38,7 +34,7 @@ public class QuestionBlock extends Block{
 	public void render(Graphics g) {	
 		if (coin != null) coin.render(g);
 		
-		g.drawImage(sprite[index], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+		g.drawImage(sprite[index], (int) x, (int) y, (int) width, (int) height, null);
 	}
 	
 	public void hit() {

@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
+import com.game.gfx.Texture;
 import com.game.main.Game;
 import com.game.object.util.ObjectId;
 
@@ -19,7 +21,10 @@ public abstract class GameObject {
 	protected float velX, velY;
 	protected float width, height;
 	protected int scale;
-	
+
+	protected Texture tex = Game.getTexture();
+	protected int index;
+	protected BufferedImage[] sprite;
 	
 	/**
 	 * Creates game object with x and y coordinates and object type id
@@ -28,16 +33,23 @@ public abstract class GameObject {
 		this.x = x * scale;
 		this.y = y * scale;
 		this.id = id;
-		this.width = width;
-		this.height = height;
+		this.width = width * scale;
+		this.height = height * scale;
 		this.scale = scale;
 	}
 	
 	public abstract void tick();
 	public abstract void render(Graphics g);
-	public abstract Rectangle getBounds();
+
+	public Rectangle getBounds() {
+		int x = (int) this.x;
+		int y = (int) this.y;
+		int w = (int) width;
+		int h = (int) height;
+		return new Rectangle(x, y, w, h);
+	}
 	
-	private void showBounds(Graphics g) {
+	protected void showBounds(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		
 		g.setColor(Color.red);
@@ -97,11 +109,11 @@ public abstract class GameObject {
 	}
 	
 	public float getWidth() {
-		return width * scale;
+		return width;
 	}
 	
 	public float getHeight() {
-		return height * scale;
+		return height;
 	}
 	
 	public int getScale() {

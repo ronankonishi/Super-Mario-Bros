@@ -14,10 +14,10 @@ public class Coin {
 	private Animation animation;
 	
 	public Coin(float x, float y, float width, float height, int scale) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.x = x * scale;
+		this.y = y * scale;
+		this.width = width * scale;
+		this.height = height * scale;
 		
 		this.velY = -5f;
 		this.turnY = y - 140;

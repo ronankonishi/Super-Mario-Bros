@@ -8,14 +8,10 @@ import com.game.main.Game;
 import com.game.object.item.RedShroom;
 
 public class QuestionFlowerBlock extends Block{
-	private Texture tex = Game.getTexture();
-	private int index;
-	private BufferedImage[] sprite;
-	private boolean hit;
 	private RedShroom redShroom;
 //	private Flower flower;
 	
-	public QuestionFlowerBlock(int x, int y, int width, int height, int scale) {
+	public QuestionFlowerBlock(float x, float y, float width, float height, int scale) {
 		super(x, y, width, height, scale);
 		index = 24;
 		sprite = tex.getTile1();
@@ -34,12 +30,12 @@ public class QuestionFlowerBlock extends Block{
 	@Override
 	public void render(Graphics g) {
 		if (redShroom != null) redShroom.render(g);
-		g.drawImage(sprite[index], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
+		g.drawImage(sprite[index], (int) x, (int) y, (int) width, (int) height, null);
 	}
 	
 	public void hit() {
 		hit = true;
-		redShroom = new RedShroom(getX(), getY() - getHeight(), getWidth(), getHeight(), scale);
+		redShroom = new RedShroom((int) x, (int) (y - height), (int) width, (int) height, scale);
 	}
 	
 	public RedShroom getRedShroom() {
