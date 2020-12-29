@@ -210,7 +210,7 @@ public class Texture {
 	
 	private void getFlowerTextures() {
 		int x_off = 0;
-		int y_off = 16*3;
+		int y_off = 16*2;
 		int width = 16;
 		int height = 16;
 		flower_1[0] = npc_sheet.getSubimage(x_off, y_off, width, height);
@@ -221,7 +221,7 @@ public class Texture {
 	
 	private void getStarTextures() {
 		int x_off = 0;
-		int y_off = 16*4;
+		int y_off = 16*3;
 		int width = 16;
 		int height = 16;
 		star_1[0] = npc_sheet.getSubimage(x_off, y_off, width, height);

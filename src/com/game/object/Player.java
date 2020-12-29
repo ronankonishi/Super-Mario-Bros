@@ -24,6 +24,13 @@ public class Player extends GameObject {
 	private static final float HEIGHT = 16;
 	
 	private Handler handler;
+	private State state;
+	
+	enum State {
+		SMALL,
+		LARGE,
+		FIRE;
+	}
 	
 	private BufferedImage[] spriteL, spriteS;
 	private Animation playerWalkL, playerWalkS;
@@ -48,6 +55,8 @@ public class Player extends GameObject {
 		
 		sprite = spriteS;
 		currAnimation = playerWalkS;
+		
+		state = State.SMALL;
 //		setStateLarge();
 //		setStateSmall();
 	}
@@ -74,6 +83,7 @@ public class Player extends GameObject {
 	}
 
 	private void setStateSmall() {
+		state = State.SMALL;
 		sprite = spriteS;
 		currAnimation = playerWalkS;
 		y += height/2;
@@ -81,6 +91,7 @@ public class Player extends GameObject {
 	}
 	
 	private void setStateLarge() {
+		state = state.LARGE;
 		sprite = spriteL;
 		currAnimation = playerWalkL;
 		y -= height;
@@ -115,8 +126,14 @@ public class Player extends GameObject {
 				
 				((Block) temp).hit();
 				if (temp.getClass() == BrickBlock.class) removeObjs.add(temp);
-				if (temp.getClass() == QuestionFlowerBlock.class) {
-					addObjs.add(((QuestionFlowerBlock) temp).getRedShroom());
+				if (temp.getClass() == QuestionFlowerBlock.class && !((QuestionFlowerBlock) temp).isDisabled()) {
+					if (state == State.SMALL) {
+						((QuestionFlowerBlock) temp).spawnRedShroom();
+						addObjs.add(((QuestionFlowerBlock) temp).getRedShroom());
+					} else if (state == State.LARGE) {
+						((QuestionFlowerBlock) temp).spawnRedFlower();
+						addObjs.add(((QuestionFlowerBlock) temp).getRedFlower());
+					}
 				}
 			} else {
 				if (temp.getClass() == InvisibleBlock.class) continue; 
@@ -220,7 +237,7 @@ public class Player extends GameObject {
 	}
 
 	@Override
-	protected boolean shouldRemove() {
+	public boolean shouldRemove() {
 		return false;
 	}
 }

@@ -24,8 +24,8 @@ public class RedShroom extends GameObject {
 	
 	@Override
 	public void tick() {
-		setX(getVelX() + getX());
-		setY(getVelY() + getY());
+		x += velX;
+		y += velY;
 		
 		applyGravity();
 		collision();
@@ -70,47 +70,42 @@ public class RedShroom extends GameObject {
 		g2d.draw(getBoundsTop());
 	}
 
-	public Rectangle getBoundsBottom() {
-		int x = (int) (getX() + (getWidth()/4));
-		int y = (int) (getY() + (getHeight()/2));
-		int w = (int) (getWidth()/2);
-		int h = (int) (getHeight()/2);
+	private Rectangle getBoundsBottom() {
+		int x = (int) (this.x + (width/4));
+		int y = (int) (this.y + (height/2));
+		int w = (int) (width/2);
+		int h = (int) (height/2);
 		return new Rectangle(x, y, w, h);
 	}
 	
-	public Rectangle getBoundsTop() {
-		int x = (int) ((int)getX() + (getWidth()/2) - (getWidth()/4));
-		int y = (int) getY();
-		int w = (int) (getWidth() / 2);
-		int h = (int) (getHeight() / 2);
+	private Rectangle getBoundsTop() {
+		int x = (int) (this.x + (width/2) - (width/4));
+		int y = (int) this.y;
+		int w = (int) (width / 2);
+		int h = (int) (height / 2);
 		return new Rectangle(x, y, w, h);
 	}
 	
-	public Rectangle getBoundsRight() {
-		int x = (int) (getX() + getWidth() - 5);
-		int y = (int) (getY() + 5);
-		int w = (int) 5;
-		int h = (int) (getHeight() - 10);
+	private Rectangle getBoundsRight() {
+		int x = (int) (this.x + width - 5);
+		int y = (int) (this.y + 5);
+		int w = 5;
+		int h = (int) (height - 10);
 		return new Rectangle(x, y, w, h);
 	}
 	
-	public Rectangle getBoundsLeft() {
-		int x = (int) getX();
-		int y = (int) (getY() + 5);
-		int w = (int) 5;
-		int h = (int) (getHeight() - 10);
+	private Rectangle getBoundsLeft() {
+		int x = (int) this.x;
+		int y = (int) (this.y + 5);
+		int w = 5;
+		int h = (int) (height - 10);
 		return new Rectangle(x, y, w, h);
 	}
 	
 	@Override
 	public void render(Graphics g) {
 		showBounds(g);
-		g.drawImage(sprite[index], (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight(), null);
-	}
-
-	@Override
-	public Rectangle getBounds() {
-		return new Rectangle((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+		g.drawImage(sprite[index], (int) x, (int) y, (int) width, (int) height, null);
 	}
 
 	@Override

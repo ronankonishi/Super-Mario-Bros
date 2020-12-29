@@ -40,7 +40,8 @@ public abstract class GameObject {
 	
 	public abstract void tick();
 	public abstract void render(Graphics g);
-
+	public abstract boolean shouldRemove();
+	
 	public Rectangle getBounds() {
 		int x = (int) this.x;
 		int y = (int) this.y;
@@ -119,6 +120,4 @@ public abstract class GameObject {
 	public int getScale() {
 		return scale;
 	}
-
-	protected abstract boolean shouldRemove();
 }

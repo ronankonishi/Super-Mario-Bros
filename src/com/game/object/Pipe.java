@@ -38,7 +38,7 @@ public class Pipe extends GameObject {
 	}
 
 	@Override
-	protected boolean shouldRemove() {
+	public boolean shouldRemove() {
 		return false;
 	}
 }
