@@ -81,7 +81,7 @@ public class Player extends GameObject {
 			g.drawImage(sprite[0], (int) x, (int) y, (int) width, (int) height, null);
 		}
 		
-		showBounds(g);		
+//		showBounds(g);		
 	}
 
 	private void setStateSmall() {
@@ -161,13 +161,12 @@ public class Player extends GameObject {
 					continue;
 				}
 				
-				if (temp.getClass() == InvisibleBlock.class) {
+				if (temp.getClass() == InvisibleBlock.class && !((InvisibleBlock) temp).isDisabled()) {
 					((InvisibleBlock) temp).spawnGreenShroom();
 					addObjs.add(((InvisibleBlock)temp).getGreenShroom());
-					System.out.println("spawning");
 				}
 			} else {
-				if (temp.getClass() == InvisibleBlock.class && !((InvisibleBlock) temp).isHit()) continue; 
+				if (temp.getClass() == InvisibleBlock.class && !((InvisibleBlock) temp).isDisabled()) continue; 
 				
 				if (getBoundsBottom().intersects(temp.getBounds())) {
 					y = temp.getY() - height;
