@@ -1,12 +1,12 @@
 package com.game.object.block;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
-import com.game.gfx.Texture;
-import com.game.main.Game;
+import com.game.object.item.GreenShroom;
 
 public class InvisibleBlock extends Block{
+	private GreenShroom greenShroom;
+	private boolean disabled;
+	
 	public InvisibleBlock(float x, float y, float width, float height, int scale) {
 		super(x, y, width, height, scale);
 		sprite = tex.getTile1();
@@ -17,6 +17,8 @@ public class InvisibleBlock extends Block{
 	public void tick() {
 		if (hit) {
 			index = 3;
+			hit = false;
+			disabled = true;
 		}
 	}
 	
@@ -37,5 +39,17 @@ public class InvisibleBlock extends Block{
 	
 	public boolean isHit() {
 		return hit;
+	}
+	
+	public void spawnGreenShroom() {
+		greenShroom = new GreenShroom((int) x, (int) (y - height), (int) width, (int) height, 1);
+	}
+	
+	public GreenShroom getGreenShroom() {
+		return greenShroom;
+	}
+	
+	public boolean isDisabled() {
+		return disabled;
 	}
 }

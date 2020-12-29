@@ -5,7 +5,7 @@ public enum ObjectId {
 	Enemy, 
 	Block, 
 	Pipe, 
-	Debris, 
-	RedShroom, 
-	RedFlower;
+	Debris,  
+	RedFlower, 
+	Shroom;
 }

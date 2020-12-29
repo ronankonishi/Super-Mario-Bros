@@ -14,6 +14,7 @@ import com.game.object.block.Block;
 import com.game.object.block.BrickBlock;
 import com.game.object.block.InvisibleBlock;
 import com.game.object.block.QuestionFlowerBlock;
+import com.game.object.item.GreenShroom;
 import com.game.object.item.RedFlower;
 import com.game.object.item.RedShroom;
 import com.game.object.util.Handler;
@@ -138,6 +139,11 @@ public class Player extends GameObject {
 				continue;
 			} 
 			
+			if (temp.getClass() == GreenShroom.class && getBounds().intersects(temp.getBounds())) {
+				removeObjs.add(temp);
+				continue;
+			}
+			
 			if (temp.getId() == ObjectId.Block && getBoundsTop().intersects(temp.getBounds())) {
 				if(temp.getClass() == InvisibleBlock.class && velY > 0) continue;
 				
@@ -154,6 +160,13 @@ public class Player extends GameObject {
 						((QuestionFlowerBlock) temp).spawnRedFlower();
 						addObjs.add(((QuestionFlowerBlock) temp).getRedFlower());
 					}
+					continue;
+				}
+				
+				if (temp.getClass() == InvisibleBlock.class) {
+					((InvisibleBlock) temp).spawnGreenShroom();
+					addObjs.add(((InvisibleBlock)temp).getGreenShroom());
+					System.out.println("spawning");
 				}
 			} else {
 				if (temp.getClass() == InvisibleBlock.class && !((InvisibleBlock) temp).isHit()) continue; 
