@@ -14,6 +14,7 @@ import com.game.object.block.Block;
 import com.game.object.block.BrickBlock;
 import com.game.object.block.InvisibleBlock;
 import com.game.object.block.QuestionFlowerBlock;
+import com.game.object.item.RedFlower;
 import com.game.object.item.RedShroom;
 import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
@@ -32,8 +33,8 @@ public class Player extends GameObject {
 		FIRE;
 	}
 	
-	private BufferedImage[] spriteL, spriteS;
-	private Animation playerWalkL, playerWalkS;
+	private BufferedImage[] spriteL, spriteS, spriteF;
+	private Animation playerWalkL, playerWalkS, playerWalkF;
 	private Animation currAnimation;
 	private LinkedList<GameObject> removeObjs, addObjs;
 	
@@ -49,9 +50,11 @@ public class Player extends GameObject {
 						
 		spriteL = tex.getMarioL();
 		spriteS = tex.getMarioS();
+		spriteF = tex.getMarioF();
 		
 		playerWalkL = new Animation(5, spriteL[1], spriteL[2], spriteL[3]);
 		playerWalkS = new Animation(5, spriteS[1], spriteS[2], spriteS[3]);
+		playerWalkF = new Animation(5, spriteF[1], spriteF[2], spriteF[3]);
 		
 		sprite = spriteS;
 		currAnimation = playerWalkS;
@@ -83,6 +86,7 @@ public class Player extends GameObject {
 	}
 
 	private void setStateSmall() {
+		if (state == State.SMALL) return;
 		state = State.SMALL;
 		sprite = spriteS;
 		currAnimation = playerWalkS;
@@ -91,11 +95,19 @@ public class Player extends GameObject {
 	}
 	
 	private void setStateLarge() {
+		if (state == State.LARGE) return;
 		state = state.LARGE;
 		sprite = spriteL;
 		currAnimation = playerWalkL;
 		y -= height;
 		height *= 2;
+	}
+	
+	private void setStateFire() {
+		if (state == State.FIRE) return;
+		state = state.FIRE;
+		sprite = spriteF;
+		currAnimation = playerWalkF;
 	}
 
 	@Override
@@ -114,13 +126,21 @@ public class Player extends GameObject {
 			if (temp == this) continue;
 			if (removeObjs.contains(temp) || addObjs.contains(temp)) continue;
 			
-			if (temp.getClass() == RedShroom.class) {
-				if (getBounds().intersects(temp.getBounds())) {
-					setStateLarge();
-					((RedShroom) temp).shouldRemove();
-					removeObjs.add(temp);
-				}
-			} else if (temp.getId() == ObjectId.Block && getBoundsTop().intersects(temp.getBounds())) {
+			if (temp.getClass() == RedShroom.class && getBounds().intersects(temp.getBounds())) {
+				setStateLarge();
+//				((RedShroom) temp).shouldRemove();
+				removeObjs.add(temp);
+				continue;
+			}
+			
+			if (temp.getClass() == RedFlower.class && getBounds().intersects(temp.getBounds())) {
+				setStateFire();
+//				((RedFlower) temp).shouldRemove();
+				removeObjs.add(temp);
+				continue;
+			} 
+			
+			if (temp.getId() == ObjectId.Block && getBoundsTop().intersects(temp.getBounds())) {
 				y = temp.getY() + temp.getHeight();
 				velY = 0;
 				

@@ -20,12 +20,17 @@ public class Texture {
 						  tile_sheet, game_over_sheet, intro_sheet;
 	private List<BufferedImage> sheetList;
 		
-	public BufferedImage[] mario_l, mario_s, tile_1, tile_2, tile_3, tile_4,
+	public BufferedImage[] mario_l, mario_s, mario_f, mario_il, mario_is, 
+						   tile_1, tile_2, tile_3, tile_4,
 						   pipe_1, debris_1, coin_a1, shroom_1, flower_1, star_1;
 	
 	public Texture() {
 		mario_l = new BufferedImage[MARIO_L_COUNT];
 		mario_s = new BufferedImage[MARIO_S_COUNT];
+		mario_f = new BufferedImage[MARIO_L_COUNT];
+		mario_il = new BufferedImage[MARIO_L_COUNT];
+		mario_is = new BufferedImage[MARIO_S_COUNT];
+		
 		tile_1 = new BufferedImage[TILE_1_COUNT + TILE_2_COUNT];
 		tile_2 = new BufferedImage[TILE_1_COUNT + TILE_2_COUNT];
 		tile_3 = new BufferedImage[TILE_1_COUNT + TILE_2_COUNT];
@@ -67,6 +72,18 @@ public class Texture {
 	
 	public BufferedImage[] getMarioS() {
 		return mario_s;
+	}
+	
+	public BufferedImage[] getMarioF() {
+		return mario_f;
+	}
+	
+	public BufferedImage[] getMarioIL() {
+		return mario_il;
+	}
+	
+	public BufferedImage[] getMarioIS() {
+		return mario_is;
 	}
 	
 	public BufferedImage[] getTile1() {
@@ -124,6 +141,33 @@ public class Texture {
 		
 		for (int i = 0; i < MARIO_S_COUNT; i++) {
 			mario_s[i] = player_sheet.getSubimage(x_off + i*(width+1), y_off, width, height);
+		}
+		
+		
+		x_off = 80;
+		y_off = 129;
+		width = 16;
+		height = 32;
+		
+		for (int i = 0; i < MARIO_L_COUNT; i++) {
+			mario_f[i] = player_sheet.getSubimage(x_off + i*(width+1), y_off, width, height);
+		}
+		
+		
+		x_off = 80;
+		y_off = 192;
+		width = 16;
+		height = 32;
+		
+		for (int i = 0; i < MARIO_L_COUNT; i++) {
+			mario_il[i] = player_sheet.getSubimage(x_off + i*(width+1), y_off, width, height);
+		}
+		
+		y_off += height+1;
+		height = 16;
+		
+		for (int i = 0; i < MARIO_S_COUNT; i++) {
+			mario_is[i] = player_sheet.getSubimage(x_off + i*(width+1), y_off, width, height);
 		}
 	}
 	
