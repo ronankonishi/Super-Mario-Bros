@@ -128,19 +128,19 @@ public class Player extends GameObject {
 			
 			if (temp.getClass() == RedShroom.class && getBounds().intersects(temp.getBounds())) {
 				setStateLarge();
-//				((RedShroom) temp).shouldRemove();
 				removeObjs.add(temp);
 				continue;
 			}
 			
 			if (temp.getClass() == RedFlower.class && getBounds().intersects(temp.getBounds())) {
 				setStateFire();
-//				((RedFlower) temp).shouldRemove();
 				removeObjs.add(temp);
 				continue;
 			} 
 			
 			if (temp.getId() == ObjectId.Block && getBoundsTop().intersects(temp.getBounds())) {
+				if(temp.getClass() == InvisibleBlock.class && velY > 0) continue;
+				
 				y = temp.getY() + temp.getHeight();
 				velY = 0;
 				
@@ -150,13 +150,13 @@ public class Player extends GameObject {
 					if (state == State.SMALL) {
 						((QuestionFlowerBlock) temp).spawnRedShroom();
 						addObjs.add(((QuestionFlowerBlock) temp).getRedShroom());
-					} else if (state == State.LARGE) {
+					} else if (state == State.LARGE || state == State.FIRE) {
 						((QuestionFlowerBlock) temp).spawnRedFlower();
 						addObjs.add(((QuestionFlowerBlock) temp).getRedFlower());
 					}
 				}
 			} else {
-				if (temp.getClass() == InvisibleBlock.class) continue; 
+				if (temp.getClass() == InvisibleBlock.class && !((InvisibleBlock) temp).isHit()) continue; 
 				
 				if (getBoundsBottom().intersects(temp.getBounds())) {
 					y = temp.getY() - height;

@@ -34,4 +34,8 @@ public class InvisibleBlock extends Block{
 	public boolean shouldRemove() {
 		return false;
 	}
+	
+	public boolean isHit() {
+		return hit;
+	}
 }
