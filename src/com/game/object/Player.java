@@ -32,9 +32,7 @@ public class Player extends GameObject {
 	enum State {
 		SMALL,
 		LARGE,
-		FIRE,
-		INVINCIBLEL,
-		INVINCIBLES;
+		FIRE;
 	}
 	
 	private BufferedImage[] spriteL, spriteS, spriteF;
@@ -47,6 +45,7 @@ public class Player extends GameObject {
 	
 	private boolean jumped;
 	private boolean forward;	
+	private int invincibleTimer;
 	
 	public Player(float x, float y, int scale, Handler handler) {
 		super(x, y, ObjectId.Player, WIDTH, HEIGHT, scale);
@@ -116,42 +115,63 @@ public class Player extends GameObject {
 	}
 
 	private void setStateSmall() {
-		if (state == State.SMALL) return;
-		state = State.SMALL;
 		sprite = spriteS;
 		currAnimationS = playerWalkS;
 		currAnimationC = null;
+		if (state == State.SMALL) return;
+		state = State.SMALL;
 		y += height/2;
 		height /= 2;
 	}
 	
 	private void setStateLarge() {
-		if (state == State.LARGE) return;
-		state = state.LARGE;
 		sprite = spriteL;
 		currAnimationS = playerWalkL;
 		currAnimationC = null;
+		if (state == State.LARGE) return;
+		state = state.LARGE;
 		y -= height;
 		height *= 2;
 	}
 	
 	private void setStateFire() {
-		if (state == State.FIRE) return;
-		state = state.FIRE;
 		sprite = spriteF;
 		currAnimationS = playerWalkF;
 		currAnimationC = null;
+		if (state == State.FIRE) return;
+		state = state.FIRE;
 	}
 	
 	private void setStateIL() {
-		if (state == State.INVINCIBLEL) return;
-		state = state.INVINCIBLEL;
+		invincibleTimer = 0;
 		currAnimationS = null;
 		currAnimationC = playerWalkIL;
+	}
+	
+	private void setStateIS() {
+		invincibleTimer = 0;
+		currAnimationS = null;
+		currAnimationC = playerWalkIS;
 	}
 
 	@Override
 	public void tick() {
+		if (currAnimationC != null) {
+			invincibleTimer = (invincibleTimer + 1) % 100;
+			if (invincibleTimer == 99) {
+				switch(state) {
+					case SMALL:
+						setStateSmall();
+						break;
+					case LARGE:
+						setStateLarge();
+						break;
+					case FIRE:
+						setStateFire();
+						break;
+				}
+			}
+		}
 		x += velX;
 		y += velY;
 		applyGravity();
@@ -189,7 +209,11 @@ public class Player extends GameObject {
 			}
 			
 			if (temp.getClass() == Star.class && getBounds().intersects(temp.getBounds())) {
-				setStateIL();
+				if (state == State.SMALL) {
+					setStateIS();
+				} else {
+					setStateIL();
+				}
 				removeObjs.add(temp);
 				continue;
 			}
