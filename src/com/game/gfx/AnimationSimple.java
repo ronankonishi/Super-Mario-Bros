@@ -3,7 +3,7 @@ package com.game.gfx;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-public class Animation {
+public class AnimationSimple {
 
 	private int speed;
 	private int frames;
@@ -14,13 +14,9 @@ public class Animation {
 	private BufferedImage[] images;
 	private BufferedImage currentImg;
 	
-	public Animation(int speed, BufferedImage... args) {
+	public AnimationSimple(int speed, BufferedImage... args) {
 		this.speed = speed;
-		images = new BufferedImage[args.length];
-		for(int i = 0; i < args.length; i++) {
-			images[i] = args[i];
-		}
-		
+		images = args;
 		frames = args.length;
 	}
 	
@@ -31,7 +27,6 @@ public class Animation {
 			nextFrame();
 		}
 	}
-	
 	
 	private void nextFrame() {
 		currentImg = images[count];

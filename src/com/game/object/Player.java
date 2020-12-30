@@ -7,7 +7,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
-import com.game.gfx.Animation;
+import com.game.gfx.AnimationComplex;
+import com.game.gfx.AnimationSimple;
 import com.game.object.block.Block;
 import com.game.object.block.BrickBlock;
 import com.game.object.block.BrickStarBlock;
@@ -31,17 +32,21 @@ public class Player extends GameObject {
 	enum State {
 		SMALL,
 		LARGE,
-		FIRE;
+		FIRE,
+		INVINCIBLEL,
+		INVINCIBLES;
 	}
 	
 	private BufferedImage[] spriteL, spriteS, spriteF;
-	private Animation playerWalkL, playerWalkS, playerWalkF;
-	private Animation currAnimation;
+	private BufferedImage[][] spriteIL, spriteIS;
+	private AnimationSimple playerWalkL, playerWalkS, playerWalkF;
+	private AnimationComplex playerWalkIL, playerWalkIS;
+	private AnimationSimple currAnimationS;
+	private AnimationComplex currAnimationC;
 	private LinkedList<GameObject> removeObjs, addObjs;
 	
-	private boolean jumped = false;
-	private boolean forward = false;
-	
+	private boolean jumped;
+	private boolean forward;	
 	
 	public Player(float x, float y, int scale, Handler handler) {
 		super(x, y, ObjectId.Player, WIDTH, HEIGHT, scale);
@@ -52,13 +57,17 @@ public class Player extends GameObject {
 		spriteL = tex.getMarioL();
 		spriteS = tex.getMarioS();
 		spriteF = tex.getMarioF();
+		spriteIL = tex.getMarioIL();
+		spriteIS = tex.getMarioIS();
 		
-		playerWalkL = new Animation(5, spriteL[1], spriteL[2], spriteL[3]);
-		playerWalkS = new Animation(5, spriteS[1], spriteS[2], spriteS[3]);
-		playerWalkF = new Animation(5, spriteF[1], spriteF[2], spriteF[3]);
+		playerWalkL = new AnimationSimple(5, spriteL[1], spriteL[2], spriteL[3]);
+		playerWalkS = new AnimationSimple(5, spriteS[1], spriteS[2], spriteS[3]);
+		playerWalkF = new AnimationSimple(5, spriteF[1], spriteF[2], spriteF[3]);
+		playerWalkIL = new AnimationComplex(5, spriteIL[0], spriteIL[1], spriteIL[2]);
+		playerWalkIS = new AnimationComplex(5, spriteIS[0], spriteIS[1], spriteIS[2]);
 		
 		sprite = spriteS;
-		currAnimation = playerWalkS;
+		currAnimationS = playerWalkS;
 		
 		state = State.SMALL;
 //		setStateLarge();
@@ -69,18 +78,38 @@ public class Player extends GameObject {
 	public void render(Graphics g) {
 		if (jumped) {
 			if (forward) {
-				g.drawImage(sprite[5], (int) x, (int) y, (int) width, (int) height, null);
+				if (currAnimationC != null) {
+					currAnimationC.drawJumpR(g, (int) x, (int) y, (int) width, (int) height);
+				} else {
+					g.drawImage(sprite[5], (int) x, (int) y, (int) width, (int) height, null);
+				}
 			} else {
-				g.drawImage(sprite[5], (int) (x + width), (int) y, (int) -width, (int) height, null);
+				if (currAnimationC != null) {
+					currAnimationC.drawJumpL(g, (int) x, (int) y, (int) width, (int) height);
+				} else {
+					g.drawImage(sprite[5], (int) (x + width), (int) y, (int) -width, (int) height, null);
+				}
 			}
 		} else if (velX > 0) {
-			currAnimation.drawAnimation(g, (int) x, (int) y, (int) width, (int) height);
+			if (currAnimationC != null) {
+				currAnimationC.drawWalkR(g, (int) x, (int) y, (int) width, (int) height);
+			} else {
+				currAnimationS.drawAnimation(g, (int) x, (int) y, (int) width, (int) height);
+			}
 			forward = true;
 		} else if (velX < 0) {
-			currAnimation.drawAnimation(g, (int) (x + width), (int) y, (int) -width, (int) height);
+			if (currAnimationC != null) {
+				currAnimationC.drawWalkL(g, (int) x, (int) y, (int) width, (int) height);
+			} else {
+				currAnimationS.drawAnimation(g, (int) (x + width), (int) y, (int) -width, (int) height);
+			}
 			forward = false;
 		} else {
-			g.drawImage(sprite[0], (int) x, (int) y, (int) width, (int) height, null);
+			if (currAnimationC != null) {
+				currAnimationC.drawStillR(g, (int) x, (int) y, (int) width, (int) height);
+			} else {
+				g.drawImage(sprite[0], (int) x, (int) y, (int) width, (int) height, null);
+			}
 		}
 		
 //		showBounds(g);		
@@ -90,7 +119,8 @@ public class Player extends GameObject {
 		if (state == State.SMALL) return;
 		state = State.SMALL;
 		sprite = spriteS;
-		currAnimation = playerWalkS;
+		currAnimationS = playerWalkS;
+		currAnimationC = null;
 		y += height/2;
 		height /= 2;
 	}
@@ -99,7 +129,8 @@ public class Player extends GameObject {
 		if (state == State.LARGE) return;
 		state = state.LARGE;
 		sprite = spriteL;
-		currAnimation = playerWalkL;
+		currAnimationS = playerWalkL;
+		currAnimationC = null;
 		y -= height;
 		height *= 2;
 	}
@@ -108,7 +139,15 @@ public class Player extends GameObject {
 		if (state == State.FIRE) return;
 		state = state.FIRE;
 		sprite = spriteF;
-		currAnimation = playerWalkF;
+		currAnimationS = playerWalkF;
+		currAnimationC = null;
+	}
+	
+	private void setStateIL() {
+		if (state == State.INVINCIBLEL) return;
+		state = state.INVINCIBLEL;
+		currAnimationS = null;
+		currAnimationC = playerWalkIL;
 	}
 
 	@Override
@@ -117,7 +156,12 @@ public class Player extends GameObject {
 		y += velY;
 		applyGravity();
 		
-		currAnimation.runAnimation();
+		if (currAnimationC != null) {
+			currAnimationC.runAnimation();
+		} else {
+			currAnimationS.runAnimation();
+		}
+		
 		collision();
 	}
 	
@@ -145,6 +189,7 @@ public class Player extends GameObject {
 			}
 			
 			if (temp.getClass() == Star.class && getBounds().intersects(temp.getBounds())) {
+				setStateIL();
 				removeObjs.add(temp);
 				continue;
 			}
