@@ -18,7 +18,7 @@ public class RedFlower extends GameObject{
 
 	@Override
 	public void render(Graphics g) {
-		showBounds(g);
+//		showBounds(g);
 		g.drawImage(sprite[index], (int) x, (int) y, (int) width, (int) height, null);
 	}
 
