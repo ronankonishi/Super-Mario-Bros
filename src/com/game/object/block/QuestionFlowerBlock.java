@@ -30,11 +30,11 @@ public class QuestionFlowerBlock extends Block{
 	}
 	
 	public void spawnRedShroom() {
-		redShroom = new RedShroom((int) x, (int) (y - height), (int) width, (int) height, 1);
+		redShroom = new RedShroom(x, y - height, width, height, 1);
 	}
 	
 	public void spawnRedFlower() {
-		redFlower = new RedFlower((int) x, (int) (y - height), (int) width, (int) height, 1);
+		redFlower = new RedFlower(x, y - height, width, height, 1);
 	}
 	
 	public RedShroom getRedShroom() {

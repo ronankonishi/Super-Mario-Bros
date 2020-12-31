@@ -17,7 +17,7 @@ public class QuestionBlock extends Block{
 	public void tick() {
 		if (!disabled && hit) {
 			index = 3;
-			coin = new Coin((int) x, (int) y, (int) width, (int) height, 1);
+			coin = new Coin(x, y, width, height, 1);
 			hit = false;
 			disabled = true;
 		}

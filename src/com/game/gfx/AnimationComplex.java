@@ -33,40 +33,40 @@ public class AnimationComplex {
 		if (rWalk || lWalk) wCount = (wCount + 1) % 3;
 	}
 	
-	public void drawStillR(Graphics g, int x, int y, int width, int height) {
-		g.drawImage(images[iCount][0], x, y, width, height, null);
+	public void drawStillR(Graphics g, float x, float y, float width, float height) {
+		g.drawImage(images[iCount][0], (int) x, (int) y, (int) width, (int) height, null);
 		rWalk = false;
 		lWalk = false;
 	}
 	
-	public void drawStillL(Graphics g, int x, int y, int width, int height) {
-		g.drawImage(images[iCount][0], (x + width), y, -width, height, null);
+	public void drawStillL(Graphics g, float x, float y, float width, float height) {
+		g.drawImage(images[iCount][0], (int) (x + width), (int) y, (int) -width, (int) height, null);
 		rWalk = false;
 		lWalk = false;
 	}
 	
-	public void drawWalkR(Graphics g, int x, int y, int width, int height) {
+	public void drawWalkR(Graphics g, float x, float y, float width, float height) {
 		if (!rWalk) wCount = 0;
-		g.drawImage(images[iCount][wCount + 1], x, y, width, height, null);
+		g.drawImage(images[iCount][wCount + 1], (int) x, (int) y, (int) width, (int) height, null);
 		rWalk = true;
 		lWalk = false;
 	}
 	
-	public void drawWalkL(Graphics g, int x, int y, int width, int height) {
+	public void drawWalkL(Graphics g, float x, float y, float width, float height) {
 		if (!lWalk) wCount = 0;
-		g.drawImage(images[iCount][wCount + 1], (x + width), y, -width, height, null);
+		g.drawImage(images[iCount][wCount + 1], (int) (x + width), (int) y, (int) -width, (int) height, null);
 		rWalk = false;
 		lWalk = true;
 	}	
 	
-	public void drawJumpR(Graphics g, int x, int y, int width, int height) {
-		g.drawImage(images[iCount][5], x, y, width, height, null);
+	public void drawJumpR(Graphics g, float x, float y, float width, float height) {
+		g.drawImage(images[iCount][5], (int) x, (int) y, (int) width, (int) height, null);
 		rWalk = false;
 		lWalk = false;
 	}
 	
-	public void drawJumpL(Graphics g, int x, int y, int width, int height) {
-		g.drawImage(images[iCount][5], (x + width), y, -width, height, null);
+	public void drawJumpL(Graphics g, float x, float y, float width, float height) {
+		g.drawImage(images[iCount][5], (int) (x + width), (int) y, (int) -width, (int) height, null);
 		rWalk = false;
 		lWalk = false;
 	}

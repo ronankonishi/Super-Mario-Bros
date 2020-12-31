@@ -24,7 +24,7 @@ public class BrickCoinsBlock extends Block {
 			if (hitCount == 10) {
 				index = 3;
 			}
-			coins.add(new Coin((int) x, (int) y, (int) width, (int) height, 1));
+			coins.add(new Coin(x, y, width, height, 1));
 			hit = false;
 		}
 		

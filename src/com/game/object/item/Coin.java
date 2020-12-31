@@ -34,7 +34,7 @@ public class Coin {
 	}
 	
 	public void render(Graphics g) {
-		animation.drawAnimation(g, (int) x, (int) y, (int) width, (int) height);
+		animation.drawAnimation(g, x, y, width, height);
 	}
 	
 	public boolean shouldRemove() {

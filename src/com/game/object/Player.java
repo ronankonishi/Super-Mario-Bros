@@ -78,34 +78,34 @@ public class Player extends GameObject {
 		if (jumped) {
 			if (forward) {
 				if (currAnimationC != null) {
-					currAnimationC.drawJumpR(g, (int) x, (int) y, (int) width, (int) height);
+					currAnimationC.drawJumpR(g, x, y, width, height);
 				} else {
 					g.drawImage(sprite[5], (int) x, (int) y, (int) width, (int) height, null);
 				}
 			} else {
 				if (currAnimationC != null) {
-					currAnimationC.drawJumpL(g, (int) x, (int) y, (int) width, (int) height);
+					currAnimationC.drawJumpL(g, x, y, width, height);
 				} else {
 					g.drawImage(sprite[5], (int) (x + width), (int) y, (int) -width, (int) height, null);
 				}
 			}
 		} else if (velX > 0) {
 			if (currAnimationC != null) {
-				currAnimationC.drawWalkR(g, (int) x, (int) y, (int) width, (int) height);
+				currAnimationC.drawWalkR(g, x,  y, width, height);
 			} else {
-				currAnimationS.drawAnimation(g, (int) x, (int) y, (int) width, (int) height);
+				currAnimationS.drawAnimation(g, x, y, width, height);
 			}
 			forward = true;
 		} else if (velX < 0) {
 			if (currAnimationC != null) {
-				currAnimationC.drawWalkL(g, (int) x, (int) y, (int) width, (int) height);
+				currAnimationC.drawWalkL(g, x, y, width, height);
 			} else {
-				currAnimationS.drawAnimation(g, (int) (x + width), (int) y, (int) -width, (int) height);
+				currAnimationS.drawAnimation(g, x + width, y, -width, height);
 			}
 			forward = false;
 		} else {
 			if (currAnimationC != null) {
-				currAnimationC.drawStillR(g, (int) x, (int) y, (int) width, (int) height);
+				currAnimationC.drawStillR(g, x, y, width, height);
 			} else {
 				g.drawImage(sprite[0], (int) x, (int) y, (int) width, (int) height, null);
 			}

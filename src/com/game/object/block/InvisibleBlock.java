@@ -42,7 +42,7 @@ public class InvisibleBlock extends Block{
 	}
 	
 	public void spawnGreenShroom() {
-		greenShroom = new GreenShroom((int) x, (int) (y - height), (int) width, (int) height, 1);
+		greenShroom = new GreenShroom(x, (y - height), width, height, 1);
 	}
 	
 	public GreenShroom getGreenShroom() {

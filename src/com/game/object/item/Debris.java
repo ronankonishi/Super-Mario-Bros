@@ -45,9 +45,9 @@ public class Debris {
 		x[3] = velX + x[3];
 
 		y[0] = velY + y[0];
-		y[1] = (float) (velY + y[1] - 2);
+		y[1] = velY + y[1] - 2;
 		y[2] = velY + y[2];
-		y[3] = (float) (velY + y[3] - 2);
+		y[3] = velY + y[3] - 2;
 		
 		applyGravity();
 		

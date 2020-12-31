@@ -37,7 +37,7 @@ public class AnimationSimple {
 		}
 	}
 	
-	public void drawAnimation(Graphics g, int x, int y, int width, int height) {
-		g.drawImage(currentImg, x, y, width, height, null);
+	public void drawAnimation(Graphics g, float x, float y, float width, float height) {
+		g.drawImage(currentImg, (int) x, (int) y, (int) width, (int) height, null);
 	}
 }

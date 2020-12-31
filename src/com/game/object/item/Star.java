@@ -112,7 +112,7 @@ public class Star extends GameObject {
 	@Override
 	public void render(Graphics g) {
 //		showBounds(g);
-		animation.drawAnimation(g, (int) x, (int) y, (int) width, (int) height);
+		animation.drawAnimation(g, x, y, width, height);
 	}
 
 	@Override

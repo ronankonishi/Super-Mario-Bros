@@ -42,6 +42,6 @@ public class BrickBlock extends Block{
 	
 	public void hit() {
 		hit = true;
-		debris = new Debris((int) x, (int) y, (int) width, (int) height, scale);
+		debris = new Debris(x, y, width, height, scale);
 	}
 }
