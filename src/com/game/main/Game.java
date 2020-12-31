@@ -110,6 +110,7 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	private void tick() {
+		handler.getPlayer().setLeftBound(cam.getCX() - WIDTH/2);
 		handler.tick();
 		cam.tick();
 //		hud.tick();

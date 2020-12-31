@@ -47,6 +47,8 @@ public class Player extends GameObject {
 	private boolean forward;	
 	private int invincibleTimer;
 	
+	private float leftBound;
+	
 	public Player(float x, float y, int scale, Handler handler) {
 		super(x, y, ObjectId.Player, WIDTH, HEIGHT, scale);
 		this.handler = handler;
@@ -172,7 +174,11 @@ public class Player extends GameObject {
 				}
 			}
 		}
-		x += velX;
+		
+		if (x + velX > leftBound) {
+			x += velX;
+		}
+		
 		y += velY;
 		applyGravity();
 		
@@ -349,6 +355,10 @@ public class Player extends GameObject {
 	
 	public void setJumped(boolean hasJumped) {
 		jumped = hasJumped;
+	}
+	
+	public void setLeftBound(float x) {
+		leftBound = x;
 	}
 
 	@Override
