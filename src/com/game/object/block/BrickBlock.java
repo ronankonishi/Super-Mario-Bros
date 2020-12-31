@@ -49,7 +49,7 @@ public class BrickBlock extends Block{
 			return;
 		}
 				
-		g.drawImage(sprite[index], (int) x, (int) y + yInc, (int) width, (int) height, null);
+		g.drawImage(sprite[index], (int) x, (int) (y + yInc), (int) width, (int) height, null);
 	}
 	
 	@Override
