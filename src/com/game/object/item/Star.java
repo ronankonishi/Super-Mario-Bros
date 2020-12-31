@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import com.game.gfx.AnimationSimple;
 import com.game.main.Game;
 import com.game.object.GameObject;
 import com.game.object.util.Handler;
@@ -12,12 +13,14 @@ import com.game.object.util.ObjectId;
 
 public class Star extends GameObject {
 	private Handler handler = Game.getHandler();
+	private AnimationSimple animation;
 
 	public Star(float x, float y, float width, float height, int scale) {
 		super(x, y, ObjectId.Star, width, height, scale);
 		sprite = tex.getStar1();
 		velX = 3f;
 		velY = -5f;
+		animation = new AnimationSimple(4, sprite[0], sprite[1], sprite[2], sprite[3]);
 	}
 	
 	@Override
@@ -25,6 +28,7 @@ public class Star extends GameObject {
 		x += velX;
 		y += velY;
 		
+		animation.runAnimation();
 		applyGravity();
 		collision();
 	}
@@ -107,8 +111,8 @@ public class Star extends GameObject {
 	
 	@Override
 	public void render(Graphics g) {
-		showBounds(g);
-		g.drawImage(sprite[index], (int) x, (int) y, (int) width, (int) height, null);
+//		showBounds(g);
+		animation.drawAnimation(g, (int) x, (int) y, (int) width, (int) height);
 	}
 
 	@Override

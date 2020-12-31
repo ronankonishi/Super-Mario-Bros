@@ -157,8 +157,8 @@ public class Player extends GameObject {
 	@Override
 	public void tick() {
 		if (currAnimationC != null) {
-			invincibleTimer = (invincibleTimer + 1) % 100;
-			if (invincibleTimer == 99) {
+			invincibleTimer = (invincibleTimer + 1) % 600;
+			if (invincibleTimer == 599) {
 				switch(state) {
 					case SMALL:
 						setStateSmall();
