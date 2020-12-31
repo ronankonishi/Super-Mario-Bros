@@ -5,6 +5,9 @@ import com.game.object.item.Debris;
 
 public class BrickBlock extends Block{
 	private Debris debris;
+	private int yInc;
+	private boolean smallHit;
+	private boolean flip;
 	
 	public BrickBlock(float x, float y, float width, float height, int scale) {
 		super(x, y, width, height, scale);
@@ -14,7 +17,7 @@ public class BrickBlock extends Block{
 	
 	@Override
 	public boolean shouldRemove() {
-		if (debris.shouldRemove()) {
+		if (debris != null && debris.shouldRemove()) {
 			return true;
 		}
 		return false;
@@ -25,6 +28,18 @@ public class BrickBlock extends Block{
 		if (hit) {
 			debris.tick();
 		}
+		if (smallHit) {
+			if (!flip) {
+				yInc--;
+			} else {
+				yInc++;
+			}
+			if (yInc == -10) flip = true;
+			if (yInc == 0) {
+				smallHit = false;
+				flip = false;
+			}
+		}
 	}
 	
 	@Override
@@ -33,14 +48,17 @@ public class BrickBlock extends Block{
 			debris.draw(g);
 			return;
 		}
-		
-		if (index == -1) return;
-		
-		g.drawImage(sprite[index], (int) x, (int) y, (int) width, (int) height, null);
+				
+		g.drawImage(sprite[index], (int) x, (int) y + yInc, (int) width, (int) height, null);
 	}
 	
+	@Override
+	public void smallHit() {
+		smallHit = true;
+	}
 	
-	public void hit() {
+	@Override
+	public void largeHit() {
 		hit = true;
 		debris = new Debris(x, y, width, height, scale);
 	}

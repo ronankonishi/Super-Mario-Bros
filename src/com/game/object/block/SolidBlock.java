@@ -17,9 +17,9 @@ public class SolidBlock extends Block{
 	public void render(Graphics g) {				
 		g.drawImage(sprite[index], (int) x, (int) y, (int) width, (int) height, null);
 	}
-
+	
 	@Override
-	public void hit() {}
+	public void largeHit() {}
 
 	@Override
 	public boolean shouldRemove() {

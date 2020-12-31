@@ -49,9 +49,9 @@ public class QuestionFlowerBlock extends Block{
 	public boolean shouldRemove() {
 		return false;
 	}
-
+	
 	@Override
-	public void hit() {
+	public void largeHit() {
 		hit = true;
 	}
 	

@@ -10,6 +10,10 @@ public abstract class Block extends GameObject {
 		super(x, y, ObjectId.Block, width, height, scale);
 	}
 	
-	public abstract void hit();
+	public void smallHit() {
+		largeHit();
+	};
+	
+	public abstract void largeHit();
 	public abstract boolean shouldRemove();
 }

@@ -230,8 +230,13 @@ public class Player extends GameObject {
 				y = temp.getY() + temp.getHeight();
 				velY = 0;
 				
-				((Block) temp).hit();
-				if (temp.getClass() == BrickBlock.class) removeObjs.add(temp);
+				if (state == State.SMALL) {
+					((Block) temp).smallHit();
+				} else {
+					((Block) temp).largeHit();
+					if (temp.getClass() == BrickBlock.class) removeObjs.add(temp);
+				}
+				
 				
 				if (temp.getClass() == QuestionFlowerBlock.class && !((QuestionFlowerBlock) temp).isDisabled()) {
 					if (state == State.SMALL) {

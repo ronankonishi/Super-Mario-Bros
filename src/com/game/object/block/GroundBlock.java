@@ -19,8 +19,8 @@ public class GroundBlock extends Block {
 	}
 
 	@Override
-	public void hit() {}
-
+	public void largeHit() {}
+	
 	@Override
 	public boolean shouldRemove() {
 		return false;

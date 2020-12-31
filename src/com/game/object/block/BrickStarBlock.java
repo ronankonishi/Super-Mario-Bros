@@ -28,7 +28,8 @@ public class BrickStarBlock extends Block {
 		g.drawImage(sprite[index], (int) x, (int) y, (int) width, (int) height, null);
 	}
 	
-	public void hit() {
+	@Override
+	public void largeHit() {
 		hit = true;
 	}
 	
