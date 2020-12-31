@@ -8,6 +8,8 @@ import com.game.object.util.ObjectId;
 
 public class RedFlower extends GameObject{
 	AnimationSimple animation;
+	private boolean entering = true;
+	private int yCount;
 	
 	public RedFlower(float x, float y, float width, float height, int scale) {
 		super(x, y, ObjectId.RedFlower, width, height, scale);
@@ -18,6 +20,12 @@ public class RedFlower extends GameObject{
 
 	@Override
 	public void tick() {
+		if (entering) {
+			y--;
+			yCount++;
+			if (yCount == height) entering = false;
+		}
+		
 		animation.runAnimation();
 	}
 

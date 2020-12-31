@@ -12,6 +12,8 @@ import com.game.object.util.ObjectId;
 
 public abstract class Shroom extends GameObject {
 	private Handler handler = Game.getHandler();
+	private boolean entering = true;
+	private int yCount;
 
 	public Shroom(float x, float y, float width, float height, int scale) {
 		super(x, y, ObjectId.Shroom, width, height, scale);
@@ -21,6 +23,13 @@ public abstract class Shroom extends GameObject {
 	
 	@Override
 	public void tick() {
+		if (entering) {
+			y--;
+			yCount++;
+			if (yCount == height) entering = false;
+			return;
+		}
+		
 		x += velX;
 		y += velY;
 		

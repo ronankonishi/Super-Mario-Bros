@@ -56,7 +56,7 @@ public class BrickStarBlock extends Block {
 	}
 	
 	public void spawnStar() {
-		star = new Star(x, (y - (height + 1)), width, height, 1);
+		star = new Star(x, y, width, height, 1);
 	}
 	
 	public Star getStar() {
