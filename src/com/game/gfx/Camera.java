@@ -5,30 +5,36 @@ import com.game.object.GameObject;
 
 public class Camera {
 
-	private int x, y;
+	private GameObject player;
+	private float cX, cY;
+	private float pX;
 	
-	public Camera(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Camera(float cX, float cY, GameObject player) {
+		this.cX = cX;
+		this.cY = cY;
+		this.player = player;
 	}
 	
-	public void tick(GameObject player) {
-		x = (int) -player.getX() + Game.getScreenWidth()/2;
+	public void tick() {
+		float offset = player.getX() - (cX + Game.getScreenWidth()/2);
+		if (offset > 0) {
+			cX += offset;
+		}
 	}
 	
-	public void setX(int x) {
-		this.x = x;
+	public void setX(float cX) {
+		this.cX = cX;
 	}
 	
-	public void setY(int y) {
-		this.y = y;
+	public void setY(float cY) {
+		this.cY = cY;
 	}
 	
-	public float getX() {
-		return x;
+	public float getCX() {
+		return cX;
 	}
 	
-	public float getY() {
-		return y;
+	public float getCY() {
+		return cY;
 	}
 }

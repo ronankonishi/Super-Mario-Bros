@@ -57,7 +57,7 @@ public class Game extends Canvas implements Runnable {
 		levelHandler = new LevelHandler(handler);
 		levelHandler.start();
 
-		cam = new Camera(0, SCREEN_OFFSET);
+		cam = new Camera(0, SCREEN_OFFSET, handler.getPlayer());
 		
 //		hud = new HUD();
 		new Window(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, this);
@@ -111,7 +111,7 @@ public class Game extends Canvas implements Runnable {
 	
 	private void tick() {
 		handler.tick();
-		cam.tick(handler.getPlayer());
+		cam.tick();
 //		hud.tick();
 	}
 
@@ -129,9 +129,9 @@ public class Game extends Canvas implements Runnable {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-		g2d.translate(cam.getX(), cam.getY());
+		g2d.translate(-cam.getCX(), cam.getCY());
 		handler.render(g);
-		g2d.translate(-cam.getX(), -cam.getY());
+		g2d.translate(cam.getCX(), -cam.getCY());
 
 //		hud.render(g);
 		
