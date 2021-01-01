@@ -119,7 +119,6 @@ public class Player extends GameObject {
 	private void setStateSmall() {
 		sprite = spriteS;
 		currAnimationS = playerWalkS;
-		currAnimationC = null;
 		if (state == State.SMALL) return;
 		state = State.SMALL;
 		y += height/2;
@@ -129,7 +128,7 @@ public class Player extends GameObject {
 	private void setStateLarge() {
 		sprite = spriteL;
 		currAnimationS = playerWalkL;
-		currAnimationC = null;
+		if (currAnimationC != null) currAnimationC = playerWalkIL;
 		if (state == State.LARGE) return;
 		state = state.LARGE;
 		y -= height;
@@ -139,7 +138,6 @@ public class Player extends GameObject {
 	private void setStateFire() {
 		sprite = spriteF;
 		currAnimationS = playerWalkF;
-		currAnimationC = null;
 		if (state == State.FIRE) return;
 		state = state.FIRE;
 	}
@@ -161,6 +159,7 @@ public class Player extends GameObject {
 		if (currAnimationC != null) {
 			invincibleTimer = (invincibleTimer + 1) % 600;
 			if (invincibleTimer == 599) {
+				currAnimationC = null;
 				switch(state) {
 					case SMALL:
 						setStateSmall();
