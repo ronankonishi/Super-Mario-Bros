@@ -7,7 +7,7 @@ import com.game.object.item.Star;
 public class BrickStarBlock extends Block {
 	private boolean disabled;
 	private Star star;
-	private int yInc;
+	private int yInc = 2;
 	private boolean smallHit;
 	private boolean flip;
 	
