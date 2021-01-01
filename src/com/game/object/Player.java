@@ -50,7 +50,7 @@ public class Player extends GameObject {
 	private float leftBound;
 	
 	public Player(float x, float y, int scale, Handler handler) {
-		super(x, y, ObjectId.Player, WIDTH, HEIGHT, scale);
+		super(x, y, ObjectId.Player, WIDTH, HEIGHT, scale, 1);
 		this.handler = handler;
 		removeObjs = new LinkedList<GameObject>();
 		addObjs = new LinkedList<GameObject>();

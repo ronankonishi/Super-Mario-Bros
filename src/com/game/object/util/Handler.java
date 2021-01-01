@@ -21,7 +21,14 @@ public class Handler {
 	
 	public void tick() {
 		for (GameObject obj : gameObjs) {
-			obj.tick();
+			if (obj.getZ() == 1) {
+				obj.tick();
+			}
+		}
+		for (GameObject obj : gameObjs) {
+			if (obj.getZ() == 2) {
+				obj.tick();
+			}
 		}
 		LinkedList<GameObject> removeObjs = player.removeObjs();
 		for (GameObject removeObj : removeObjs) {
@@ -35,7 +42,14 @@ public class Handler {
 	
 	public void render(Graphics g) {
 		for (GameObject obj : gameObjs) {
-			obj.render(g);
+			if (obj.getZ() == 1) {
+				obj.render(g);
+			}
+		}
+		for (GameObject obj : gameObjs) {
+			if (obj.getZ() == 2) {
+				obj.render(g);
+			}
 		}
 	}
 

@@ -7,7 +7,7 @@ public abstract class Block extends GameObject {
 	protected boolean hit;
 	
 	public Block(float x, float y, float width, float height, int scale) {
-		super(x, y, ObjectId.Block, width, height, scale);
+		super(x, y, ObjectId.Block, width, height, scale, 2);
 	}
 	
 	public void smallHit() {

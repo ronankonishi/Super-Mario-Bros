@@ -15,14 +15,15 @@ public class Star extends GameObject {
 	private Handler handler = Game.getHandler();
 	private AnimationSimple animation;
 	private boolean entering = true;
-	private int yCount;
+	private int yCount = 1;
 
 	public Star(float x, float y, float width, float height, int scale) {
-		super(x, y, ObjectId.Star, width, height, scale);
+		super(x, y, ObjectId.Star, width, height, scale, 1);
 		sprite = tex.getStar1();
 		velX = 3f;
 		velY = -5f;
 		animation = new AnimationSimple(4, sprite[0], sprite[1], sprite[2], sprite[3]);
+		y--;
 	}
 	
 	@Override

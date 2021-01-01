@@ -16,7 +16,7 @@ public class Pipe extends GameObject {
 	private boolean enterable;
 	
 	public Pipe(int x, int y, int width, int height, int index, int scale, boolean enterable) {
-		super(x, y, ObjectId.Pipe, width, height, scale);
+		super(x, y, ObjectId.Pipe, width, height, scale, 2);
 		this.index = index;
 		this.enterable = enterable;
 		sprite = tex.getPipe1();

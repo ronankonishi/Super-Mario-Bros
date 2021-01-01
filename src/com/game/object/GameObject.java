@@ -17,6 +17,7 @@ public abstract class GameObject {
 	
 	protected float x;
 	protected float y;
+	protected int z; //render z-height
 	protected ObjectId id;
 	protected float velX, velY;
 	protected float width, height;
@@ -29,13 +30,14 @@ public abstract class GameObject {
 	/**
 	 * Creates game object with x and y coordinates and object type id
 	 */
-	public GameObject(float x, float y, ObjectId id, float width, float height, int scale) {
+	public GameObject(float x, float y, ObjectId id, float width, float height, int scale, int z) {
 		this.x = x * scale;
 		this.y = y * scale;
 		this.id = id;
 		this.width = width * scale;
 		this.height = height * scale;
 		this.scale = scale;
+		this.z = z;
 	}
 	
 	public abstract void tick();
@@ -119,5 +121,9 @@ public abstract class GameObject {
 	
 	public int getScale() {
 		return scale;
+	}
+	
+	public int getZ() {
+		return z;
 	}
 }

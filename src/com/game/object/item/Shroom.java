@@ -13,12 +13,13 @@ import com.game.object.util.ObjectId;
 public abstract class Shroom extends GameObject {
 	private Handler handler = Game.getHandler();
 	private boolean entering = true;
-	private int yCount;
+	private int yCount = 1;
 
 	public Shroom(float x, float y, float width, float height, int scale) {
-		super(x, y, ObjectId.Shroom, width, height, scale);
+		super(x, y, ObjectId.Shroom, width, height, scale, 1);
 		sprite = tex.getShroom1();
 		velX = 3f;
+		y--;
 	}
 	
 	@Override
