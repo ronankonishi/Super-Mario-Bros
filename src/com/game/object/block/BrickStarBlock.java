@@ -7,12 +7,13 @@ import com.game.object.item.Star;
 public class BrickStarBlock extends Block {
 	private boolean disabled;
 	private Star star;
-	private int yInc = 2;
+	private int yInc;
 	private boolean smallHit;
 	private boolean flip;
 	
 	public BrickStarBlock(float x, float y, float width, float height, int scale) {
 		super(x, y, width, height, scale);
+		System.out.println(y);
 		index = 1;
 		sprite = tex.getTile1();
 	}

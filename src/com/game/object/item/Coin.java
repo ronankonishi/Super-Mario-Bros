@@ -20,7 +20,7 @@ public class Coin {
 		this.height = height * scale;
 		
 		this.velY = -5f;
-		this.turnY = y - 140;
+		this.turnY = y - 150;
 		this.endY = y;
 		
 		coin = tex.getCoinA1();

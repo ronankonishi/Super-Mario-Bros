@@ -8,7 +8,7 @@ public class QuestionFlowerBlock extends Block{
 	private RedShroom redShroom;
 	private RedFlower redFlower;
 	private boolean disabled;
-	private int yInc = 2;
+	private int yInc;
 	private boolean smallHit;
 	private boolean flip;
 	

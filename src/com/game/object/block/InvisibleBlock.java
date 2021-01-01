@@ -6,7 +6,7 @@ import com.game.object.item.GreenShroom;
 public class InvisibleBlock extends Block{
 	private GreenShroom greenShroom;
 	private boolean disabled;
-	private int yInc = 2;
+	private int yInc;
 	private boolean smallHit;
 	private boolean flip;
 	

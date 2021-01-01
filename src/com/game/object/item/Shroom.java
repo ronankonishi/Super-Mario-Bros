@@ -19,7 +19,7 @@ public abstract class Shroom extends GameObject {
 		super(x, y, ObjectId.Shroom, width, height, scale, 1);
 		sprite = tex.getShroom1();
 		velX = 3f;
-		y--;
+		this.y--;
 	}
 	
 	@Override

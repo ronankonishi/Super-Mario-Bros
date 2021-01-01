@@ -16,7 +16,7 @@ public class RedFlower extends GameObject{
 		index = 0;
 		sprite = tex.getFlower1();
 		animation = new AnimationSimple(5, sprite[0], sprite[1], sprite[2], sprite[3]);
-		y--;
+		this.y--;
 	}
 
 	@Override

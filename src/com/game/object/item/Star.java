@@ -23,7 +23,8 @@ public class Star extends GameObject {
 		velX = 3f;
 		velY = -5f;
 		animation = new AnimationSimple(4, sprite[0], sprite[1], sprite[2], sprite[3]);
-		y--;
+		this.y--;
+		
 	}
 	
 	@Override
