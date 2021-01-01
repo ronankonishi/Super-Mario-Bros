@@ -14,7 +14,6 @@ public class BrickCoinsBlock extends Block {
 	
 	public BrickCoinsBlock(float x, float y, float width, float height, int scale) {
 		super(x, y, width, height, scale);
-		System.out.println(y);
 		index = 1;
 		sprite = tex.getTile1();
 		coins = new LinkedList<Coin>();
