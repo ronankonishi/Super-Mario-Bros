@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.game.gfx.Camera;
+import com.game.main.Game;
 import com.game.object.GameObject;
 import com.game.object.Player;
 
@@ -14,22 +16,31 @@ public class Handler {
 	
 	private List<GameObject> gameObjs;
 	private Player player;
+	private Camera cam;
 	
 	public Handler() {
 		gameObjs = new LinkedList<GameObject>();
 	}
+
+	public void setCam(Camera cam) {
+		this.cam = cam;
+	}
 	
 	public void tick() {
+		player.setLeftBound(cam.getCX() - Game.getScreenWidth()/2);
+
 		for (GameObject obj : gameObjs) {
-			if (obj.getZ() == 1) {
+			if ((obj.getX() < cam.getCX() + 60 + Game.getScreenWidth()) && (obj.getX() > cam.getCX() - 60)) {
+				obj.setRenderStatus(true);
+			} else {
+				if (obj.getRenderStatus() && obj.getId() == ObjectId.MovingItem) continue;
+				obj.setRenderStatus(false);
+			}
+			if (obj.getRenderStatus()) {
 				obj.tick();
 			}
 		}
-		for (GameObject obj : gameObjs) {
-			if (obj.getZ() == 2) {
-				obj.tick();
-			}
-		}
+		
 		LinkedList<GameObject> removeObjs = player.removeObjs();
 		for (GameObject removeObj : removeObjs) {
 			removeObj(removeObj);
@@ -42,17 +53,17 @@ public class Handler {
 	
 	public void render(Graphics g) {
 		for(GameObject obj: gameObjs) {
-			if (obj.getZ() == 0) {
+			if (obj.getZ() == 0 && obj.getRenderStatus()) {
 				obj.render(g);
 			}
 		}
 		for (GameObject obj : gameObjs) {
-			if (obj.getZ() == 1) {
+			if (obj.getZ() == 1 && obj.getRenderStatus()) {
 				obj.render(g);
 			}
 		}
 		for (GameObject obj : gameObjs) {
-			if (obj.getZ() == 2) {
+			if (obj.getZ() == 2 && obj.getRenderStatus()) {
 				obj.render(g);
 			}
 		}

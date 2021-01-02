@@ -6,8 +6,7 @@ public enum ObjectId {
 	Block, 
 	Pipe, 
 	Debris,  
-	RedFlower, 
-	Shroom, 
-	Star, 
-	BackgroundObj;
+	RedFlower,
+	BackgroundObj, 
+	MovingItem;
 }

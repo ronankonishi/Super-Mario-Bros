@@ -18,7 +18,7 @@ public class Star extends GameObject {
 	private int yCount = 1;
 
 	public Star(float x, float y, float width, float height, int scale) {
-		super(x, y, ObjectId.Star, width, height, scale, 1);
+		super(x, y, ObjectId.MovingItem, width, height, scale, 1);
 		sprite = tex.getStar1();
 		velX = 3f;
 		velY = -5f;

@@ -16,7 +16,7 @@ public abstract class Shroom extends GameObject {
 	private int yCount = 1;
 
 	public Shroom(float x, float y, float width, float height, int scale) {
-		super(x, y, ObjectId.Shroom, width, height, scale, 1);
+		super(x, y, ObjectId.MovingItem, width, height, scale, 1);
 		sprite = tex.getShroom1();
 		velX = 3f;
 		this.y--;

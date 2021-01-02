@@ -22,6 +22,7 @@ public abstract class GameObject {
 	protected float velX, velY;
 	protected float width, height;
 	protected int scale;
+	protected boolean renderStatus;
 
 	protected Texture tex = Game.getTexture();
 	protected int index;
@@ -91,6 +92,11 @@ public abstract class GameObject {
 		this.height = height;
 	}
 	
+
+	public void setRenderStatus(boolean renderStatus) {
+		this.renderStatus = renderStatus;
+	}
+	
 	public float getX() {
 		return x;
 	}
@@ -125,5 +131,9 @@ public abstract class GameObject {
 	
 	public int getZ() {
 		return z;
+	}
+	
+	public boolean getRenderStatus() {
+		return renderStatus;
 	}
 }
