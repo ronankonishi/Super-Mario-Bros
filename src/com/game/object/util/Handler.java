@@ -41,6 +41,11 @@ public class Handler {
 	}
 	
 	public void render(Graphics g) {
+		for(GameObject obj: gameObjs) {
+			if (obj.getZ() == 0) {
+				obj.render(g);
+			}
+		}
 		for (GameObject obj : gameObjs) {
 			if (obj.getZ() == 1) {
 				obj.render(g);

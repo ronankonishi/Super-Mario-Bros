@@ -22,7 +22,8 @@ public class Texture {
 		
 	public BufferedImage[] mario_l, mario_s, mario_f, 
 						   tile_1, tile_2, tile_3, tile_4,
-						   pipe_1, debris_1, coin_a1, shroom_1, flower_1, star_1;
+						   pipe_1, debris_1, coin_a1, shroom_1, flower_1, star_1,
+						   mountain_1, cloud_1, bush_1, castle_1;
 	public BufferedImage[][] mario_il, mario_is;
 	
 	public Texture() {
@@ -42,6 +43,11 @@ public class Texture {
 		shroom_1 = new BufferedImage[3];
 		flower_1 = new BufferedImage[4];
 		star_1 = new BufferedImage[4];
+		
+		mountain_1 = new BufferedImage[6];
+		bush_1 = new BufferedImage[3];
+		cloud_1 = new BufferedImage[3];
+		castle_1 = new BufferedImage[8];
 		
 		loader = new BufferedImageLoader();
 		sheetList = new LinkedList<BufferedImage>();
@@ -65,6 +71,11 @@ public class Texture {
 		getShroomTextures();
 		getFlowerTextures();
 		getStarTextures();
+		
+		getMountainTextures();
+		getBushTextures();
+		getCloudTextures();
+		getCastleTextures();
 	}
 	
 	public BufferedImage[] getMarioL() {
@@ -125,6 +136,22 @@ public class Texture {
 	
 	public BufferedImage[] getStar1() {
 		return star_1;
+	}
+	
+	public BufferedImage[] getMountain1() {
+		return mountain_1;
+	}
+	
+	public BufferedImage[] getBush1() {
+		return bush_1;
+	}
+	
+	public BufferedImage[] getCloud1() {
+		return cloud_1;
+	}
+	
+	public BufferedImage[] getCastle1() {
+		return castle_1;
 	}
 	
 	private void getPlayerTextures() {
@@ -277,5 +304,58 @@ public class Texture {
 		star_1[1] = npc_sheet.getSubimage(x_off + width, y_off, width, height);
 		star_1[2] = npc_sheet.getSubimage(x_off + 2*width, y_off, width, height);
 		star_1[3] = npc_sheet.getSubimage(x_off + 3*width, y_off, width, height);
+	}
+	
+	private void getMountainTextures() {
+		int x_off = 8*16;
+		int y_off = 8*16;
+		int width = 16;
+		int height = 16;
+		mountain_1[0] = tile_sheet.getSubimage(x_off, y_off, width, height);
+		mountain_1[1] = tile_sheet.getSubimage(x_off + width, y_off, width, height);
+		mountain_1[2] = tile_sheet.getSubimage(x_off + 2*width, y_off, width, height);
+		
+		mountain_1[3] = tile_sheet.getSubimage(x_off, y_off + height, width, height);
+		mountain_1[4] = tile_sheet.getSubimage(x_off + width, y_off + height, width, height);
+		mountain_1[5] = tile_sheet.getSubimage(x_off + 2*width, y_off + height, width, height);
+	}
+	
+	private void getBushTextures() {
+		int x_off = 11*16;
+		int y_off = 9*16;
+		int width = 16;
+		int height = 16;
+		bush_1[0] = tile_sheet.getSubimage(x_off, y_off, width, height);
+		bush_1[1] = tile_sheet.getSubimage(x_off + width, y_off, width, height);
+		bush_1[2] = tile_sheet.getSubimage(x_off + 2*width, y_off, width, height);
+	}
+	
+	private void getCloudTextures() {
+		int x_off = 0;
+		int y_off = 20*16;
+		int width = 16;
+		int height = 32;
+		cloud_1[0] = tile_sheet.getSubimage(x_off, y_off, width, height);
+		cloud_1[1] = tile_sheet.getSubimage(x_off + width, y_off, width, height);
+		cloud_1[2] = tile_sheet.getSubimage(x_off + 2*width, y_off, width, height);
+	}
+	
+	private void getCastleTextures() {
+		int x_off1 = 17*16;
+		int y_off1 = 0;
+		int width = 16;
+		int height = 16;
+		castle_1[7] = npc_sheet.getSubimage(x_off1, y_off1, width, height);
+		
+		int x_off = 11*16;
+		int y_off = 0;
+		castle_1[0] = tile_sheet.getSubimage(x_off, y_off, width, height);
+		castle_1[1] = tile_sheet.getSubimage(x_off + width, y_off, width, height);
+		castle_1[2] = tile_sheet.getSubimage(x_off + 2*width, y_off, width, height);
+		castle_1[3] = tile_sheet.getSubimage(x_off + 3*width, y_off, width, height);
+	
+		castle_1[4] = tile_sheet.getSubimage(x_off, y_off + height, width, height);
+		castle_1[5] = tile_sheet.getSubimage(x_off + width, y_off + height, width, height);
+		castle_1[6] = tile_sheet.getSubimage(x_off + 2*width, y_off + height, width, height);
 	}
 }

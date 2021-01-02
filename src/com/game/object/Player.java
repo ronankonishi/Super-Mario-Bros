@@ -193,6 +193,8 @@ public class Player extends GameObject {
 	private void collision() {
 		for (int i = 0; i < handler.getGameObjs().size(); i++) {
 			GameObject temp = handler.getGameObjs().get(i);
+			
+			if (temp.getClass() == BackgroundObject.class) continue; 
 			if (temp == this) continue;
 			if (removeObjs.contains(temp) || addObjs.contains(temp)) continue;
 			

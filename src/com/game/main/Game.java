@@ -26,7 +26,7 @@ public class Game extends Canvas implements Runnable {
 	private final static int WINDOW_HEIGHT = 720;
 	private final static int SCREEN_WIDTH = WINDOW_WIDTH - 67;
 	private final static int SCREEN_HEIGHT = WINDOW_HEIGHT;
-	private final static int SCREEN_OFFSET = 16*3;
+	private final static int SCREEN_OFFSET = -16;
 
 	// GAME VARIABLES
 	private boolean running;
@@ -54,7 +54,7 @@ public class Game extends Canvas implements Runnable {
 		handler = new Handler();
 		this.addKeyListener(new KeyInput(handler));
 		
-		levelHandler = new LevelHandler(handler);
+		levelHandler = new LevelHandler(handler, tex);
 		levelHandler.start();
 
 		cam = new Camera(0, SCREEN_OFFSET, handler.getPlayer());
@@ -127,7 +127,7 @@ public class Game extends Canvas implements Runnable {
 		Graphics g = buf.getDrawGraphics();
 		Graphics2D g2d = (Graphics2D) g;
 
-		g.setColor(Color.BLACK);
+		g.setColor(new Color(92, 148, 252));
 		g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		g2d.translate(-cam.getCX(), cam.getCY());
