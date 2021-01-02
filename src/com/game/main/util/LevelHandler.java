@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import com.game.gfx.BufferedImageLoader;
 import com.game.gfx.Texture;
 import com.game.object.BackgroundObject;
+import com.game.object.GameObject;
 import com.game.object.Pipe;
 import com.game.object.Player;
 import com.game.object.block.Block;
@@ -17,6 +18,8 @@ import com.game.object.block.QuestionBlock;
 import com.game.object.block.QuestionFlowerBlock;
 import com.game.object.block.SolidBlock;
 import com.game.object.util.Handler;
+import com.gane.object.enemy.Goomba;
+import com.gane.object.enemy.Koopa;
 
 public class LevelHandler {
 	
@@ -35,6 +38,7 @@ public class LevelHandler {
 	public void start() {
 		loadTiles(PARENT_FOLDER + "/1_1.png");
 		loadBackground(PARENT_FOLDER + "/1_1b.png");
+		loadCharacters(PARENT_FOLDER + "/1_1c.png");
 	}
 	
 	private void loadTiles(String levelTilesPath) {
@@ -82,8 +86,6 @@ public class LevelHandler {
 					handler.addObj(new Pipe(i*16, j*16, 32, 16, 0, 3, true));
 				} else if (blue == 0 && green == 0 && red == 30) {
 					handler.addObj(new Pipe(i*16, j*16, 32, 16, 2, 3, true));
-				} else if (red == 0 && green == 0 && blue == 255) {
-					handler.setPlayer(new Player(i*16, j*16, 3, handler));
 				}
 				
 			}
@@ -154,6 +156,34 @@ public class LevelHandler {
 					}
 					
 					handler.addObj(new BackgroundObject(i * 16, j*16, 16, h, 3, img));
+				}
+			}
+		}
+	}
+	
+	private void loadCharacters(String levelCharactersPath) {
+		BufferedImage levelTiles = loader.loadImage(levelCharactersPath);
+		
+		int width = levelTiles.getWidth();
+		int height = levelTiles.getHeight();
+		
+		for(int i = 0; i < height; i++) {
+			for(int j = 0; j < width; j++) {
+				int pixel = levelTiles.getRGB(i, j);
+				int red = (pixel >> 16) & 0xff;
+				int green = (pixel >> 8) & 0xff;
+				int blue = pixel & 0xff;
+				
+				if (red == 255 && green == 255 && blue == 255) continue;
+				
+				if (red == green && red == blue) {
+					if (red == 0) {
+						handler.setPlayer(new Player(i*16, j*16, 3, handler));
+					} else if (red == 30) {
+						handler.addObj(new Goomba(i*16, j*16, 16, 16, 3));
+					} else if (red == 60) {
+						handler.addObj(new Koopa(i*16, j*16, 16, 32, 3));
+					}					
 				}
 			}
 		}

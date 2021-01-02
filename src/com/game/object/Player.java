@@ -20,6 +20,7 @@ import com.game.object.item.RedShroom;
 import com.game.object.item.Star;
 import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
+import com.gane.object.enemy.Enemy;
 
 public class Player extends GameObject {
 
@@ -197,6 +198,15 @@ public class Player extends GameObject {
 			if (temp.getClass() == BackgroundObject.class) continue; 
 			if (temp == this) continue;
 			if (removeObjs.contains(temp) || addObjs.contains(temp)) continue;
+			
+			if (temp.getId() == ObjectId.Enemy) {
+				if (getBoundsBottom().intersects(temp.getBounds())) {
+					((Enemy) temp).kill();
+					removeObjs.add(temp);
+					velY = -5f;
+				} 
+				continue;
+			}
 			
 			if (temp.getClass() == RedShroom.class && getBounds().intersects(temp.getBounds())) {
 				setStateLarge();

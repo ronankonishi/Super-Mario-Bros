@@ -23,7 +23,8 @@ public class Texture {
 	public BufferedImage[] mario_l, mario_s, mario_f, 
 						   tile_1, tile_2, tile_3, tile_4,
 						   pipe_1, debris_1, coin_a1, shroom_1, flower_1, star_1,
-						   mountain_1, cloud_1, bush_1, castle_1;
+						   mountain_1, cloud_1, bush_1, castle_1,
+						   goomba_1, koopa_1;
 	public BufferedImage[][] mario_il, mario_is;
 	
 	public Texture() {
@@ -48,6 +49,9 @@ public class Texture {
 		bush_1 = new BufferedImage[3];
 		cloud_1 = new BufferedImage[3];
 		castle_1 = new BufferedImage[8];
+		
+		goomba_1 = new BufferedImage[3];
+		koopa_1 = new BufferedImage[3];
 		
 		loader = new BufferedImageLoader();
 		sheetList = new LinkedList<BufferedImage>();
@@ -76,6 +80,9 @@ public class Texture {
 		getBushTextures();
 		getCloudTextures();
 		getCastleTextures();
+		
+		getGoombaTextures();
+		getKoopaTextures();
 	}
 	
 	public BufferedImage[] getMarioL() {
@@ -152,6 +159,14 @@ public class Texture {
 	
 	public BufferedImage[] getCastle1() {
 		return castle_1;
+	}
+	
+	public BufferedImage[] getGoomba1() {
+		return goomba_1;
+	}
+	
+	public BufferedImage[] getKoopa1() {
+		return koopa_1;
 	}
 	
 	private void getPlayerTextures() {
@@ -357,5 +372,27 @@ public class Texture {
 		castle_1[4] = tile_sheet.getSubimage(x_off, y_off + height, width, height);
 		castle_1[5] = tile_sheet.getSubimage(x_off + width, y_off + height, width, height);
 		castle_1[6] = tile_sheet.getSubimage(x_off + 2*width, y_off + height, width, height);
+	}
+	
+	private void getGoombaTextures() {
+		int x_off = 0;
+		int y_off = 16;
+		int width = 16;
+		int height = 16;
+		
+		goomba_1[0] = enemy_sheet.getSubimage(x_off, y_off, width, height);
+		goomba_1[1] = enemy_sheet.getSubimage(x_off + width, y_off, width, height);
+		goomba_1[2] = enemy_sheet.getSubimage(x_off + 2*width, y_off, width, height);
+	}
+	
+	private void getKoopaTextures() {
+		int x_off = 6*16;
+		int y_off = 0;
+		int width = 16;
+		int height = 32;
+		
+		koopa_1[0] = enemy_sheet.getSubimage(x_off, y_off, width, height);
+		koopa_1[1] = enemy_sheet.getSubimage(x_off + width, y_off, width, height);
+		koopa_1[2] = enemy_sheet.getSubimage(x_off + 4*width, y_off, width, height);
 	}
 }

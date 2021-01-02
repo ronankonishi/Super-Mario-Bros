@@ -1,4 +1,4 @@
-package com.game.object.item;
+package com.gane.object.enemy;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,40 +10,21 @@ import com.game.object.GameObject;
 import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
 
-public abstract class Shroom extends GameObject {
+public abstract class Enemy extends GameObject {
 	private Handler handler = Game.getHandler();
-	private boolean entering = true;
-	private int yCount = 1;
 
-	public Shroom(float x, float y, float width, float height, int scale) {
-		super(x, y, ObjectId.MovingItem, width, height, scale, 1);
-		sprite = tex.getShroom1();
-		velX = 3f;
-		this.y--;
+	public Enemy(float x, float y, float width, float height, int scale) {
+		super(x, y, ObjectId.Enemy, width, height, scale, 2);
 	}
 	
-	@Override
-	public void tick() {
-		if (entering) {
-			y--;
-			yCount++;
-			if (yCount == height) entering = false;
-			return;
-		}
-		
-		x += velX;
-		y += velY;
-		
-		applyGravity();
-		collision();
-	}
+	public abstract void kill();
 	
-	private void collision() {
+	protected void collision() {
 		for (int i = 0; i < handler.getGameObjs().size(); i++) {
 			GameObject temp = handler.getGameObjs().get(i);
 			if (temp == this) continue;
 			
-			if (temp.getId() == ObjectId.Block || temp.getId() == ObjectId.Pipe) {
+			if (temp.getId() == ObjectId.Block || temp.getId() == ObjectId.Pipe || temp.getId() == ObjectId.Enemy) {
 				if (getBoundsBottom().intersects(temp.getBounds())) {
 					y = temp.getY() - height;
 					velY = 0;
@@ -62,6 +43,7 @@ public abstract class Shroom extends GameObject {
 		}
 	}
 	
+
 	@Override
 	protected void showBounds(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
@@ -73,7 +55,7 @@ public abstract class Shroom extends GameObject {
 		g2d.draw(getBoundsTop());
 	}
 
-	private Rectangle getBoundsBottom() {
+	protected Rectangle getBoundsBottom() {
 		int x = (int) (this.x + (width/4));
 		int y = (int) (this.y + (height/2));
 		int w = (int) (width/2);
@@ -81,7 +63,7 @@ public abstract class Shroom extends GameObject {
 		return new Rectangle(x, y, w, h);
 	}
 	
-	private Rectangle getBoundsTop() {
+	protected Rectangle getBoundsTop() {
 		int x = (int) (this.x + (width/2) - (width/4));
 		int y = (int) this.y;
 		int w = (int) (width / 2);
@@ -89,7 +71,7 @@ public abstract class Shroom extends GameObject {
 		return new Rectangle(x, y, w, h);
 	}
 	
-	private Rectangle getBoundsRight() {
+	protected Rectangle getBoundsRight() {
 		int x = (int) (this.x + width - 5);
 		int y = (int) (this.y + 5);
 		int w = 5;
@@ -97,22 +79,11 @@ public abstract class Shroom extends GameObject {
 		return new Rectangle(x, y, w, h);
 	}
 	
-	private Rectangle getBoundsLeft() {
+	protected Rectangle getBoundsLeft() {
 		int x = (int) this.x;
 		int y = (int) (this.y + 5);
 		int w = 5;
 		int h = (int) (height - 10);
 		return new Rectangle(x, y, w, h);
-	}
-	
-	@Override
-	public void render(Graphics g) {
-//		showBounds(g);
-		g.drawImage(sprite[index], (int) x, (int) y, (int) width, (int) height, null);
-	}
-
-	@Override
-	public boolean shouldRemove() {
-		return true;
 	}
 }
