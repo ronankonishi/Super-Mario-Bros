@@ -27,8 +27,18 @@ public class Handler {
 	}
 	
 	public void tick() {
-		player.setLeftBound(cam.getCX() - Game.getScreenWidth()/2);
+		player.setLeftBound(cam.getCX());		
 
+		LinkedList<GameObject> removeObjsOffscreen = new LinkedList<GameObject>();
+		for (GameObject obj : gameObjs) {
+			if (obj.getId() == ObjectId.MovingItem && obj.getY() > Game.getScreenHeight()) {
+				removeObjsOffscreen.add(obj);
+			}
+		}
+		for (GameObject removeObj : removeObjsOffscreen) {
+			removeObj(removeObj);
+		}
+		
 		for (GameObject obj : gameObjs) {
 			if ((obj.getX() < cam.getCX() + 60 + Game.getScreenWidth()) && (obj.getX() > cam.getCX() - 60)) {
 				obj.setRenderStatus(true);
@@ -36,6 +46,9 @@ public class Handler {
 				if (obj.getRenderStatus() && obj.getId() == ObjectId.MovingItem) continue;
 				obj.setRenderStatus(false);
 			}
+		}
+		
+		for (GameObject obj : gameObjs) {
 			if (obj.getRenderStatus()) {
 				obj.tick();
 			}

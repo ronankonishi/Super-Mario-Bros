@@ -174,7 +174,7 @@ public class Player extends GameObject {
 			}
 		}
 		
-		if (x + velX > leftBound) {
+		if (x + velX >= leftBound) {
 			x += velX;
 		}
 		
