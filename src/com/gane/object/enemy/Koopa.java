@@ -14,7 +14,7 @@ public class Koopa extends Enemy{
 		super(x, y, width, height, scale);
 		sprite = tex.getKoopa1();
 		animation = new AnimationSimple(5, sprite[0], sprite[1]);
-		velX = -3f;
+		velX = 3f;
 	}
 	
 	@Override

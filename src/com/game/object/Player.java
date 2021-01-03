@@ -43,6 +43,8 @@ public class Player extends GameObject {
 	private AnimationSimple currAnimationS;
 	private AnimationComplex currAnimationC;
 	private LinkedList<GameObject> removeObjs, addObjs;
+	private boolean immune;
+	private int immuneTimer;
 	
 	private boolean jumped;
 	private boolean forward;	
@@ -131,6 +133,10 @@ public class Player extends GameObject {
 		currAnimationS = playerWalkL;
 		if (currAnimationC != null) currAnimationC = playerWalkIL;
 		if (state == State.LARGE) return;
+		if (state == State.FIRE) {
+			state = state.LARGE;
+			return;
+		}
 		state = state.LARGE;
 		y -= height;
 		height *= 2;
@@ -158,8 +164,9 @@ public class Player extends GameObject {
 	@Override
 	public void tick() {
 		if (currAnimationC != null) {
-			invincibleTimer = (invincibleTimer + 1) % 600;
+			invincibleTimer = invincibleTimer + 1;
 			if (invincibleTimer == 599) {
+				invincibleTimer = 0;
 				currAnimationC = null;
 				switch(state) {
 					case SMALL:
@@ -172,6 +179,14 @@ public class Player extends GameObject {
 						setStateFire();
 						break;
 				}
+			}
+		}
+		
+		if (immune) {
+			immuneTimer = immuneTimer + 1;
+			if (immuneTimer == 19) {
+				immuneTimer = 0;
+				immune = false;
 			}
 		}
 		
@@ -199,12 +214,17 @@ public class Player extends GameObject {
 			if (temp == this) continue;
 			if (removeObjs.contains(temp) || addObjs.contains(temp)) continue;
 			
-			if (temp.getId() == ObjectId.Enemy) {
+			if (temp.getId() == ObjectId.Enemy && !immune) {
 				if (getBoundsBottom().intersects(temp.getBounds())) {
 					((Enemy) temp).kill();
 					removeObjs.add(temp);
 					velY = -5f;
-				} 
+				} else if (getBoundsTop().intersects(temp.getBounds()) || 
+						   getBoundsRight().intersects(temp.getBounds()) || 
+						   getBoundsLeft().intersects(temp.getBounds())) {
+					playerHit();
+				}
+				
 				continue;
 			}
 			
@@ -294,6 +314,21 @@ public class Player extends GameObject {
 					x = temp.getX() + temp.getWidth();
 				}
 			}
+		}
+	}
+	
+	private void playerHit() {
+		immune = true;
+		switch(state) {
+			case SMALL:
+				
+				break;
+			case LARGE:
+				setStateSmall();
+				break;
+			case FIRE:
+				setStateLarge();
+				break;
 		}
 	}
 	
