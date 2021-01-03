@@ -1,4 +1,4 @@
-package com.gane.object.enemy;
+package com.game.object.enemy;
 
 import java.awt.Color;
 import java.awt.Graphics;

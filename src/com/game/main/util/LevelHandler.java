@@ -17,9 +17,9 @@ import com.game.object.block.InvisibleBlock;
 import com.game.object.block.QuestionBlock;
 import com.game.object.block.QuestionFlowerBlock;
 import com.game.object.block.SolidBlock;
+import com.game.object.enemy.Goomba;
+import com.game.object.enemy.Koopa;
 import com.game.object.util.Handler;
-import com.gane.object.enemy.Goomba;
-import com.gane.object.enemy.Koopa;
 
 public class LevelHandler {
 	
