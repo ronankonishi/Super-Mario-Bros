@@ -3,40 +3,35 @@ package com.game.object.enemy;
 import java.awt.Graphics;
 
 import com.game.gfx.AnimationSimple;
+import com.game.object.item.Shell;
 
 public class Koopa extends Enemy{
 	private AnimationSimple animation;
-	private boolean kill;
-	private boolean remove;
-	private int counter;
+	private Shell shell;
 	
 	public Koopa(float x, float y, float width, float height, int scale) {
 		super(x, y, width, height, scale);
 		sprite = tex.getKoopa1();
 		animation = new AnimationSimple(5, sprite[0], sprite[1]);
-		velX = 3f;
+		velX = -3f;
 	}
 	
 	@Override
 	public void kill() {
-		kill = true;
+		shell = new Shell(x, y + (height/2), width, height/2, 1);
 	}
 
 	@Override
 	public boolean shouldRemove() {
-		return remove;
+		return true;
 	}
 
+	public Shell getShell() {
+		return shell;
+	}
+	
 	@Override
 	public void tick() {
-		if (kill) {
-			counter++;
-			if (counter > 200) {
-				remove = true;
-			}
-			return;
-		}
-		
 		x += velX;
 		y += velY;
 		
@@ -48,10 +43,6 @@ public class Koopa extends Enemy{
 	@Override
 	public void render(Graphics g) {
 //		showBounds(g);
-		if (!kill) {
-			animation.drawAnimation(g, x, y, width, height);
-		} else {
-			g.drawImage(sprite[2], (int) x, (int) y, (int) width, (int) height, null);
-		}
+		animation.drawAnimation(g, x, y, width, height);
 	}
 }

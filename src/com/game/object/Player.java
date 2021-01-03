@@ -15,9 +15,11 @@ import com.game.object.block.BrickStarBlock;
 import com.game.object.block.InvisibleBlock;
 import com.game.object.block.QuestionFlowerBlock;
 import com.game.object.enemy.Enemy;
+import com.game.object.enemy.Koopa;
 import com.game.object.item.GreenShroom;
 import com.game.object.item.RedFlower;
 import com.game.object.item.RedShroom;
+import com.game.object.item.Shell;
 import com.game.object.item.Star;
 import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
@@ -49,6 +51,9 @@ public class Player extends GameObject {
 	private boolean jumped;
 	private boolean forward;	
 	private int invincibleTimer;
+	
+	private int shellTimer;
+	private boolean shellDelay;
 	
 	private float leftBound;
 	
@@ -207,6 +212,10 @@ public class Player extends GameObject {
 	}
 	
 	private void collision() {
+		if (shellDelay) {
+			shellTimer++;
+		}
+		
 		for (int i = 0; i < handler.getGameObjs().size(); i++) {
 			GameObject temp = handler.getGameObjs().get(i);
 			
@@ -219,12 +228,26 @@ public class Player extends GameObject {
 					((Enemy) temp).kill();
 					removeObjs.add(temp);
 					velY = -5f;
+					if (temp.getClass() == Koopa.class) {
+						addObjs.add(((Koopa) temp).getShell());
+						shellDelay = true;
+						shellTimer = 0;
+					}
 				} else if (getBoundsTop().intersects(temp.getBounds()) || 
 						   getBoundsRight().intersects(temp.getBounds()) || 
 						   getBoundsLeft().intersects(temp.getBounds())) {
 					playerHit();
 				}
 				
+				continue;
+			}
+			
+			if (temp.getClass() == Shell.class && getBounds().intersects(((Shell) temp).getBounds())) {
+				if (x < temp.getX()) {
+					temp.setVelX(5f);
+				} else {
+					temp.setVelX(-5f);
+				}
 				continue;
 			}
 			
