@@ -12,9 +12,14 @@ import com.game.object.util.ObjectId;
 
 public abstract class Enemy extends GameObject {
 	private Handler handler = Game.getHandler();
+	protected boolean kill;
 
 	public Enemy(float x, float y, float width, float height, int scale) {
 		super(x, y, ObjectId.Enemy, width, height, scale, 2);
+	}
+	
+	public boolean isKilled() {
+		return kill;
 	}
 	
 	public abstract void kill();
@@ -23,6 +28,7 @@ public abstract class Enemy extends GameObject {
 		for (int i = 0; i < handler.getGameObjs().size(); i++) {
 			GameObject temp = handler.getGameObjs().get(i);
 			if (temp == this) continue;
+			if (temp.getId() == ObjectId.Enemy && ((Enemy) temp).isKilled()) continue;
 			
 			if (temp.getId() == ObjectId.Block || temp.getId() == ObjectId.Pipe || temp.getId() == ObjectId.Enemy) {
 				if (getBoundsBottom().intersects(temp.getBounds())) {

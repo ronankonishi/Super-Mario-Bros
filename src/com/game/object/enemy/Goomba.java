@@ -6,7 +6,6 @@ import com.game.gfx.AnimationSimple;
 
 public class Goomba extends Enemy {
 	private AnimationSimple animation;
-	private boolean kill;
 	private boolean remove;
 	private int counter;
 	

@@ -18,6 +18,7 @@ public class Koopa extends Enemy{
 	
 	@Override
 	public void kill() {
+		kill = true;
 		shell = new Shell(x, y + (height/2), width, height/2, 1);
 	}
 
