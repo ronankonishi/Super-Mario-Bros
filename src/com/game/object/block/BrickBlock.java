@@ -27,6 +27,7 @@ public class BrickBlock extends Block{
 	public void tick() {
 		if (hit) {
 			debris.tick();
+			passable = true;
 		}
 		if (smallHit) {
 			if (!flip) {

@@ -32,7 +32,7 @@ public class Shell extends GameObject {
 		for (int i = 0; i < handler.getGameObjs().size(); i++) {
 			GameObject temp = handler.getGameObjs().get(i);
 			if (temp == this) continue;
-			if (temp.getId() == ObjectId.Block && ((Block) temp).isHit()) continue;
+			if (temp.getId() == ObjectId.Block && ((Block) temp).isDisabled()) continue;
 			
 			if (temp.getId() == ObjectId.Block || temp.getId() == ObjectId.Pipe || temp.getId() == ObjectId.Player) {
 				if (getBoundsBottom().intersects(temp.getBounds())) {

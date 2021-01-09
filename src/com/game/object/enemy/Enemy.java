@@ -30,7 +30,7 @@ public abstract class Enemy extends GameObject {
 			GameObject temp = handler.getGameObjs().get(i);
 			if (temp == this) continue;
 			if (temp.getId() == ObjectId.Enemy && ((Enemy) temp).isKilled()) continue;
-			if (temp.getId() == ObjectId.Block && ((Block) temp).isHit()) continue;
+			if (temp.getId() == ObjectId.Block && ((Block) temp).isPassable()) continue;
 			
 			if (temp.getId() == ObjectId.Block || temp.getId() == ObjectId.Pipe || temp.getId() == ObjectId.Enemy) {
 				if (getBoundsBottom().intersects(temp.getBounds())) {

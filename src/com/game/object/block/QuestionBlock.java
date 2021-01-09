@@ -5,9 +5,7 @@ import com.game.object.item.Coin;
 
 public class QuestionBlock extends Block{
 	private Coin coin;
-	private boolean disabled;
 	private int yInc;
-	private boolean smallHit;
 	private boolean flip;
 	
 	public QuestionBlock(float x, float y, float width, float height, int scale) {
@@ -18,16 +16,13 @@ public class QuestionBlock extends Block{
 	
 	@Override
 	public void tick() {
-		if (!disabled && hit) {
-			index = 3;
-			coin = new Coin(x, y, width, height, 1);
-			hit = false;
-			disabled = true;
-		}
 		if (coin != null) coin.tick();
 		if (coin != null && coin.shouldRemove()) coin = null;
 		
-		if (smallHit) {
+		if (!disabled && hit) {
+			index = 3;
+			if (coin == null) coin = new Coin(x, y, width, height, 1);
+		
 			if (!flip) {
 				yInc--;
 			} else {
@@ -35,8 +30,8 @@ public class QuestionBlock extends Block{
 			}
 			if (yInc == -10) flip = true;
 			if (yInc == 0) {
-				smallHit = false;
 				flip = false;
+				disabled = true;
 			}
 		}
 	}
@@ -50,7 +45,6 @@ public class QuestionBlock extends Block{
 	
 	@Override
 	public void largeHit() {
-		smallHit = true;
 		hit = true;
 	}
 	

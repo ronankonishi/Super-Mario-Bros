@@ -8,7 +8,6 @@ public class BrickStarBlock extends Block {
 	private boolean disabled;
 	private Star star;
 	private int yInc;
-	private boolean smallHit;
 	private boolean flip;
 	
 	public BrickStarBlock(float x, float y, float width, float height, int scale) {
@@ -19,13 +18,9 @@ public class BrickStarBlock extends Block {
 	
 	@Override
 	public void tick() {
-		if (hit) {
+		if (!disabled && hit) {
 			index = 3;
-			hit = false;
-			disabled = true;
-		}
-		
-		if (smallHit) {
+
 			if (!flip) {
 				yInc--;
 			} else {
@@ -33,8 +28,8 @@ public class BrickStarBlock extends Block {
 			}
 			if (yInc == -10) flip = true;
 			if (yInc == 0) {
-				smallHit = false;
 				flip = false;
+				disabled = true;
 			}
 		}
 	}
@@ -46,7 +41,6 @@ public class BrickStarBlock extends Block {
 	
 	@Override
 	public void largeHit() {
-		smallHit = true;
 		hit = true;
 	}
 	

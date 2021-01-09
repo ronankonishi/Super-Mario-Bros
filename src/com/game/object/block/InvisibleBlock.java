@@ -7,7 +7,6 @@ public class InvisibleBlock extends Block{
 	private GreenShroom greenShroom;
 	private boolean disabled;
 	private int yInc;
-	private boolean smallHit;
 	private boolean flip;
 	
 	public InvisibleBlock(float x, float y, float width, float height, int scale) {
@@ -18,13 +17,9 @@ public class InvisibleBlock extends Block{
 	
 	@Override
 	public void tick() {
-		if (hit) {
+		if (!disabled && hit) {
 			index = 3;
-			hit = false;
-			disabled = true;
-		}
-		
-		if (smallHit) {
+
 			if (!flip) {
 				yInc--;
 			} else {
@@ -32,8 +27,8 @@ public class InvisibleBlock extends Block{
 			}
 			if (yInc == -10) flip = true;
 			if (yInc == 0) {
-				smallHit = false;
 				flip = false;
+				disabled = true;
 			}
 		}
 	}
@@ -46,7 +41,6 @@ public class InvisibleBlock extends Block{
 	
 	@Override
 	public void largeHit() {
-		smallHit = true;
 		hit = true;
 	}
 	

@@ -7,9 +7,7 @@ import com.game.object.item.RedShroom;
 public class QuestionFlowerBlock extends Block{
 	private RedShroom redShroom;
 	private RedFlower redFlower;
-	private boolean disabled;
 	private int yInc;
-	private boolean smallHit;
 	private boolean flip;
 	
 	public QuestionFlowerBlock(float x, float y, float width, float height, int scale) {
@@ -20,13 +18,8 @@ public class QuestionFlowerBlock extends Block{
 	
 	@Override
 	public void tick() {
-		if (hit) {
+		if (hit && !disabled) {
 			index = 3;
-			hit = false;
-			disabled = true;
-		}
-		
-		if (smallHit) {
 			if (!flip) {
 				yInc--;
 			} else {
@@ -34,8 +27,8 @@ public class QuestionFlowerBlock extends Block{
 			}
 			if (yInc == -10) flip = true;
 			if (yInc == 0) {
-				smallHit = false;
 				flip = false;
+				disabled = true;
 			}
 		}
 	}
@@ -68,8 +61,6 @@ public class QuestionFlowerBlock extends Block{
 	
 	@Override
 	public void largeHit() {
-		smallHit = true;
-
 		hit = true;
 	}
 	
