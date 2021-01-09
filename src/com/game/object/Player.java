@@ -226,11 +226,11 @@ public class Player extends GameObject {
 			if (temp.getClass() == BackgroundObject.class) continue; 
 			if (temp == this) continue;
 			if (removeObjs.contains(temp) || addObjs.contains(temp)) continue;
+			if (temp.getClass() == Enemy.class && ((Enemy) temp).getFlip()) continue;
 			
 			if (temp.getId() == ObjectId.Enemy && invincible) {
 				if (getBounds().intersects(temp.getBounds())) {
-					((Enemy) temp).kill();
-					removeObjs.add(temp);
+					((Enemy) temp).flip();
 				}
 				continue;
 			}

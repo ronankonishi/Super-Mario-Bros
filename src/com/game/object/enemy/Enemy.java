@@ -8,12 +8,14 @@ import java.awt.Rectangle;
 import com.game.main.Game;
 import com.game.object.GameObject;
 import com.game.object.block.Block;
+import com.game.object.item.Shell;
 import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
 
 public abstract class Enemy extends GameObject {
 	private Handler handler = Game.getHandler();
 	protected boolean kill;
+	protected boolean flipAnimation;
 
 	public Enemy(float x, float y, float width, float height, int scale) {
 		super(x, y, ObjectId.Enemy, width, height, scale, 2);
@@ -21,6 +23,14 @@ public abstract class Enemy extends GameObject {
 	
 	public boolean isKilled() {
 		return kill;
+	}
+	
+	public boolean getFlip() {
+		return flipAnimation;
+	}
+	
+	public void flip() {
+		flipAnimation = true;
 	}
 	
 	public abstract void kill();
@@ -31,6 +41,19 @@ public abstract class Enemy extends GameObject {
 			if (temp == this) continue;
 			if (temp.getId() == ObjectId.Enemy && ((Enemy) temp).isKilled()) continue;
 			if (temp.getId() == ObjectId.Block && ((Block) temp).isPassable()) continue;
+			if (flipAnimation) continue;
+			
+			if (temp.getId() == ObjectId.Block && (((Block) temp).isHit() || ((Block) temp).isSmallHit())) {
+				if (getBoundsBottom().intersects(((Block) temp).getBounds())) {
+					flipAnimation = true;
+				}
+			}
+			
+			if (temp.getClass() == Shell.class) {
+				if (getBounds().intersects(((Shell) temp).getBounds())) {
+					flipAnimation = true;
+				}
+			}
 			
 			if (temp.getId() == ObjectId.Block || temp.getId() == ObjectId.Pipe || temp.getId() == ObjectId.Enemy) {
 				if (getBoundsBottom().intersects(temp.getBounds())) {
@@ -50,8 +73,6 @@ public abstract class Enemy extends GameObject {
 			}
 		}
 	}
-	
-
 	@Override
 	protected void showBounds(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;

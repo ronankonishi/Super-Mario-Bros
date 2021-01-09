@@ -8,6 +8,7 @@ public class Goomba extends Enemy {
 	private AnimationSimple animation;
 	private boolean remove;
 	private int counter;
+	private boolean setInitialHitVel;
 	
 	public Goomba(float x, float y, float width, float height, int scale) {
 		super(x, y, width, height, scale);
@@ -28,6 +29,13 @@ public class Goomba extends Enemy {
 	
 	@Override
 	public void tick() {
+		if (!setInitialHitVel) {
+			if (flipAnimation) {
+				velY = -5;
+				setInitialHitVel = true;
+			}
+		}
+		
 		if (kill) {
 			counter++;
 			if (counter > 50) {
@@ -48,6 +56,11 @@ public class Goomba extends Enemy {
 	@Override
 	public void render(Graphics g) {
 //		showBounds(g);
+		if (flipAnimation) {
+			g.drawImage(sprite[1], (int) x, (int) (y + height), (int) width, (int) -height, null);
+			return;
+		}
+		
 		if (!kill) {
 			animation.drawAnimation(g, x, y, width, height);
 		} else {

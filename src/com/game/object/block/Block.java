@@ -5,6 +5,7 @@ import com.game.object.util.ObjectId;
 
 public abstract class Block extends GameObject {
 	protected boolean hit;
+	protected boolean smallHit;
 	protected boolean disabled;
 	protected boolean passable;
 	
@@ -14,6 +15,10 @@ public abstract class Block extends GameObject {
 	
 	public void smallHit() {
 		largeHit();
+	}
+	
+	public boolean isSmallHit() {
+		return smallHit;
 	}
 	
 	public boolean isHit() {

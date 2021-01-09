@@ -6,8 +6,8 @@ import com.game.object.item.Debris;
 public class BrickBlock extends Block{
 	private Debris debris;
 	private int yInc;
-	private boolean smallHit;
 	private boolean flip;
+	private int count;
 	
 	public BrickBlock(float x, float y, float width, float height, int scale) {
 		super(x, y, width, height, scale);
@@ -27,7 +27,12 @@ public class BrickBlock extends Block{
 	public void tick() {
 		if (hit) {
 			debris.tick();
-			passable = true;
+			if (count > 1) {
+				passable = true;
+			}
+			if (count < 2) {
+				count++;
+			}
 		}
 		if (smallHit) {
 			if (!flip) {
@@ -38,6 +43,7 @@ public class BrickBlock extends Block{
 			if (yInc == -10) flip = true;
 			if (yInc == 0) {
 				smallHit = false;
+				hit = false;
 				flip = false;
 			}
 		}

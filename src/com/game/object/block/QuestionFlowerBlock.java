@@ -28,7 +28,7 @@ public class QuestionFlowerBlock extends Block{
 			if (yInc == -10) flip = true;
 			if (yInc == 0) {
 				flip = false;
-				disabled = true;
+				hit = false;
 			}
 		}
 	}
