@@ -49,7 +49,8 @@ public class Player extends GameObject {
 	private int immuneTimer;
 	
 	private boolean jumped;
-	private boolean forward;	
+	private boolean forward;
+	private boolean invincible;
 	private int invincibleTimer;
 	
 	private int shellTimer;
@@ -126,6 +127,7 @@ public class Player extends GameObject {
 
 	private void setStateSmall() {
 		sprite = spriteS;
+		invincible = false;
 		currAnimationS = playerWalkS;
 		if (state == State.SMALL) return;
 		state = State.SMALL;
@@ -135,6 +137,7 @@ public class Player extends GameObject {
 	
 	private void setStateLarge() {
 		sprite = spriteL;
+		invincible = false;
 		currAnimationS = playerWalkL;
 		if (currAnimationC != null) currAnimationC = playerWalkIL;
 		if (state == State.LARGE) return;
@@ -149,6 +152,7 @@ public class Player extends GameObject {
 	
 	private void setStateFire() {
 		sprite = spriteF;
+		invincible = false;
 		currAnimationS = playerWalkF;
 		if (state == State.FIRE) return;
 		state = state.FIRE;
@@ -156,12 +160,14 @@ public class Player extends GameObject {
 	
 	private void setStateIL() {
 		invincibleTimer = 0;
+		invincible = true;
 		currAnimationS = null;
 		currAnimationC = playerWalkIL;
 	}
 	
 	private void setStateIS() {
 		invincibleTimer = 0;
+		invincible = true;
 		currAnimationS = null;
 		currAnimationC = playerWalkIS;
 	}
@@ -222,6 +228,14 @@ public class Player extends GameObject {
 			if (temp.getClass() == BackgroundObject.class) continue; 
 			if (temp == this) continue;
 			if (removeObjs.contains(temp) || addObjs.contains(temp)) continue;
+			
+			if (temp.getId() == ObjectId.Enemy && invincible) {
+				if (getBounds().intersects(temp.getBounds())) {
+					((Enemy) temp).kill();
+					removeObjs.add(temp);
+				}
+				continue;
+			}
 			
 			if (temp.getId() == ObjectId.Enemy && !immune) {
 				if (getBoundsBottom().intersects(temp.getBounds())) {
