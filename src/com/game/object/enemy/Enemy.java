@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 
 import com.game.main.Game;
 import com.game.object.GameObject;
+import com.game.object.block.Block;
 import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
 
@@ -29,6 +30,7 @@ public abstract class Enemy extends GameObject {
 			GameObject temp = handler.getGameObjs().get(i);
 			if (temp == this) continue;
 			if (temp.getId() == ObjectId.Enemy && ((Enemy) temp).isKilled()) continue;
+			if (temp.getId() == ObjectId.Block && ((Block) temp).isHit()) continue;
 			
 			if (temp.getId() == ObjectId.Block || temp.getId() == ObjectId.Pipe || temp.getId() == ObjectId.Enemy) {
 				if (getBoundsBottom().intersects(temp.getBounds())) {

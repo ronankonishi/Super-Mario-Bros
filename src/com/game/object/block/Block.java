@@ -14,6 +14,9 @@ public abstract class Block extends GameObject {
 		largeHit();
 	};
 	
+	public boolean isHit() {
+		return hit;
+	}
 	public abstract void largeHit();
 	public abstract boolean shouldRemove();
 }
