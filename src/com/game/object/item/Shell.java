@@ -34,7 +34,7 @@ public class Shell extends GameObject {
 			if (temp == this) continue;
 			if (temp.getId() == ObjectId.Block && ((Block) temp).isDisabled()) continue;
 			
-			if (temp.getId() == ObjectId.Block || temp.getId() == ObjectId.Pipe || temp.getId() == ObjectId.Player) {
+			if (temp.getId() == ObjectId.Block || temp.getId() == ObjectId.Pipe) {
 				if (getBoundsBottom().intersects(temp.getBounds())) {
 					y = temp.getY() - height;
 					velY = 0;

@@ -53,8 +53,8 @@ public class Player extends GameObject {
 	private boolean invincible;
 	private int invincibleTimer;
 	
-	private int shellTimer;
-	private boolean shellDelay;
+//	private int shellTimer;
+//	private boolean shellDelay;
 	
 	private float leftBound;
 	
@@ -216,9 +216,9 @@ public class Player extends GameObject {
 	}
 	
 	private void collision() {
-		if (shellDelay) {
-			shellTimer++;
-		}
+//		if (shellDelay) {
+//			shellTimer++;
+//		}
 		
 		for (int i = 0; i < handler.getGameObjs().size(); i++) {
 			GameObject temp = handler.getGameObjs().get(i);
@@ -242,8 +242,6 @@ public class Player extends GameObject {
 					velY = -5f;
 					if (temp.getClass() == Koopa.class) {
 						addObjs.add(((Koopa) temp).getShell());
-						shellDelay = true;
-						shellTimer = 0;
 					}
 				} else if (getBoundsTop().intersects(temp.getBounds()) || 
 						   getBoundsRight().intersects(temp.getBounds()) || 
@@ -255,6 +253,12 @@ public class Player extends GameObject {
 			}
 			
 			if (temp.getClass() == Shell.class && getBounds().intersects(((Shell) temp).getBounds())) {
+				if (((Shell) temp).getVelX() != 0) {
+					if (immune || invincible) continue;
+					playerHit();
+					continue;
+				}
+				
 				if (x < temp.getX()) {
 					temp.setVelX(5f);
 				} else {
