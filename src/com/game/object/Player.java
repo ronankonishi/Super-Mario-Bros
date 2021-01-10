@@ -56,6 +56,7 @@ public class Player extends GameObject {
 	private boolean forward = true;
 	private boolean invincible;
 	private int invincibleTimer;
+	private int fireAnimationCounter;
 	
 //	private int shellTimer;
 //	private boolean shellDelay;
@@ -86,11 +87,23 @@ public class Player extends GameObject {
 		currAnimationS = playerWalkS;
 		
 		state = State.SMALL;
+		setStateLarge();
+		setStateFire();
 	}
 
 	@Override
 	public void render(Graphics g) {
-		if (jumped) {
+		if (fireAnimationCounter > 0) {
+			if (forward) {
+				g.drawImage(sprite[1], (int) x, (int) y, (int) width, (int) height, null);
+			} else {
+				g.drawImage(sprite[1], (int) (x - width), (int) y, (int) -width, (int) height, null);
+			}
+			fireAnimationCounter++;
+			if (fireAnimationCounter == 20) {
+				fireAnimationCounter = 0;
+			}
+		} else if (jumped) {
 			if (forward) {
 				if (currAnimationC != null) {
 					currAnimationC.drawJumpR(g, x, y, width, height);
@@ -496,5 +509,6 @@ public class Player extends GameObject {
 		audioHandler.playFireball();
 		Fireball fireball = new Fireball(x, y, width, height, 1, forward);
 		addObjs.add(fireball);
+		fireAnimationCounter = 1;
 	}
 }
