@@ -57,7 +57,7 @@ public class Goomba extends Enemy {
 	public void render(Graphics g) {
 //		showBounds(g);
 		if (flipAnimation) {
-			g.drawImage(sprite[1], (int) x, (int) (y + height), (int) width, (int) -height, null);
+			animation.drawAnimation(g, x, y + height, width, -height);
 			return;
 		}
 		

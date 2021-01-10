@@ -32,6 +32,7 @@ public class QuestionBlock extends Block{
 			if (yInc == 0) {
 				flip = false;
 				hit = false;
+				disabled = true;
 			}
 		}
 	}

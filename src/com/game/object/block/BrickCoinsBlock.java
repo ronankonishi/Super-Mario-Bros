@@ -9,8 +9,8 @@ public class BrickCoinsBlock extends Block {
 	private int hitCount;
 	private LinkedList<Coin> coins, removeCoins;
 	private int yInc;
-	private boolean smallHit;
 	private boolean flip;
+	private boolean initHit;
 	
 	public BrickCoinsBlock(float x, float y, float width, float height, int scale) {
 		super(x, y, width, height, scale);
@@ -22,13 +22,27 @@ public class BrickCoinsBlock extends Block {
 	
 	@Override
 	public void tick() {
-		if (hit) {
-			hitCount++;
-			if (hitCount == 10) {
-				index = 3;
+		if (hit && !disabled) {
+			if (initHit) {
+				hitCount++;
+				if (hitCount == 10) {
+					index = 3;
+					disabled = true;
+				}
+				coins.add(new Coin(x, y, width, height, 1));
+				initHit = false;
 			}
-			coins.add(new Coin(x, y, width, height, 1));
-			hit = false;
+			
+			if (!flip) {
+				yInc--;
+			} else {
+				yInc++;
+			}
+			if (yInc == -10) flip = true;
+			if (yInc == 0) {
+				flip = false;
+				hit = false;
+			}
 		}
 		
 		for (Coin coin : coins) {
@@ -37,19 +51,6 @@ public class BrickCoinsBlock extends Block {
 		}
 		for (Coin coin : removeCoins) {
 			coins.remove(coin);
-		}
-		
-		if (smallHit) {
-			if (!flip) {
-				yInc--;
-			} else {
-				yInc++;
-			}
-			if (yInc == -10) flip = true;
-			if (yInc == 0) {
-				smallHit = false;
-				flip = false;
-			}
 		}
 	}
 	
@@ -64,8 +65,8 @@ public class BrickCoinsBlock extends Block {
 	
 	@Override
 	public void largeHit() {
-		smallHit = true;
 		hit = true;
+		initHit = true;
 	}
 
 	@Override

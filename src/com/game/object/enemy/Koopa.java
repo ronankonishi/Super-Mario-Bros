@@ -44,6 +44,11 @@ public class Koopa extends Enemy{
 	@Override
 	public void render(Graphics g) {
 //		showBounds(g);
+		
+		if (flipAnimation) {
+			g.drawImage(tex.getShell1()[0], (int) x, (int) (y + height/2), (int) width, (int) (-height/2), null);
+			return;
+		}
 		animation.drawAnimation(g, x, y, width, height);
 	}
 }
