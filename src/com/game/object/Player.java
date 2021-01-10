@@ -87,8 +87,8 @@ public class Player extends GameObject {
 		currAnimationS = playerWalkS;
 		
 		state = State.SMALL;
-		setStateLarge();
-		setStateFire();
+//		setStateLarge();
+//		setStateFire();
 	}
 
 	@Override

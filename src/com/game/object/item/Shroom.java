@@ -44,6 +44,12 @@ public abstract class Shroom extends GameObject {
 			GameObject temp = handler.getGameObjs().get(i);
 			if (temp == this) continue;
 			if (temp.getId() == ObjectId.Block && ((Block) temp).isPassable()) continue;
+
+			if (temp.getId() == ObjectId.Block && (((Block) temp).isHit() || ((Block) temp).isSmallHit())) {
+				if (getBoundsBottom().intersects(((Block) temp).getBounds())) {
+					velX *= -1;
+				}
+			}
 			
 			if (temp.getId() == ObjectId.Block || temp.getId() == ObjectId.Pipe) {
 				if (getBoundsBottom().intersects(temp.getBounds())) {

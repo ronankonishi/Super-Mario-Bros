@@ -34,8 +34,9 @@ public class KeyInput extends KeyAdapter {
 			handler.getPlayer().setVelX(8);
 			keyDown[2] = true;
 		}
-		if (key == KeyEvent.VK_J) {
+		if (key == KeyEvent.VK_J && ! keyDown[3]) {
 			handler.getPlayer().fire();
+			keyDown[3] = true;
 		}
 	}
 	
@@ -50,6 +51,9 @@ public class KeyInput extends KeyAdapter {
 		}
 		if (key == KeyEvent.VK_D) {
 			keyDown[2] = false;
+		}
+		if (key == KeyEvent.VK_J) {
+			keyDown[3] = false;
 		}
 		
 		if (!keyDown[1] && !keyDown[2]) {
