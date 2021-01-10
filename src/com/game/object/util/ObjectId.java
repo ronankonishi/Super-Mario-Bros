@@ -8,5 +8,6 @@ public enum ObjectId {
 	Debris,  
 	RedFlower,
 	BackgroundObj, 
-	MovingItem;
+	MovingItem, 
+	Fireball;
 }

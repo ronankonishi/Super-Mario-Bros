@@ -13,16 +13,27 @@ import com.game.object.util.ObjectId;
 
 public class Shell extends GameObject {
 	private Handler handler = Game.getHandler();
+	protected boolean flipAnimation;
 
 	public Shell(float x, float y, float width, float height, int scale) {
 		super(x, y, ObjectId.MovingItem, width, height, scale, 1);
 		sprite = tex.getShell1();
 		index = 0;
 	}
+
+	public boolean getFlip() {
+		return flipAnimation;
+	}
+	
+	public void flip() {
+		flipAnimation = true;
+		
+	}
 	
 	@Override
 	public void tick() {
 		x += velX;
+		y += velY;
 		
 		applyGravity();
 		collision();
@@ -33,6 +44,7 @@ public class Shell extends GameObject {
 			GameObject temp = handler.getGameObjs().get(i);
 			if (temp == this) continue;
 			if (temp.getId() == ObjectId.Block && ((Block) temp).isDisabled()) continue;
+			if (flipAnimation) continue;
 			
 			if (temp.getId() == ObjectId.Block || temp.getId() == ObjectId.Pipe) {
 				if (getBoundsBottom().intersects(temp.getBounds())) {
@@ -99,6 +111,11 @@ public class Shell extends GameObject {
 	@Override
 	public void render(Graphics g) {
 //		showBounds(g);
+		
+		if (flipAnimation) {
+			g.drawImage(tex.getShell1()[0], (int) x, (int) y, (int) width, (int) -height, null);
+			return;
+		}
 		g.drawImage(sprite[index], (int) x, (int) y, (int) width, (int) height, null);
 	}
 

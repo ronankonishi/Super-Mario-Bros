@@ -34,6 +34,9 @@ public class KeyInput extends KeyAdapter {
 			handler.getPlayer().setVelX(8);
 			keyDown[2] = true;
 		}
+		if (key == KeyEvent.VK_J) {
+			handler.getPlayer().fire();
+		}
 	}
 	
 	public void keyReleased(KeyEvent e) {

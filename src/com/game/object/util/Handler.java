@@ -15,11 +15,13 @@ import com.game.object.Player;
 public class Handler {
 	
 	private List<GameObject> gameObjs;
+	private List<GameObject> removeObjs;
 	private Player player;
 	private Camera cam;
 	
 	public Handler() {
 		gameObjs = new LinkedList<GameObject>();
+		removeObjs = new LinkedList<GameObject>();
 	}
 
 	public void setCam(Camera cam) {
@@ -29,6 +31,11 @@ public class Handler {
 	public void tick() {
 		player.setLeftBound(cam.getCX());		
 
+		for (GameObject obj : removeObjs) {
+			gameObjs.remove(obj);
+		}
+		removeObjs = new LinkedList<GameObject>();
+		
 		LinkedList<GameObject> removeObjsOffscreen = new LinkedList<GameObject>();
 		for (GameObject obj : gameObjs) {
 			if (obj.getId() == ObjectId.MovingItem && obj.getY() > Game.getScreenHeight()) {
@@ -114,5 +121,9 @@ public class Handler {
 	
 	public List<GameObject> getGameObjs(){
 		return gameObjs;
+	}
+	
+	public void addRemoveObjectQueue(GameObject removeObj) {
+		removeObjs.add(removeObj);
 	}
 }

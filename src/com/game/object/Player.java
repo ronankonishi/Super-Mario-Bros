@@ -16,6 +16,7 @@ import com.game.object.block.InvisibleBlock;
 import com.game.object.block.QuestionFlowerBlock;
 import com.game.object.enemy.Enemy;
 import com.game.object.enemy.Koopa;
+import com.game.object.item.Fireball;
 import com.game.object.item.GreenShroom;
 import com.game.object.item.RedFlower;
 import com.game.object.item.RedShroom;
@@ -49,7 +50,7 @@ public class Player extends GameObject {
 	private int immuneTimer;
 	
 	private boolean jumped;
-	private boolean forward;
+	private boolean forward = true;
 	private boolean invincible;
 	private int invincibleTimer;
 	
@@ -80,7 +81,8 @@ public class Player extends GameObject {
 		currAnimationS = playerWalkS;
 		
 		state = State.SMALL;
-//		setStateLarge();
+		setStateLarge();
+		setStateFire();
 //		setStateSmall();
 	}
 
@@ -115,10 +117,18 @@ public class Player extends GameObject {
 			}
 			forward = false;
 		} else {
-			if (currAnimationC != null) {
-				currAnimationC.drawStillR(g, x, y, width, height);
+			if (forward) {
+				if (currAnimationC != null) {
+					currAnimationC.drawStillR(g, x, y, width, height);
+				} else {
+					g.drawImage(sprite[0], (int) x, (int) y, (int) width, (int) height, null);
+				}
 			} else {
-				g.drawImage(sprite[0], (int) x, (int) y, (int) width, (int) height, null);
+				if (currAnimationC != null) {
+					currAnimationC.drawStillL(g, x, y, width, height);
+				} else {
+					g.drawImage(sprite[0], (int) (x + width), (int) y, (int) -width, (int) height, null);
+				}
 			}
 		}
 		
@@ -216,17 +226,14 @@ public class Player extends GameObject {
 	}
 	
 	private void collision() {
-//		if (shellDelay) {
-//			shellTimer++;
-//		}
-		
 		for (int i = 0; i < handler.getGameObjs().size(); i++) {
 			GameObject temp = handler.getGameObjs().get(i);
 			
 			if (temp.getClass() == BackgroundObject.class) continue; 
 			if (temp == this) continue;
 			if (removeObjs.contains(temp) || addObjs.contains(temp)) continue;
-			if (temp.getClass() == Enemy.class && ((Enemy) temp).getFlip()) continue;
+			if (temp.getId() == ObjectId.Enemy && ((Enemy) temp).getFlip()) continue;
+			if (temp.getClass() == Fireball.class) continue; 
 			
 			if (temp.getId() == ObjectId.Enemy && invincible) {
 				if (getBounds().intersects(temp.getBounds())) {
@@ -454,5 +461,11 @@ public class Player extends GameObject {
 	@Override
 	public boolean shouldRemove() {
 		return false;
+	}
+	
+	public void fire() {
+		if (state != State.FIRE) return;
+		Fireball fireball = new Fireball(x, y, width, height, 1, forward);
+		addObjs.add(fireball);
 	}
 }
