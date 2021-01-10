@@ -256,7 +256,6 @@ public class Player extends GameObject {
 				} else if (getBoundsTop().intersects(temp.getBounds()) || 
 						   getBoundsRight().intersects(temp.getBounds()) || 
 						   getBoundsLeft().intersects(temp.getBounds())) {
-					audioHandler.playPipe();
 					playerHit();
 				}
 				
@@ -373,6 +372,7 @@ public class Player extends GameObject {
 	}
 	
 	private void playerHit() {
+		audioHandler.playPipe();
 		immune = true;
 		switch(state) {
 			case SMALL:
@@ -389,15 +389,15 @@ public class Player extends GameObject {
 	
 	private void playerPowerup() {
 		switch(state) {
-		case SMALL:
-			setStateLarge();
-			break;
-		case LARGE:
-			setStateFire();
-			break;
-		case FIRE:
-			break;
-	}
+			case SMALL:
+				setStateLarge();
+				break;
+			case LARGE:
+				setStateFire();
+				break;
+			case FIRE:
+				break;
+		}
 	}
 	
 	public LinkedList<GameObject> removeObjs() {

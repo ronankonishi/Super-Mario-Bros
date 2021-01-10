@@ -48,13 +48,13 @@ public abstract class Enemy extends GameObject {
 			
 			if (temp.getId() == ObjectId.Block && (((Block) temp).isHit() || ((Block) temp).isSmallHit())) {
 				if (getBoundsBottom().intersects(((Block) temp).getBounds())) {
-					flipAnimation = true;
+					flip();
 				}
 			}
 			
-			if (temp.getClass() == Shell.class) {
+			if (temp.getClass() == Shell.class && ((Shell) temp).getVelX() != 0) {
 				if (getBounds().intersects(((Shell) temp).getBounds())) {
-					flipAnimation = true;
+					flip();
 				}
 			}
 			

@@ -51,9 +51,6 @@ public class AudioHandler {
 			Clip clip = AudioSystem.getClip();
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getResource(path));
 			clip.open(inputStream);
-			FloatControl gainControl = 
-				    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-				gainControl.setValue(-20.0f);
 			clip.start();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -73,7 +70,7 @@ public class AudioHandler {
 			song.open(inputStream);
 			FloatControl gainControl = 
 				    (FloatControl) song.getControl(FloatControl.Type.MASTER_GAIN);
-				gainControl.setValue(-20.0f);
+				gainControl.setValue(-10.0f);
 	        song.loop(Clip.LOOP_CONTINUOUSLY);
 		} catch (IOException e) {
 			e.printStackTrace();
