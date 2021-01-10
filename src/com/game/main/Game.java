@@ -8,6 +8,7 @@ import java.awt.image.BufferStrategy;
 import com.game.gfx.Camera;
 import com.game.gfx.Texture;
 import com.game.gfx.Window;
+import com.game.object.util.AudioHandler;
 import com.game.object.util.Handler;
 import com.game.object.util.KeyInput;
 import com.game.main.util.LevelHandler;
@@ -36,6 +37,7 @@ public class Game extends Canvas implements Runnable {
 	private static Handler handler;
 	private Camera cam;
 	private LevelHandler levelHandler;
+	private AudioHandler audioHandler;
 	
 	private static Texture tex;
 	
@@ -63,6 +65,8 @@ public class Game extends Canvas implements Runnable {
 		
 //		hud = new HUD();
 		new Window(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, this);
+		
+		audioHandler = new AudioHandler();
 
 		this.setFocusable(true);
 		this.start();
