@@ -42,6 +42,18 @@ public class Player extends GameObject {
 		FIRE;
 	}
 	
+	enum Sprite {
+		RFire,
+		LFire,
+		RJump,
+		LJump,
+		RStill,
+		LStill,
+		RWalk,
+		LWalk,
+		I
+	}
+	
 	private BufferedImage[] spriteL, spriteS, spriteF;
 	private BufferedImage[][] spriteIL, spriteIS;
 	private AnimationSimple playerWalkL, playerWalkS, playerWalkF;
@@ -51,12 +63,17 @@ public class Player extends GameObject {
 	private LinkedList<GameObject> removeObjs, addObjs;
 	private boolean immune;
 	private int immuneTimer;
+	private boolean immuneAnimation;
 	
 	private boolean jumped;
 	private boolean forward = true;
 	private boolean invincible;
 	private int invincibleTimer;
 	private int fireAnimationCounter;
+	private boolean powerup;
+	
+	private Sprite currSprite;
+	private BufferedImage currSpriteImage;
 	
 //	private int shellTimer;
 //	private boolean shellDelay;
@@ -87,17 +104,50 @@ public class Player extends GameObject {
 		currAnimationS = playerWalkS;
 		
 		state = State.SMALL;
-//		setStateLarge();
-//		setStateFire();
+		setStateLarge();
+		setStateFire();
 	}
 
 	@Override
 	public void render(Graphics g) {
-		if (fireAnimationCounter > 0) {
+		if (immuneAnimation) {
+			if (immuneTimer % 10 < 5) {
+				switch (currSprite) {
+					case RFire:
+						g.drawImage(sprite[1], (int) x, (int) y, (int) width, (int) height, null);
+						break;
+					case LFire:
+						g.drawImage(sprite[1], (int) (x + width), (int) y, (int) -width, (int) height, null);
+						break;
+					case RJump:
+						g.drawImage(sprite[5], (int) x, (int) y, (int) width, (int) height, null);
+						break;
+					case LJump:
+						g.drawImage(sprite[5], (int) (x + width), (int) y, (int) -width, (int) height, null);
+						break;
+					case RStill:
+						g.drawImage(sprite[0], (int) x, (int) y, (int) width, (int) height, null);
+						break;
+					case LStill:
+						g.drawImage(sprite[0], (int) (x + width), (int) y, (int) -width, (int) height, null);
+						break;
+					case RWalk:
+						g.drawImage(currSpriteImage, (int) x, (int) y, (int) width, (int) height, null);
+						break;
+					case LWalk:
+						g.drawImage(currSpriteImage, (int) (x + width), (int) y, (int) -width, (int) height, null);
+						break;
+					case I:
+						break;
+				}
+			}
+		} else if (fireAnimationCounter > 0) {
 			if (forward) {
 				g.drawImage(sprite[1], (int) x, (int) y, (int) width, (int) height, null);
+				currSprite = Sprite.RFire;
 			} else {
-				g.drawImage(sprite[1], (int) (x - width), (int) y, (int) -width, (int) height, null);
+				g.drawImage(sprite[1], (int) (x + width), (int) y, (int) -width, (int) height, null);
+				currSprite = Sprite.LFire;
 			}
 			fireAnimationCounter++;
 			if (fireAnimationCounter == 20) {
@@ -107,42 +157,56 @@ public class Player extends GameObject {
 			if (forward) {
 				if (currAnimationC != null) {
 					currAnimationC.drawJumpR(g, x, y, width, height);
+					currSprite = Sprite.I;
 				} else {
 					g.drawImage(sprite[5], (int) x, (int) y, (int) width, (int) height, null);
+					currSprite = Sprite.RJump;
 				}
 			} else {
 				if (currAnimationC != null) {
 					currAnimationC.drawJumpL(g, x, y, width, height);
+					currSprite = Sprite.I;
 				} else {
 					g.drawImage(sprite[5], (int) (x + width), (int) y, (int) -width, (int) height, null);
+					currSprite = Sprite.LJump;
 				}
 			}
 		} else if (velX > 0) {
 			if (currAnimationC != null) {
 				currAnimationC.drawWalkR(g, x,  y, width, height);
+				currSprite = Sprite.I;
 			} else {
 				currAnimationS.drawAnimation(g, x, y, width, height);
+				currSpriteImage = currAnimationS.getSprite();
+				currSprite = Sprite.RWalk;
 			}
 			forward = true;
 		} else if (velX < 0) {
 			if (currAnimationC != null) {
 				currAnimationC.drawWalkL(g, x, y, width, height);
+				currSprite = Sprite.I;
 			} else {
 				currAnimationS.drawAnimation(g, x + width, y, -width, height);
+				currSprite = Sprite.LWalk;
+				currSpriteImage = currAnimationS.getSprite();
 			}
 			forward = false;
 		} else {
 			if (forward) {
 				if (currAnimationC != null) {
 					currAnimationC.drawStillR(g, x, y, width, height);
+					currSprite = Sprite.I;
 				} else {
 					g.drawImage(sprite[0], (int) x, (int) y, (int) width, (int) height, null);
+					currSprite = Sprite.RStill;
 				}
 			} else {
 				if (currAnimationC != null) {
 					currAnimationC.drawStillL(g, x, y, width, height);
+					currSprite = Sprite.I;
 				} else {
 					g.drawImage(sprite[0], (int) (x + width), (int) y, (int) -width, (int) height, null);
+					currSprite = Sprite.LStill;
 				}
 			}
 		}
@@ -217,12 +281,40 @@ public class Player extends GameObject {
 			}
 		}
 		
-		if (immune) {
+		if (immune && immuneAnimation) {
 			immuneTimer = immuneTimer + 1;
+			if (immuneTimer == 30) {
+				if (powerup) {
+					switch(state) {
+						case SMALL:
+							setStateLarge();
+							break;
+						case LARGE:
+							setStateFire();
+							break;
+						case FIRE:
+							break;
+					}
+				} else {
+					switch(state) {
+						case SMALL:
+							
+							break;
+						case LARGE:
+							setStateSmall();
+							break;
+						case FIRE:
+							setStateLarge();
+							break;
+					}
+				}
+			}
 			if (immuneTimer == 60) {
 				immuneTimer = 0;
 				immune = false;
+				immuneAnimation = false;
 			}
+			return;
 		}
 		
 		if (x + velX >= leftBound) {
@@ -295,14 +387,12 @@ public class Player extends GameObject {
 			}
 			
 			if (temp.getClass() == RedShroom.class && getBounds().intersects(temp.getBounds())) {
-				audioHandler.playPowerup();
 				playerPowerup();
 				removeObjs.add(temp);
 				continue;
 			}
 			
 			if (temp.getClass() == RedFlower.class && getBounds().intersects(temp.getBounds())) {
-				audioHandler.playPowerup();
 				playerPowerup();
 				removeObjs.add(temp);
 				continue;
@@ -390,30 +480,15 @@ public class Player extends GameObject {
 	private void playerHit() {
 		audioHandler.playPipe();
 		immune = true;
-		switch(state) {
-			case SMALL:
-				
-				break;
-			case LARGE:
-				setStateSmall();
-				break;
-			case FIRE:
-				setStateLarge();
-				break;
-		}
+		immuneAnimation = true;
+		powerup = false;
 	}
 	
 	private void playerPowerup() {
-		switch(state) {
-			case SMALL:
-				setStateLarge();
-				break;
-			case LARGE:
-				setStateFire();
-				break;
-			case FIRE:
-				break;
-		}
+		audioHandler.playPowerup();
+		immune = true;
+		immuneAnimation = true;
+		powerup = true;
 	}
 	
 	public LinkedList<GameObject> removeObjs() {

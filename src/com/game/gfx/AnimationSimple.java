@@ -37,6 +37,10 @@ public class AnimationSimple {
 		}
 	}
 	
+	public BufferedImage getSprite() {
+		return currentImg;
+	}
+	
 	public void drawAnimation(Graphics g, float x, float y, float width, float height) {
 		g.drawImage(currentImg, (int) x, (int) y, (int) width, (int) height, null);
 	}
