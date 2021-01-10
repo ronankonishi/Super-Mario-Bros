@@ -219,7 +219,7 @@ public class Player extends GameObject {
 		
 		if (immune) {
 			immuneTimer = immuneTimer + 1;
-			if (immuneTimer == 19) {
+			if (immuneTimer == 60) {
 				immuneTimer = 0;
 				immune = false;
 			}
@@ -258,18 +258,20 @@ public class Player extends GameObject {
 				continue;
 			}
 			
-			if (temp.getId() == ObjectId.Enemy && !immune) {
-				if (getBoundsBottom().intersects(temp.getBounds())) {
-					((Enemy) temp).kill();
-					removeObjs.add(temp);
-					velY = -5f;
-					if (temp.getClass() == Koopa.class) {
-						addObjs.add(((Koopa) temp).getShell());
+			if (temp.getId() == ObjectId.Enemy) {
+				if (!immune) {
+					if (getBoundsBottom().intersects(temp.getBounds())) {
+						((Enemy) temp).kill();
+						removeObjs.add(temp);
+						velY = -5f;
+						if (temp.getClass() == Koopa.class) {
+							addObjs.add(((Koopa) temp).getShell());
+						}
+					} else if (getBoundsTop().intersects(temp.getBounds()) || 
+							   getBoundsRight().intersects(temp.getBounds()) || 
+							   getBoundsLeft().intersects(temp.getBounds())) {
+						playerHit();
 					}
-				} else if (getBoundsTop().intersects(temp.getBounds()) || 
-						   getBoundsRight().intersects(temp.getBounds()) || 
-						   getBoundsLeft().intersects(temp.getBounds())) {
-					playerHit();
 				}
 				
 				continue;
