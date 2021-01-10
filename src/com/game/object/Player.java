@@ -269,6 +269,7 @@ public class Player extends GameObject {
 					continue;
 				}
 				
+				immune = true;
 				audioHandler.playKick();
 				if (x < temp.getX()) {
 					temp.setVelX(5f);
