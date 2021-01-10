@@ -19,6 +19,7 @@ public class Goomba extends Enemy {
 
 	@Override
 	public void kill() {
+		audioHandler.playKick();
 		kill = true;
 	}
 	

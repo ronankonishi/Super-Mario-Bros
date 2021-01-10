@@ -9,10 +9,12 @@ import com.game.main.Game;
 import com.game.object.GameObject;
 import com.game.object.block.Block;
 import com.game.object.item.Shell;
+import com.game.object.util.AudioHandler;
 import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
 
 public abstract class Enemy extends GameObject {
+	protected AudioHandler audioHandler = Game.getAudioHandler();
 	private Handler handler = Game.getHandler();
 	protected boolean kill;
 	protected boolean flipAnimation;
@@ -30,6 +32,7 @@ public abstract class Enemy extends GameObject {
 	}
 	
 	public void flip() {
+		audioHandler.playKick();
 		flipAnimation = true;
 	}
 	

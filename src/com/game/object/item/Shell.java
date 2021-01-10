@@ -8,11 +8,13 @@ import java.awt.Rectangle;
 import com.game.main.Game;
 import com.game.object.GameObject;
 import com.game.object.block.Block;
+import com.game.object.util.AudioHandler;
 import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
 
 public class Shell extends GameObject {
 	private Handler handler = Game.getHandler();
+	private AudioHandler audioHandler = Game.getAudioHandler();
 	protected boolean flipAnimation;
 
 	public Shell(float x, float y, float width, float height, int scale) {
@@ -53,11 +55,13 @@ public class Shell extends GameObject {
 				}
 				
 				if (getBoundsRight().intersects(temp.getBounds())) {
+					audioHandler.playBump();
 					x = temp.getX() - width;
 					velX *= -1;
 				}
 				
 				if (getBoundsLeft().intersects(temp.getBounds())) {
+					audioHandler.playBump();
 					x = temp.getX() + temp.getWidth();
 					velX *= -1;
 				}

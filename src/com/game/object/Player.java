@@ -256,6 +256,7 @@ public class Player extends GameObject {
 				} else if (getBoundsTop().intersects(temp.getBounds()) || 
 						   getBoundsRight().intersects(temp.getBounds()) || 
 						   getBoundsLeft().intersects(temp.getBounds())) {
+					audioHandler.playPipe();
 					playerHit();
 				}
 				
