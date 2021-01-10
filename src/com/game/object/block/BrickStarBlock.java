@@ -2,9 +2,12 @@ package com.game.object.block;
 
 import java.awt.Graphics;
 
+import com.game.main.Game;
 import com.game.object.item.Star;
+import com.game.object.util.AudioHandler;
 
 public class BrickStarBlock extends Block {
+	private AudioHandler audioHandler = Game.getAudioHandler();
 	private boolean disabled;
 	private Star star;
 	private int yInc;
@@ -30,6 +33,7 @@ public class BrickStarBlock extends Block {
 			if (yInc == 0) {
 				flip = false;
 				disabled = true;
+				hit = false;
 			}
 		}
 	}
@@ -50,6 +54,7 @@ public class BrickStarBlock extends Block {
 	}
 	
 	public void spawnStar() {
+		audioHandler.playPowerupAppears();
 		star = new Star(x, y, width, height, 1);
 	}
 	

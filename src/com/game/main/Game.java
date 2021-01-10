@@ -37,7 +37,7 @@ public class Game extends Canvas implements Runnable {
 	private static Handler handler;
 	private Camera cam;
 	private LevelHandler levelHandler;
-	private AudioHandler audioHandler;
+	private static AudioHandler audioHandler;
 	
 	private static Texture tex;
 	
@@ -56,18 +56,19 @@ public class Game extends Canvas implements Runnable {
 		handler = new Handler();
 		this.addKeyListener(new KeyInput(handler));
 		
+		audioHandler = new AudioHandler();
+		
 		levelHandler = new LevelHandler(handler, tex);
 		levelHandler.start();
 
 		cam = new Camera(0, SCREEN_OFFSET, handler.getPlayer());
 		handler.setCam(cam);
 		
+		audioHandler.playTheme();
 		
 //		hud = new HUD();
 		new Window(WINDOW_WIDTH, WINDOW_HEIGHT, NAME, this);
 		
-		audioHandler = new AudioHandler();
-
 		this.setFocusable(true);
 		this.start();
 	}
@@ -161,6 +162,10 @@ public class Game extends Canvas implements Runnable {
 
 	public static Handler getHandler() {
 		return handler;
+	}
+	
+	public static AudioHandler getAudioHandler() {
+		return audioHandler;
 	}
 	
 	public static int getWindowHeight() {

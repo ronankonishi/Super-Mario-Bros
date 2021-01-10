@@ -3,9 +3,12 @@ package com.game.object.block;
 import java.awt.Graphics;
 import java.util.LinkedList;
 
+import com.game.main.Game;
 import com.game.object.item.Coin;
+import com.game.object.util.AudioHandler;
 
 public class BrickCoinsBlock extends Block {
+	private AudioHandler audioHandler = Game.getAudioHandler();
 	private int hitCount;
 	private LinkedList<Coin> coins, removeCoins;
 	private int yInc;
@@ -29,6 +32,7 @@ public class BrickCoinsBlock extends Block {
 					index = 3;
 					disabled = true;
 				}
+				audioHandler.playCoin();
 				coins.add(new Coin(x, y, width, height, 1));
 				initHit = false;
 			}
@@ -43,12 +47,16 @@ public class BrickCoinsBlock extends Block {
 				flip = false;
 				hit = false;
 			}
+		} else if (hit) {
+			audioHandler.playBump();
+			hit = false;
 		}
 		
 		for (Coin coin : coins) {
 			coin.tick();
 			if (coin.shouldRemove()) removeCoins.add(coin);
 		}
+		
 		for (Coin coin : removeCoins) {
 			coins.remove(coin);
 		}

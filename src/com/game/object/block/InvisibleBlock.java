@@ -1,9 +1,13 @@
 package com.game.object.block;
 
 import java.awt.Graphics;
+
+import com.game.main.Game;
 import com.game.object.item.GreenShroom;
+import com.game.object.util.AudioHandler;
 
 public class InvisibleBlock extends Block{
+	private AudioHandler audioHandler = Game.getAudioHandler();
 	private GreenShroom greenShroom;
 	private boolean disabled;
 	private int yInc;
@@ -55,6 +59,7 @@ public class InvisibleBlock extends Block{
 	}
 	
 	public void spawnGreenShroom() {
+		audioHandler.playPowerupAppears();
 		greenShroom = new GreenShroom(x, y, width, height, 1);
 	}
 	

@@ -1,10 +1,14 @@
 package com.game.object.block;
 
 import java.awt.Graphics;
+
+import com.game.main.Game;
 import com.game.object.item.RedFlower;
 import com.game.object.item.RedShroom;
+import com.game.object.util.AudioHandler;
 
 public class QuestionFlowerBlock extends Block{
+	private AudioHandler audioHandler = Game.getAudioHandler();
 	private RedShroom redShroom;
 	private RedFlower redFlower;
 	private int yInc;
@@ -40,10 +44,12 @@ public class QuestionFlowerBlock extends Block{
 	}
 	
 	public void spawnRedShroom() {
+		audioHandler.playPowerupAppears();
 		redShroom = new RedShroom(x, y, width, height, 1);
 	}
 	
 	public void spawnRedFlower() {
+		audioHandler.playPowerupAppears();
 		redFlower = new RedFlower(x, y, width, height, 1);
 	}
 	

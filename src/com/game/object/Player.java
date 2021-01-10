@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 import com.game.gfx.AnimationComplex;
 import com.game.gfx.AnimationSimple;
+import com.game.main.Game;
 import com.game.object.block.Block;
 import com.game.object.block.BrickBlock;
 import com.game.object.block.BrickStarBlock;
@@ -22,6 +23,7 @@ import com.game.object.item.RedFlower;
 import com.game.object.item.RedShroom;
 import com.game.object.item.Shell;
 import com.game.object.item.Star;
+import com.game.object.util.AudioHandler;
 import com.game.object.util.Handler;
 import com.game.object.util.ObjectId;
 
@@ -31,6 +33,7 @@ public class Player extends GameObject {
 	private static final float HEIGHT = 16;
 	
 	private Handler handler;
+	private AudioHandler audioHandler;
 	private State state;
 	
 	enum State {
@@ -64,6 +67,8 @@ public class Player extends GameObject {
 		this.handler = handler;
 		removeObjs = new LinkedList<GameObject>();
 		addObjs = new LinkedList<GameObject>();
+		
+		audioHandler = Game.getAudioHandler();
 						
 		spriteL = tex.getMarioL();
 		spriteS = tex.getMarioS();
@@ -81,9 +86,6 @@ public class Player extends GameObject {
 		currAnimationS = playerWalkS;
 		
 		state = State.SMALL;
-		setStateLarge();
-		setStateFire();
-//		setStateSmall();
 	}
 
 	@Override
@@ -187,6 +189,7 @@ public class Player extends GameObject {
 				invincibleTimer = 0;
 				currAnimationC = null;
 				invincible = false;
+				audioHandler.playTheme();
 				switch(state) {
 					case SMALL:
 						setStateSmall();
@@ -266,6 +269,7 @@ public class Player extends GameObject {
 					continue;
 				}
 				
+				audioHandler.playKick();
 				if (x < temp.getX()) {
 					temp.setVelX(5f);
 				} else {
@@ -275,23 +279,27 @@ public class Player extends GameObject {
 			}
 			
 			if (temp.getClass() == RedShroom.class && getBounds().intersects(temp.getBounds())) {
-				setStateLarge();
+				audioHandler.playPowerup();
+				playerPowerup();
 				removeObjs.add(temp);
 				continue;
 			}
 			
 			if (temp.getClass() == RedFlower.class && getBounds().intersects(temp.getBounds())) {
-				setStateFire();
+				audioHandler.playPowerup();
+				playerPowerup();
 				removeObjs.add(temp);
 				continue;
 			} 
 			
 			if (temp.getClass() == GreenShroom.class && getBounds().intersects(temp.getBounds())) {
 				removeObjs.add(temp);
+				audioHandler.play1Up();
 				continue;
 			}
 			
 			if (temp.getClass() == Star.class && getBounds().intersects(temp.getBounds())) {
+				audioHandler.playInvincible();
 				if (state == State.SMALL) {
 					setStateIS();
 				} else {
@@ -378,6 +386,19 @@ public class Player extends GameObject {
 		}
 	}
 	
+	private void playerPowerup() {
+		switch(state) {
+		case SMALL:
+			setStateLarge();
+			break;
+		case LARGE:
+			setStateFire();
+			break;
+		case FIRE:
+			break;
+	}
+	}
+	
 	public LinkedList<GameObject> removeObjs() {
 		LinkedList<GameObject> output = new LinkedList<GameObject>();
 		for (GameObject removeObj : removeObjs) {
@@ -450,8 +471,13 @@ public class Player extends GameObject {
 		return jumped;
 	}
 	
-	public void setJumped(boolean hasJumped) {
-		jumped = hasJumped;
+	public void setJumped() {
+		jumped = true;
+		if (state == State.SMALL) {
+			audioHandler.playJumpSmall();
+		} else {
+			audioHandler.playJumpSuper();
+		}
 	}
 	
 	public void setLeftBound(float x) {
@@ -465,6 +491,7 @@ public class Player extends GameObject {
 	
 	public void fire() {
 		if (state != State.FIRE) return;
+		audioHandler.playFireball();
 		Fireball fireball = new Fireball(x, y, width, height, 1, forward);
 		addObjs.add(fireball);
 	}

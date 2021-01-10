@@ -23,7 +23,7 @@ public class KeyInput extends KeyAdapter {
 			if (!handler.getPlayer().hasJumped()) {
 				handler.getPlayer().setVelY(-15);
 				keyDown[0] = true;
-				handler.getPlayer().setJumped(true);
+				handler.getPlayer().setJumped();
 			}
 		}
 		if (key == KeyEvent.VK_A) {

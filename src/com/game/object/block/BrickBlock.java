@@ -1,9 +1,13 @@
 package com.game.object.block;
 
 import java.awt.Graphics;
+
+import com.game.main.Game;
 import com.game.object.item.Debris;
+import com.game.object.util.AudioHandler;
 
 public class BrickBlock extends Block{
+	private AudioHandler audioHandler = Game.getAudioHandler();
 	private Debris debris;
 	private int yInc;
 	private boolean flip;
@@ -61,11 +65,13 @@ public class BrickBlock extends Block{
 	
 	@Override
 	public void smallHit() {
+		audioHandler.playBump();
 		smallHit = true;
 	}
 	
 	@Override
 	public void largeHit() {
+		audioHandler.playBreakblock();
 		hit = true;
 		debris = new Debris(x, y, width, height, scale);
 	}
