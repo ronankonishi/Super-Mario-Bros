@@ -62,7 +62,7 @@ public class AudioHandler {
 		}
 	}
 	
-	private void playSong(String path) {
+	private void playSong(String path, boolean loop) {
         try {
         	if (song != null) song.stop();
 			song = AudioSystem.getClip();
@@ -71,7 +71,11 @@ public class AudioHandler {
 			FloatControl gainControl = 
 				    (FloatControl) song.getControl(FloatControl.Type.MASTER_GAIN);
 				gainControl.setValue(-10.0f);
-	        song.loop(Clip.LOOP_CONTINUOUSLY);
+			if (loop) {
+				song.loop(Clip.LOOP_CONTINUOUSLY);
+			} else {
+				song.start();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (LineUnavailableException e) {
@@ -83,12 +87,17 @@ public class AudioHandler {
 	}
 	
 	public void playTheme() {
-		playSong(theme);
+		playSong(theme, true);
 	}
 	
 	public void playInvincible() {
-		playSong(invincible);
+		playSong(invincible, true);
 	}
+	
+	public void playMariodie() {
+		playSong(mariodie, false);
+	}
+	
 	
 	public void play1Up() {
 		play(oneup);
@@ -140,10 +149,6 @@ public class AudioHandler {
 	
 	public void playKick() {
 		play(kick);
-	}
-	
-	public void playMariodie() {
-		play(mariodie);
 	}
 	
 	public void playPause() {

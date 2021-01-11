@@ -19,6 +19,8 @@ public class KeyInput extends KeyAdapter {
 			System.exit(0);
 		}
 		
+		if (handler.getPlayer().hasDied()) return;
+		
 		if (key == KeyEvent.VK_W) {
 			if (!handler.getPlayer().hasJumped()) {
 				handler.getPlayer().setVelY(-15);

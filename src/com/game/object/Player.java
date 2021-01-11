@@ -71,7 +71,8 @@ public class Player extends GameObject {
 	private int invincibleTimer;
 	private int fireAnimationCounter;
 	private boolean powerup;
-	
+	private boolean playerDies;
+		
 	private Sprite currSprite;
 	private BufferedImage currSpriteImage;
 	
@@ -81,7 +82,7 @@ public class Player extends GameObject {
 	private float leftBound;
 	
 	public Player(float x, float y, int scale, Handler handler) {
-		super(x, y, ObjectId.Player, WIDTH, HEIGHT, scale, 1);
+		super(x, y, ObjectId.Player, WIDTH, HEIGHT, scale, 2);
 		this.handler = handler;
 		removeObjs = new LinkedList<GameObject>();
 		addObjs = new LinkedList<GameObject>();
@@ -104,13 +105,17 @@ public class Player extends GameObject {
 		currAnimationS = playerWalkS;
 		
 		state = State.SMALL;
-		setStateLarge();
-		setStateFire();
+//		setStateLarge();
+//		setStateFire();
 	}
 
 	@Override
 	public void render(Graphics g) {
-		if (immuneAnimation) {
+		if (playerDies) {
+			if (getY() < Game.getScreenHeight()) {
+				g.drawImage(sprite[6], (int) x, (int) y, (int) width, (int) height, null);
+			}
+		} else if (immuneAnimation) {
 			if (immuneTimer % 10 < 5) {
 				switch (currSprite) {
 					case RFire:
@@ -288,7 +293,7 @@ public class Player extends GameObject {
 					switch(state) {
 						case SMALL:
 							setStateLarge();
-							break;
+							return;
 						case LARGE:
 							setStateFire();
 							break;
@@ -297,9 +302,6 @@ public class Player extends GameObject {
 					}
 				} else {
 					switch(state) {
-						case SMALL:
-							
-							break;
 						case LARGE:
 							setStateSmall();
 							break;
@@ -315,6 +317,15 @@ public class Player extends GameObject {
 				immuneAnimation = false;
 			}
 			return;
+		}
+		
+		if (immune) {
+			immuneTimer = immuneTimer + 1;
+			if (immuneTimer == 60) {
+				immuneTimer = 0;
+				immune = false;
+				immuneAnimation = false;
+			}
 		}
 		
 		if (x + velX >= leftBound) {
@@ -333,7 +344,21 @@ public class Player extends GameObject {
 		collision();
 	}
 	
+	private void marioDies() {
+		velY = -10;
+		velX = 0;
+		audioHandler.playMariodie();
+		playerDies = true;
+		immune = false;
+	}
+	
+	public boolean hasDied() {
+		return playerDies;
+	}
+	
 	private void collision() {
+		if (playerDies) return;
+		
 		for (int i = 0; i < handler.getGameObjs().size(); i++) {
 			GameObject temp = handler.getGameObjs().get(i);
 			
@@ -478,7 +503,11 @@ public class Player extends GameObject {
 	}
 	
 	private void playerHit() {
-		audioHandler.playPipe();
+		if (state == State.SMALL) {
+			marioDies();
+			return;
+		}
+		audioHandler.playPipe();	
 		immune = true;
 		immuneAnimation = true;
 		powerup = false;

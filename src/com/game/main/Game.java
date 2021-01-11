@@ -38,8 +38,11 @@ public class Game extends Canvas implements Runnable {
 	private Camera cam;
 	private LevelHandler levelHandler;
 	private static AudioHandler audioHandler;
+	private static KeyInput keyInput;
 	
 	private static Texture tex;
+	
+	private int newGameTimer;
 	
 	public static void main(String args[]) {
 		new Game();
@@ -54,7 +57,8 @@ public class Game extends Canvas implements Runnable {
 		tex = new Texture();
 		
 		handler = new Handler();
-		this.addKeyListener(new KeyInput(handler));
+		keyInput = new KeyInput(handler);
+		this.addKeyListener(keyInput);
 		
 		audioHandler = new AudioHandler();
 		
