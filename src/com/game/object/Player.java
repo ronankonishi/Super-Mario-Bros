@@ -265,6 +265,9 @@ public class Player extends GameObject {
 
 	@Override
 	public void tick() {
+		
+		if (y > Game.getScreenHeight() && !playerDies) marioDies();
+		
 		if (currAnimationC != null) {
 			invincibleTimer = invincibleTimer + 1;
 			if (invincibleTimer == 599) {
@@ -345,7 +348,9 @@ public class Player extends GameObject {
 	}
 	
 	private void marioDies() {
-		velY = -10;
+		if (y <= Game.getScreenHeight()) {
+			velY = -10;
+		}
 		velX = 0;
 		audioHandler.playMariodie();
 		playerDies = true;
