@@ -19,7 +19,7 @@ public class KeyInput extends KeyAdapter {
 			System.exit(0);
 		}
 		
-		if (handler.getPlayer().hasDied()) return;
+		if (handler.getPlayer().disabled()) return;
 		
 		if (key == KeyEvent.VK_W) {
 			if (!handler.getPlayer().hasJumped()) {

@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import com.game.gfx.BufferedImageLoader;
 import com.game.gfx.Texture;
 import com.game.object.BackgroundObject;
+import com.game.object.FlagPole;
 import com.game.object.GameObject;
 import com.game.object.Pipe;
 import com.game.object.Player;
@@ -86,6 +87,8 @@ public class LevelHandler {
 					handler.addObj(new Pipe(i*16, j*16, 32, 16, 0, 3, true));
 				} else if (blue == 0 && green == 0 && red == 30) {
 					handler.addObj(new Pipe(i*16, j*16, 32, 16, 2, 3, true));
+				} else if (blue == 0 && green == 0 && red == 50) {
+					handler.addObj(new FlagPole(i*16, j*16, 16, 10*16, 3));
 				}
 				
 			}

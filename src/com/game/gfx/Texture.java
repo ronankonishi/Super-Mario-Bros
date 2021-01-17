@@ -24,7 +24,8 @@ public class Texture {
 						   tile_1, tile_2, tile_3, tile_4,
 						   pipe_1, debris_1, coin_a1, shroom_1, flower_1, star_1,
 						   mountain_1, cloud_1, bush_1, castle_1,
-						   goomba_1, koopa_1, shell_1, fireball;
+						   goomba_1, koopa_1, shell_1, fireball,
+						   flag_1;
 	public BufferedImage[][] mario_il, mario_is;
 	
 	public Texture() {
@@ -55,6 +56,8 @@ public class Texture {
 		shell_1 = new BufferedImage[1];
 		
 		fireball = new BufferedImage[4];
+		
+		flag_1 = new BufferedImage[3];
 		
 		loader = new BufferedImageLoader();
 		sheetList = new LinkedList<BufferedImage>();
@@ -89,6 +92,7 @@ public class Texture {
 		getShellTextures();
 		
 		getFireballTextures();
+		getFlagTextures();
 	}
 	
 	public BufferedImage[] getMarioL() {
@@ -181,6 +185,10 @@ public class Texture {
 	
 	public BufferedImage[] getFireball() {
 		return fireball;
+	}
+	
+	public BufferedImage[] getFlag() {
+		return flag_1;
 	}
 	
 	private void getPlayerTextures() {
@@ -426,5 +434,18 @@ public class Texture {
 		fireball[1] = npc_sheet.getSubimage(x_off + width, y_off, width, height);
 		fireball[2] = npc_sheet.getSubimage(x_off, y_off + height, width, height);
 		fireball[3] = npc_sheet.getSubimage(x_off + width, y_off + height, width, height);
+	}
+	
+	private void getFlagTextures() {
+		int x_off1 = 8*16;
+		int y_off1 = 2*16;
+		int width = 16;
+		int height = 16;
+		flag_1[0] = npc_sheet.getSubimage(x_off1, y_off1, width, height);
+
+		int x_off = 16*16;
+		int y_off = 8*16;
+		flag_1[1] = tile_sheet.getSubimage(x_off, y_off, width, height);
+		flag_1[2] = tile_sheet.getSubimage(x_off, y_off + height, width, height);
 	}
 }

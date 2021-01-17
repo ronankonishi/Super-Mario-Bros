@@ -72,9 +72,17 @@ public class Player extends GameObject {
 	private int fireAnimationCounter;
 	private boolean powerup;
 	private boolean playerDies;
-		
+	private boolean stageClear;
+	private boolean stageClearAnimation;
+	private int stageClearAnimationTimer;
+	private boolean finishAnimation;
+	private boolean playerWins;
+	
 	private Sprite currSprite;
 	private BufferedImage currSpriteImage;
+	private int finishAnimationDistance;
+	
+	private FlagPole flag;
 	
 //	private int shellTimer;
 //	private boolean shellDelay;
@@ -265,8 +273,44 @@ public class Player extends GameObject {
 
 	@Override
 	public void tick() {
-		
 		if (y > Game.getScreenHeight() && !playerDies) marioDies();
+		
+		if (x + velX >= leftBound) {
+			x += velX;
+		}
+		
+		y += velY;
+		
+		if (finishAnimation) {
+			finishAnimationDistance++;
+			if (finishAnimationDistance == 56) {
+				handler.addRemoveObjectQueue(this);
+			}
+		}
+		
+		if (stageClear) {
+			if (stageClearAnimation) {
+				stageClearAnimationTimer += 1;
+				if (stageClearAnimationTimer == 20) {
+					velX = 5;
+					velY = -2;
+					stageClear = false;
+					finishAnimation = true;
+				}
+				return;
+			}
+			
+			if (y > Game.getScreenHeight() - 200) {
+				velY = 0;
+				if (flag.isDown()) {
+					audioHandler.playStageClear();
+					x += width;
+					forward = false;
+					stageClearAnimation = true;
+				}
+			}
+			return;
+		}
 		
 		if (currAnimationC != null) {
 			invincibleTimer = invincibleTimer + 1;
@@ -331,11 +375,6 @@ public class Player extends GameObject {
 			}
 		}
 		
-		if (x + velX >= leftBound) {
-			x += velX;
-		}
-		
-		y += velY;
 		applyGravity();
 		
 		if (currAnimationC != null) {
@@ -357,8 +396,8 @@ public class Player extends GameObject {
 		immune = false;
 	}
 	
-	public boolean hasDied() {
-		return playerDies;
+	public boolean disabled() {
+		return playerDies || playerWins;
 	}
 	
 	private void collision() {
@@ -372,6 +411,15 @@ public class Player extends GameObject {
 			if (removeObjs.contains(temp) || addObjs.contains(temp)) continue;
 			if (temp.getId() == ObjectId.Enemy && ((Enemy) temp).getFlip()) continue;
 			if (temp.getClass() == Fireball.class) continue; 
+			
+			if (temp.getClass() == FlagPole.class) {
+				if (getBounds().intersects(temp.getBounds()) && !finishAnimation) {
+					marioWins();
+					((FlagPole) temp).fall();
+					flag = (FlagPole)temp;
+				}
+				continue;
+			}
 			
 			if (temp.getId() == ObjectId.Enemy && invincible) {
 				if (getBounds().intersects(temp.getBounds())) {
@@ -505,6 +553,16 @@ public class Player extends GameObject {
 				}
 			}
 		}
+	}
+	
+	private void marioWins() {
+		audioHandler.playFlagpole();
+		velY = 6;
+		velX = 0;
+		x += 16;
+		stageClear = true;
+		forward = true;
+		playerWins = true;
 	}
 	
 	private void playerHit() {

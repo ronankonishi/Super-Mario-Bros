@@ -132,7 +132,7 @@ public class AudioHandler {
 	}
 	
 	public void playFlagpole() {
-		play(flagpole);
+		playSong(flagpole, false);
 	}
 	
 	public void playGameover() {
@@ -168,7 +168,7 @@ public class AudioHandler {
 	}
 	
 	public void playStageClear() {
-		play(stageClear);
+		playSong(stageClear, false);
 	}
 	
 	public void playStomp() {
@@ -184,6 +184,6 @@ public class AudioHandler {
 	}
 	
 	public void playWorldClear() {
-		play(worldClear);
+		playSong(worldClear, false);
 	}
 }

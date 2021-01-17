@@ -9,5 +9,5 @@ public enum ObjectId {
 	RedFlower,
 	BackgroundObj, 
 	MovingItem, 
-	Fireball;
+	Fireball, Flag;
 }
