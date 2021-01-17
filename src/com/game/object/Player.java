@@ -274,44 +274,7 @@ public class Player extends GameObject {
 	@Override
 	public void tick() {
 		if (y > Game.getScreenHeight() && !playerDies) marioDies();
-		
-		if (x + velX >= leftBound) {
-			x += velX;
-		}
-		
-		y += velY;
-		
-		if (finishAnimation) {
-			finishAnimationDistance++;
-			if (finishAnimationDistance == 56) {
-				handler.addRemoveObjectQueue(this);
-			}
-		}
-		
-		if (stageClear) {
-			if (stageClearAnimation) {
-				stageClearAnimationTimer += 1;
-				if (stageClearAnimationTimer == 20) {
-					velX = 5;
-					velY = -2;
-					stageClear = false;
-					finishAnimation = true;
-				}
-				return;
-			}
-			
-			if (y > Game.getScreenHeight() - 200) {
-				velY = 0;
-				if (flag.isDown()) {
-					audioHandler.playStageClear();
-					x += width;
-					forward = false;
-					stageClearAnimation = true;
-				}
-			}
-			return;
-		}
-		
+				
 		if (currAnimationC != null) {
 			invincibleTimer = invincibleTimer + 1;
 			if (invincibleTimer == 599) {
@@ -373,6 +336,43 @@ public class Player extends GameObject {
 				immune = false;
 				immuneAnimation = false;
 			}
+		}
+		
+		if (x + velX >= leftBound) {
+			x += velX;
+		}
+		
+		y += velY;
+		
+		if (finishAnimation) {
+			finishAnimationDistance++;
+			if (finishAnimationDistance == 56) {
+				handler.addRemoveObjectQueue(this);
+			}
+		}
+		
+		if (stageClear) {
+			if (stageClearAnimation) {
+				stageClearAnimationTimer += 1;
+				if (stageClearAnimationTimer == 20) {
+					velX = 5;
+					velY = -2;
+					stageClear = false;
+					finishAnimation = true;
+				}
+				return;
+			}
+			
+			if (y > Game.getScreenHeight() - (152 + height)) {
+				velY = 0;
+				if (flag.isDown()) {
+					audioHandler.playStageClear();
+					x += width;
+					forward = false;
+					stageClearAnimation = true;
+				}
+			}
+			return;
 		}
 		
 		applyGravity();
